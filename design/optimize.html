@@ -1,0 +1,39 @@
+<!doctype html><meta charset="utf-8"><title>optimize</title>
+<body style="font:13px monospace;padding:16px"><pre id="log">start…</pre>
+<script>
+const JOBS = [
+  ['loaves.jpg',      'loaves.webp',      1000, 0.80],
+  ['shelf.jpg',       'shelf.webp',        640, 0.80],
+  ['board.jpg',       'board.webp',        640, 0.80],
+  ['exterior.jpg',    'exterior.webp',     640, 0.80],
+  ['breakfast.jpg',   'breakfast.webp',    820, 0.78],
+  ['jam-jar.jpg',     'jam-jar.webp',      880, 0.80],
+  ['jam-orange.webp', 'jam-orange.webp',   800, 0.78],
+  ['jam-red.webp',    'jam-red.webp',      800, 0.78],
+  ['blueberry.jpg',   'blueberry.webp',    640, 0.80],
+];
+const log = m => document.getElementById('log').textContent += '\n' + m;
+const load = src => new Promise((ok,ng)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=ng;i.src=src;});
+(async () => {
+  let total = 0;
+  for (const [src, out, maxW, q] of JOBS) {
+    const im = await load('/assets/site/' + src);
+    const sc = Math.min(1, maxW / im.naturalWidth);
+    const c = document.createElement('canvas');
+    c.width = Math.round(im.naturalWidth * sc); c.height = Math.round(im.naturalHeight * sc);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/webp', q));
+    await fetch('/save?name=assets/web/' + out, { method: 'POST', body: blob });
+    total += blob.size;
+    log(`${out}  ${c.width}x${c.height}  ${(blob.size/1024).toFixed(0)}KB`);
+  }
+  const im = await load('/assets/site/logo-alpha.png');
+  const c = document.createElement('canvas'); c.width = 480; c.height = 480;
+  c.getContext('2d').drawImage(im, 0, 0, 480, 480);
+  const blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.92));
+  await fetch('/save?name=assets/web/logo-alpha.webp', { method: 'POST', body: blob });
+  total += blob.size;
+  log(`logo-alpha.webp 480x480  ${(blob.size/1024).toFixed(0)}KB`);
+  log(`\nTOTAL ${(total/1024).toFixed(0)}KB`);
+})();
+</script>

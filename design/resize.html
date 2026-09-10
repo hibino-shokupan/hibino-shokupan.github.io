@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>resize</title>
+<body style="font:14px sans-serif;padding:20px">
+<div id="log">working...</div>
+<script>
+const p = new URLSearchParams(location.search);
+const src = p.get('f'), maxW = +(p.get('w')||1600), name = p.get('n')||'out.jpg', q = +(p.get('q')||0.86);
+const im = new Image();
+im.onload = () => {
+  const sc = Math.min(1, maxW/im.naturalWidth);
+  const c = document.createElement('canvas');
+  c.width = Math.round(im.naturalWidth*sc);
+  c.height = Math.round(im.naturalHeight*sc);
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+  c.toBlob(b=>{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(b); a.download=name;
+    document.body.appendChild(a); a.click();
+    document.getElementById('log').textContent =
+      `DONE ${im.naturalWidth}x${im.naturalHeight} -> ${c.width}x${c.height}, ${(b.size/1024).toFixed(0)}KB`;
+  },'image/jpeg',q);
+};
+im.onerror = () => document.getElementById('log').textContent='ERROR loading '+src;
+im.src = src;
+</script>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
+  <style>
+    body { margin: 0; background: #FBF8F3; }
+    a { color: #9A7247; text-decoration: none; }
+    a:hover { color: #7A5836; }
+    p { margin: 0; }
+    h1, h2, h3 { margin: 0; font-weight: 400; }
+
+    .hero-frame { overflow: hidden; }
+    .hero-slide {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0;
+      animation: heroFade 32s linear infinite;
+    }
+    .hero-slide:nth-child(2) { animation-delay: 4s; }
+    .hero-slide:nth-child(3) { animation-delay: 8s; }
+    .hero-slide:nth-child(4) { animation-delay: 12s; }
+    .hero-slide:nth-child(5) { animation-delay: 16s; }
+    .hero-slide:nth-child(6) { animation-delay: 20s; }
+    .hero-slide:nth-child(7) { animation-delay: 24s; }
+    .hero-slide:nth-child(8) { animation-delay: 28s; }
+    .hero-slide.contain { object-fit: contain; background: #FBF8F3; animation-name: heroFadeFlat; }
+    @keyframes heroFade {
+      0%     { opacity: 0; transform: scale(1); }
+      1.6%   { opacity: 1; }
+      12.5%  { opacity: 1; }
+      14.1%  { opacity: 0; transform: scale(1.05); }
+      100%   { opacity: 0; transform: scale(1.05); }
+    }
+    @keyframes heroFadeFlat {
+      0%     { opacity: 0; }
+      1.6%   { opacity: 1; }
+      12.5%  { opacity: 1; }
+      14.1%  { opacity: 0; }
+      100%   { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide { animation: none; }
+      .hero-slide:nth-child(1) { opacity: 1; }
+    }
+  </style>
+</helmet>
+
+<div style="width: 390px; background: #FBF8F3; font-family: 'Noto Sans JP', sans-serif; color: #2A2522; -webkit-font-smoothing: antialiased; overflow: hidden;">
+
+  <!-- header -->
+  <div style="position: relative; height: 68px;">
+    <div style="display: flex; align-items: center; gap: 11px; position: absolute; left: 20px; top: 14px;">
+      <img src="logo-alpha.png" alt="&amp;.&amp; 日々の食パン ロゴ" style="width: 40px; height: 40px; object-fit: contain;">
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <div style="font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.14em;">&amp;.&amp; 日々の食パン</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 9px; letter-spacing: 0.3em; color: #9A7247;">SINCE 2020</div>
+      </div>
+    </div>
+    <a href="tel:0986510511" style="position: absolute; right: 0; top: 0; width: 92px; height: 68px; background: #2A2522; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #FBF8F3;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBF8F3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+      <span style="font-size: 9px; letter-spacing: 0.16em; color: #C0A882;">RESERVATION</span>
+    </a>
+  </div>
+
+  <!-- hero -->
+  <div style="position: relative;">
+    <div class="hero-frame" style="position: relative; width: 390px; height: 330px; border-radius: 0 0 0 150px;">
+      <img class="hero-slide" src="board.jpg" alt="まな板にのせた無添加の食パンと自家製ジャム">
+      <img class="hero-slide" src="shelf.jpg" alt="">
+      <img class="hero-slide" src="exterior.jpg" alt="">
+      <img class="hero-slide" src="breakfast.jpg" alt="">
+      <img class="hero-slide contain" src="logo-alpha.png" alt="">
+      <img class="hero-slide" src="jam-jar.jpg" alt="">
+      <img class="hero-slide" src="jam-orange.webp" alt="">
+      <img class="hero-slide" src="jam-red.webp" alt="">
+    </div>
+    <div style="position: absolute; left: 24px; bottom: -42px; width: 96px; height: 96px; border-radius: 50%; background: #FBF8F3; border: 1px solid #D9CDBB; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+      <div style="font-family: 'Noto Serif JP', serif; font-size: 14px; letter-spacing: 0.1em;">無添加</div>
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 7px; letter-spacing: 0.2em; color: #9A7247;">NO ADDITIVES</div>
+    </div>
+  </div>
+
+  <div style="position: relative; display: flex; flex-direction: column; gap: 22px; padding: 66px 24px 46px;">
+    <img src="logo-alpha.png" alt="" style="position: absolute; right: -70px; top: 150px; width: 400px; height: 400px; object-fit: contain; opacity: 0.055; pointer-events: none;">
+    <div style="display: flex; align-items: center; gap: 18px;">
+      <img src="logo-alpha.png" alt="" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;">
+      <h1 style="font-family: 'Noto Serif JP', serif; font-size: 26px; line-height: 1.35; letter-spacing: 0.08em; font-weight: 400;">&amp;.&amp;<br>日々の食パン</h1>
+    </div>
+    <div style="display: flex; align-items: center; gap: 13px;">
+      <div style="width: 26px; height: 1px; background: #9A7247;"></div>
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 10px; letter-spacing: 0.3em; color: #9A7247;">SINCE 2020 — MIMATA, MIYAZAKI</div>
+    </div>
+    <div style="font-family: 'Noto Serif JP', serif; font-size: 27px; line-height: 1.6; letter-spacing: 0.06em; font-weight: 200;">日々の食卓に、<br>しずかなよろこびを。</div>
+    <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 19px; letter-spacing: 0.05em; color: #9A7247;">Bread for everyday</div>
+    <div style="width: 48px; height: 1px; background: #C9BCAA;"></div>
+    <p style="font-size: 14px; line-height: 2.15; letter-spacing: 0.05em; color: #5D554E; text-wrap: pretty;">宮崎県三股町の小さな食パン屋です。<br>無添加の食パンと自家製のジャムを、<br>ひとつずつ焼いて、つくっています。</p>
+    <a href="tel:0986510511" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 58px; background: #2A2522; margin-top: 6px; color: #FBF8F3;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FBF8F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+      <span style="font-size: 15px; letter-spacing: 0.14em;">お電話でご予約</span>
+    </a>
+    <div style="text-align: center; font-size: 12px; line-height: 1.95; letter-spacing: 0.06em; color: #9A8F84;">木・金・土・日　11:00〜15:00<br>売り切れ次第終了</div>
+  </div>
+
+  <!-- concept -->
+  <div style="background: #FFFFFF; padding: 60px 24px 64px; display: flex; flex-direction: column; gap: 22px;">
+    <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.36em; color: #9A7247;">CONCEPT</div>
+    <h2 style="font-family: 'Noto Serif JP', serif; font-size: 25px; line-height: 1.7; letter-spacing: 0.07em; font-weight: 300;">無添加の食パンを、<br>ひとりで。</h2>
+    <p style="font-size: 14px; line-height: 2.25; letter-spacing: 0.05em; color: #4A433D; text-wrap: pretty;">2020年、宮崎県三股町の民家の一角で<br>はじまった小さなパン屋です。<br>つくるのは、無添加の食パンと、<br>季節の果物を煮た自家製のジャム。<br>毎朝ひとりで生地をあわせ、<br>焼きあがった分だけを店先に並べています。<br>だから、売り切れたらその日はおしまい。</p>
+    <p style="font-size: 14px; line-height: 2.25; letter-spacing: 0.05em; color: #4A433D; text-wrap: pretty;">特別な日のためではなく、日々の食卓のために。<br>名前のとおり、そんなパンを焼きつづけています。</p>
+  </div>
+
+  <!-- products -->
+  <div style="padding: 60px 24px 64px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 13px; margin-bottom: 40px;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.36em; color: #9A7247;">PRODUCTS</div>
+      <h2 style="font-family: 'Noto Serif JP', serif; font-size: 25px; letter-spacing: 0.12em; font-weight: 300;">つくっているもの</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 46px;">
+
+      <div style="display: flex; flex-direction: column; gap: 17px;">
+        <img src="loaves.jpg" alt="スノコに並んだ、焼きあがったばかりの食パン" style="width: 100%; height: 280px; object-fit: cover; border-radius: 171px 171px 0 0; display: block;">
+        <div style="display: flex; align-items: baseline; gap: 10px;">
+          <h3 style="font-family: 'Noto Serif JP', serif; font-size: 19px; letter-spacing: 0.08em;">食卓の食パン</h3>
+          <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #9A8F84;">shokupan</span>
+        </div>
+        <p style="font-size: 13px; line-height: 2.05; letter-spacing: 0.04em; color: #5D554E; text-wrap: pretty;">毎日の食卓に寄りそう、無添加の食パン。<br>一日につくれる数にかぎりがあるため、<br>確実にお求めの方は、<br>お電話でのご予約をおすすめします。</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 17px;">
+        <img src="jam-jar.jpg" alt="&amp;.&amp; オリジナルジャムの瓶" style="width: 100%; height: 280px; object-fit: cover; border-radius: 171px 171px 0 0; display: block;">
+        <div style="display: flex; align-items: baseline; gap: 10px;">
+          <h3 style="font-family: 'Noto Serif JP', serif; font-size: 19px; letter-spacing: 0.08em;">季節の自家製ジャム</h3>
+          <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #9A8F84;">jam</span>
+        </div>
+        <p style="font-size: 13px; line-height: 2.05; letter-spacing: 0.04em; color: #5D554E; text-wrap: pretty;">いちご、ブルーベリー、キウイ&amp;レモン、<br>白桃&amp;レモンなど、季節の果物を<br>ゆっくり煮て小さな瓶に詰めています。<br>果物の入り方によっては、<br>お作りしていない時期もあります。<br>お電話でおたずねください。</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 17px;">
+        <div style="width: 100%; height: 300px; box-sizing: border-box; border-radius: 171px 171px 0 0; background: #F4EDE2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 26px 20px;">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 10px; letter-spacing: 0.3em; color: #9A7247; margin-bottom: 6px;">FOR EXAMPLE</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">メロンパン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">抹茶メロンパン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">ハムチーズパン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">ピザパン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">ウインナーパン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">小豆パン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">塩パン</div>
+          <div style="font-size: 13px; letter-spacing: 0.1em; color: #4A433D;">もちもちパン</div>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 10px;">
+          <h3 style="font-family: 'Noto Serif JP', serif; font-size: 19px; letter-spacing: 0.08em;">その日の菓子パン</h3>
+          <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #9A8F84;">sweets</span>
+        </div>
+        <p style="font-size: 13px; line-height: 2.05; letter-spacing: 0.04em; color: #5D554E; text-wrap: pretty;">その日の気分で焼くものを決めているので、<br>並ぶ顔ぶれは日によって変わります。<br>何があるかは、着いてからのお楽しみです。</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- shop -->
+  <div style="background: #FFFFFF; padding: 60px 0 64px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 13px; margin-bottom: 34px; padding: 0 24px;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.36em; color: #9A7247;">SHOP INFORMATION</div>
+      <h2 style="font-family: 'Noto Serif JP', serif; font-size: 25px; letter-spacing: 0.12em; font-weight: 300;">店舗のご案内</h2>
+    </div>
+    <img src="exterior.jpg" alt="木目の外壁とロゴ看板のある店舗の入口" style="width: 390px; height: 270px; object-fit: cover; border-radius: 0 150px 0 0; display: block; margin-bottom: 38px;">
+    <div style="display: flex; flex-direction: column; padding: 0 24px;">
+
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px 0; border-top: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">住　所</div>
+        <div style="font-size: 14px; line-height: 1.85; letter-spacing: 0.04em;">〒889-1901<br>宮崎県北諸県郡三股町樺山1273-1</div>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 9px; height: 48px; margin-top: 6px; border: 1px solid #2A2522; color: #2A2522;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2A2522" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style="font-size: 14px; letter-spacing: 0.1em;">地図を見る</span>
+        </a>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 17px 0; border-top: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">電　話</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <span style="font-family: 'Cormorant Garamond', serif; font-size: 22px; letter-spacing: 0.05em;">0986-51-0511</span>
+          <a href="tel:0986510511" style="display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 20px; border: 1px solid #2A2522; color: #2A2522;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2A2522" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+            <span style="font-size: 13px; letter-spacing: 0.1em;">電話する</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px 0; border-top: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">電話受付</div>
+        <div style="font-size: 14px; line-height: 1.85; letter-spacing: 0.04em;">木・金・土・日　9:00 〜 15:00</div>
+        <div style="font-size: 11px; line-height: 1.85; letter-spacing: 0.04em; color: #9A8F84;">※ ひとりで作業しているため、<br>　 お電話に出られないことがあります</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 11px; padding: 17px 0; border-top: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">営業日</div>
+        <div style="display: flex; gap: 6px;">
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #FBF8F3; color: #C4BAB0;">月</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #FBF8F3; color: #C4BAB0;">火</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #FBF8F3; color: #C4BAB0;">水</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #2A2522; color: #FBF8F3;">木</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #2A2522; color: #FBF8F3;">金</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #2A2522; color: #FBF8F3;">土</span>
+          <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 50%; background: #2A2522; color: #FBF8F3;">日</span>
+        </div>
+        <div style="font-size: 11px; letter-spacing: 0.04em; color: #9A8F84;">※ 第五日曜日はお休みをいただきます</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px 0; border-top: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">営業時間</div>
+        <div style="font-size: 14px; line-height: 1.85; letter-spacing: 0.04em;">11:00 〜 15:00（売り切れ次第終了）</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px 0; border-top: 1px solid #EAE3D9; border-bottom: 1px solid #EAE3D9;">
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: #9A8F84;">その他</div>
+        <div style="font-size: 14px; line-height: 1.85; letter-spacing: 0.04em;">駐車場あり ／ テイクアウト専門</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- instagram -->
+  <div style="padding: 60px 24px 64px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 13px; margin-bottom: 22px;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.36em; color: #9A7247;">INSTAGRAM</div>
+      <h2 style="font-family: 'Noto Serif JP', serif; font-size: 25px; letter-spacing: 0.12em; font-weight: 300;">日々の記録</h2>
+    </div>
+    <p style="text-align: center; font-size: 13px; line-height: 2.15; letter-spacing: 0.04em; color: #5D554E; margin-bottom: 30px; text-wrap: pretty;">これまでに焼いたパンや、ジャムの仕込みの様子を<br>残しています。お店の場所や営業のご案内も、<br>ハイライトにまとめてあります。</p>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 30px;">
+      <img src="jam-red.webp" alt="店頭に並ぶ、いちご＆ブルーベリーのジャム" style="width: 100%; height: 106px; object-fit: cover; display: block;">
+      <img src="breakfast.jpg" alt="ジャムをのせたトーストのある朝の食卓" style="width: 100%; height: 106px; object-fit: cover; display: block;">
+      <img src="blueberry.jpg" alt="摘みたてのブルーベリーと自家製ジャム" style="width: 100%; height: 106px; object-fit: cover; display: block;">
+    </div>
+    <a href="https://www.instagram.com/and.and_hibinosyokupan" style="display: flex; align-items: center; justify-content: center; gap: 11px; height: 56px; border: 1px solid #2A2522; color: #2A2522;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A2522" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#2A2522" stroke="none"/></svg>
+      <span style="font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 0.05em;">@and.and_hibinosyokupan</span>
+    </a>
+  </div>
+
+  <!-- reservation -->
+  <div style="background: #2A2522; padding: 58px 24px 62px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+    <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.36em; color: #C0A882;">RESERVATION</div>
+    <h2 style="font-family: 'Noto Serif JP', serif; font-size: 25px; letter-spacing: 0.12em; font-weight: 300; color: #FBF8F3;">ご予約はお電話で</h2>
+    <p style="text-align: center; font-size: 13px; line-height: 2.15; letter-spacing: 0.04em; color: #BDB4AA; text-wrap: pretty;">ご予約・お問い合わせは、お電話で承ります。<br>つくり手がひとりのため、パンを焼いている間は<br>お電話に出られないことがあります。<br>その際は、少し時間をおいておかけ直しください。</p>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; padding: 26px 0 24px; background: #FBF8F3; margin-top: 6px;">
+      <span style="font-family: 'Cormorant Garamond', serif; font-size: 31px; letter-spacing: 0.04em; color: #2A2522;">0986-51-0511</span>
+      <a href="tel:0986510511" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 262px; height: 56px; background: #2A2522; color: #FBF8F3;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FBF8F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+        <span style="font-size: 15px; letter-spacing: 0.12em;">電話する</span>
+      </a>
+    </div>
+    <div style="text-align: center; font-size: 11px; line-height: 2.1; letter-spacing: 0.08em; color: #8F867D;">受付時間　木・金・土・日　9:00 〜 15:00<br>※ 第五日曜日はお休みをいただきます</div>
+  </div>
+
+  <!-- footer -->
+  <div style="padding: 38px 24px 42px; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <img src="logo-alpha.png" alt="&amp;.&amp; 日々の食パン ロゴ" style="width: 42px; height: 42px; object-fit: contain;">
+    <div style="font-family: 'Noto Serif JP', serif; font-size: 12px; letter-spacing: 0.16em; color: #5D554E;">&amp;.&amp; 日々の食パン</div>
+    <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.14em; color: #9A8F84;">© 2026 &amp;.&amp; HIBINO SHOKUPAN</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

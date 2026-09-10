@@ -1,0 +1,10 @@
+# Instagram から取得した作業用アーカイブ。
+# サイトで使ってよい写真は assets/site/ の9枚のみのため、公開リポジトリには含めない。
+assets/images/
+
+# 生成物（再生成できる。サイズが大きい）
+design/hibino-shokupan-website.html
+design/preview-*.html
+design/standalone-*.html
+design/site-preview.html
+design/photo-sheet.html
