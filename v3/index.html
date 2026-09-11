@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&amp;.&amp; 日々の食パン｜宮崎県三股町の無添加食パン専門店</title>
+<meta name="description" content="宮崎県三股町の「&amp;.&amp; 日々の食パン」は、無添加の食パンと自家製ジャムを販売する小さなテイクアウト専門店です。営業は木・金・土・日曜の11時から15時、売り切れ次第終了。ご予約は電話0986-51-0511で承ります。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+
+<header class="bar">
+  <a class="bar-brand" href="#top">
+    <img src="../assets/web/logo-alpha.webp" width="480" height="480" alt="&amp;.&amp; 日々の食パン">
+    <span>日々の食パン</span>
+  </a>
+  <nav class="bar-nav">
+    <a href="#items">商品</a>
+    <a href="#calendar">営業日</a>
+    <a href="#shop">店舗情報</a>
+    <a href="#insta">Instagram</a>
+  </nav>
+  <a class="bar-cta" href="tel:0986510511">ご予約 <span>0986-51-0511</span></a>
+</header>
+
+<main id="top">
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">MIMATA, MIYAZAKI &nbsp;/&nbsp; SINCE 2020</p>
+      <h1>焼けた分だけ、<br>並べています。</h1>
+      <p class="hero-lead">無添加の食パンと、季節の果物で仕込むジャム。<br>ひとりでつくっているので、数は多くありません。</p>
+      <a class="btn-big" href="tel:0986510511">
+        お電話でご予約
+        <span class="btn-num">0986-51-0511</span>
+      </a>
+      <p class="hero-open" id="heroOpen" hidden></p>
+    </div>
+
+    <div class="hero-cards">
+      <figure class="card c1"><img src="../assets/web/loaves.webp" width="1000" height="750" fetchpriority="high" alt="焼きあがったばかりの食パン"></figure>
+      <figure class="card c2"><img src="../assets/web/jam-orange.webp" width="800" height="809" alt="店頭に並ぶきんかんジャム"></figure>
+      <figure class="card c3"><img src="../assets/web/breakfast.webp" width="820" height="1025" alt="ジャムをのせたトースト"></figure>
+    </div>
+  </section>
+
+  <!-- 商品 3枚パネル -->
+  <section class="items" id="items">
+    <article class="panel p1">
+      <div class="panel-head">
+        <h2>SHOKUPAN</h2>
+        <p class="ja">食卓の食パン</p>
+        <p class="sub">毎日の食卓に寄りそう無添加の食パン<br>一日に焼ける数は決まっています</p>
+      </div>
+      <img src="../assets/web/board.webp" width="640" height="480" loading="lazy" alt="まな板にのせた無添加の食パン">
+    </article>
+
+    <article class="panel p2">
+      <div class="panel-head">
+        <h2>JAM</h2>
+        <p class="ja">季節の自家製ジャム</p>
+        <p class="sub">いちご・ブルーベリー・きんかん<br>キウイ&amp;レモン・白桃&amp;レモン</p>
+      </div>
+      <img src="../assets/web/jam-jar.webp" width="880" height="660" loading="lazy" alt="&amp;.&amp; オリジナルジャムの瓶">
+    </article>
+
+    <article class="panel p3">
+      <div class="panel-head">
+        <h2>SWEETS</h2>
+        <p class="ja">その日の菓子パン</p>
+        <p class="sub">焼くものはその日に決めています<br>何があるかは着いてからのお楽しみ</p>
+      </div>
+      <ul class="panel-list">
+        <li>メロンパン</li><li>抹茶メロンパン</li><li>ハムチーズパン</li><li>ピザパン</li>
+        <li>ウインナーパン</li><li>小豆パン</li><li>塩パン</li><li>もちもちパン</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- 営業カレンダー -->
+  <section class="cal-wrap" id="calendar">
+    <div class="cal-intro">
+      <h2>OPEN DAYS</h2>
+      <p class="ja">営業日</p>
+      <p class="note">木・金・土・日の 11:00〜15:00。<br>売り切れ次第終了です。第五日曜日はお休みをいただきます。</p>
+      <div class="today-box" id="todayBox" hidden>
+        <p class="today-date" id="todayDate"></p>
+        <p class="today-state" id="todayState"></p>
+      </div>
+    </div>
+
+    <div class="cal">
+      <div class="cal-bar">
+        <button type="button" id="calPrev" aria-label="前の月">‹</button>
+        <p id="calTitle"></p>
+        <button type="button" id="calNext" aria-label="次の月">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <ul class="cal-key">
+        <li><span class="sw is-open"></span>営業日</li>
+        <li><span class="sw is-off"></span>定休日</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 店舗情報 -->
+  <section class="shop" id="shop">
+    <div class="shop-head">
+      <h2>STORE</h2>
+      <p class="ja">店舗情報</p>
+    </div>
+    <div class="shop-cols">
+      <img class="shop-photo" src="../assets/web/exterior.webp" width="640" height="640" loading="lazy" alt="木目の外壁とロゴ看板のある店舗の入口">
+      <dl class="facts">
+        <dt>住所</dt>
+        <dd>〒889-1901<br>宮崎県北諸県郡三股町樺山1273-1</dd>
+        <dt>電話</dt>
+        <dd><a href="tel:0986510511">0986-51-0511</a><br><span class="muted">受付 9:00〜15:00（営業日）</span></dd>
+        <dt>営業時間</dt>
+        <dd>11:00 〜 15:00<br><span class="muted">売り切れ次第終了</span></dd>
+        <dt>そのほか</dt>
+        <dd>駐車場あり ／ テイクアウト専門</dd>
+      </dl>
+    </div>
+    <div class="shop-btns">
+      <a class="btn-line" href="tel:0986510511">電話する</a>
+      <a class="btn-line" href="https://www.google.com/maps/search/?api=1&amp;query=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1" target="_blank" rel="noopener">地図を見る</a>
+    </div>
+  </section>
+
+  <!-- Instagram -->
+  <section class="insta" id="insta">
+    <div class="insta-head">
+      <h2>INSTAGRAM</h2>
+      <p class="ja">日々の記録</p>
+    </div>
+    <div class="insta-row">
+      <img src="../assets/web/jam-red.webp" width="800" height="887" loading="lazy" alt="店頭に並ぶ、いちご＆ブルーベリーのジャム">
+      <img src="../assets/web/shelf.webp" width="640" height="480" loading="lazy" alt="木の棚に並んだ食パン">
+      <img src="../assets/web/blueberry.webp" width="640" height="480" loading="lazy" alt="摘みたてのブルーベリーと自家製ジャム">
+    </div>
+    <a class="btn-line is-center" href="https://www.instagram.com/and.and_hibinosyokupan" target="_blank" rel="noopener">@and.and_hibinosyokupan</a>
+  </section>
+
+  <footer class="foot">
+    <p class="foot-name">&amp;.&amp; 日々の食パン</p>
+    <p class="foot-c">© 2026 HIBINO SHOKUPAN</p>
+  </footer>
+</main>
+
+<a class="callbar" href="tel:0986510511">お電話でご予約　0986-51-0511</a>
+
+<script>
+(function () {
+  var OPEN_WD = [4, 5, 6, 0];           // 木 金 土 日
+  var WD_JA = ['日', '月', '火', '水', '木', '金', '土'];
+
+  function isFifthSunday(y, m, d) {      // m は 0 始まり
+    var wd = new Date(y, m, d).getDay();
+    return wd === 0 && Math.ceil(d / 7) === 5;
+  }
+  function isBusinessDay(y, m, d) {
+    var wd = new Date(y, m, d).getDay();
+    return OPEN_WD.indexOf(wd) !== -1 && !isFifthSunday(y, m, d);
+  }
+
+  // 日本時間での「今日」
+  var p = {};
+  new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false
+  }).formatToParts(new Date()).forEach(function (x) { if (p[x.type] === undefined) p[x.type] = x.value; });
+
+  var TY = +p.year, TM = +p.month - 1, TD = +p.day;
+  var mins = +p.hour * 60 + +p.minute;
+
+  // 本日の状態
+  var open = isBusinessDay(TY, TM, TD);
+  var now = open && mins >= 660 && mins < 900;
+  var box = document.getElementById('todayBox');
+  document.getElementById('todayDate').textContent =
+    p.month + '月' + p.day + '日（' + WD_JA[new Date(TY, TM, TD).getDay()] + '）';
+  var st = document.getElementById('todayState');
+  st.textContent = now ? 'ただいま営業中' : (open ? '本日は営業日です' : '本日は定休日です');
+  st.className = 'today-state ' + (now ? 'is-now' : (open ? 'is-open' : 'is-off'));
+  box.hidden = false;
+
+  var hero = document.getElementById('heroOpen');
+  hero.textContent = (now ? '● ただいま営業中' : (open ? '● 本日は営業日' : '○ 本日は定休日')) + '　11:00〜15:00';
+  hero.className = 'hero-open ' + (now ? 'is-now' : (open ? 'is-open' : 'is-off'));
+  hero.hidden = false;
+
+  // カレンダー
+  var vy = TY, vm = TM;
+  var grid = document.getElementById('calGrid');
+  var title = document.getElementById('calTitle');
+
+  function render() {
+    title.textContent = vy + '年 ' + (vm + 1) + '月';
+    grid.textContent = '';
+    ['月', '火', '水', '木', '金', '土', '日'].forEach(function (w) {
+      var h = document.createElement('span');
+      h.className = 'cal-wd';
+      h.textContent = w;
+      grid.appendChild(h);
+    });
+    var first = new Date(vy, vm, 1).getDay();      // 0=日
+    var lead = (first + 6) % 7;                     // 月曜始まりに直す
+    for (var i = 0; i < lead; i++) grid.appendChild(document.createElement('span'));
+    var last = new Date(vy, vm + 1, 0).getDate();
+    for (var d = 1; d <= last; d++) {
+      var cell = document.createElement('span');
+      cell.className = 'cal-day ' + (isBusinessDay(vy, vm, d) ? 'is-open' : 'is-off');
+      if (vy === TY && vm === TM && d === TD) cell.classList.add('is-today');
+      cell.textContent = d;
+      grid.appendChild(cell);
+    }
+  }
+  document.getElementById('calPrev').onclick = function () { vm--; if (vm < 0) { vm = 11; vy--; } render(); };
+  document.getElementById('calNext').onclick = function () { vm++; if (vm > 11) { vm = 0; vy++; } render(); };
+  render();
+})();
+</script>
+
+</body>
+</html>
