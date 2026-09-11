@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&amp;.&amp; 日々の食パン｜宮崎県三股町の無添加食パン専門店</title>
+<meta name="description" content="宮崎県三股町の「&amp;.&amp; 日々の食パン」は、無添加の食パンと自家製ジャムを販売する小さなテイクアウト専門店です。営業は木・金・土・日曜の11時から15時、売り切れ次第終了。ご予約は電話0986-51-0511で承ります。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
+<link rel="stylesheet" href="style.css?v=3">
+</head>
+
+<body>
+
+<!-- 左の縦サイドバー（PC）／上部バー（スマホ） -->
+<aside class="rail">
+  <a class="rail-brand" href="#top">
+    <img src="../assets/web/logo-alpha.webp" width="480" height="480" alt="&amp;.&amp; 日々の食パン">
+    <span class="rail-name">日々の食パン</span>
+    <span class="rail-romaji">HIBINO SHOKUPAN</span>
+  </a>
+
+  <nav class="rail-nav">
+    <a href="#concept"><span class="ja">つくりかた</span><span class="en">concept</span></a>
+    <span class="dot"></span>
+    <a href="#products"><span class="ja">つくるもの</span><span class="en">products</span></a>
+    <span class="dot"></span>
+    <a href="#shop"><span class="ja">店舗情報</span><span class="en">store info</span></a>
+    <span class="dot"></span>
+    <a href="#instagram"><span class="ja">日々の記録</span><span class="en">instagram</span></a>
+  </nav>
+
+  <div class="rail-foot">
+    <a href="https://www.instagram.com/and.and_hibinosyokupan" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&amp;query=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1" target="_blank" rel="noopener" aria-label="地図">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+    </a>
+  </div>
+</aside>
+
+<!-- 右上の固定CTA -->
+<a class="pill" href="tel:0986510511">
+  <span>お電話でご予約</span>
+  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+</a>
+
+<main id="top">
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="hero-media">
+      <img class="shot" src="../assets/web/loaves.webp" width="1000" height="750" fetchpriority="high" alt="スノコに並んだ、焼きあがったばかりの食パン">
+      <img class="shot" src="../assets/web/shelf.webp" width="640" height="480" alt="">
+      <img class="shot" src="../assets/web/breakfast.webp" width="820" height="1025" alt="">
+      <img class="shot" src="../assets/web/jam-orange.webp" width="800" height="809" alt="">
+    </div>
+
+    <div class="hero-inner">
+      <p class="hero-name">&amp;.&amp; 日々の食パン</p>
+      <h1 class="hero-catch">日々の食卓に、<br>しずかなよろこびを。</h1>
+      <p class="hero-sub">宮崎県三股町　無添加の食パンとジャム</p>
+    </div>
+
+    <!-- 本日の営業状況 -->
+    <div class="strip" id="today" hidden>
+      <span class="strip-date" id="stripDate"></span>
+      <span class="strip-sep"></span>
+      <span class="strip-state" id="stripState"></span>
+      <span class="strip-sep"></span>
+      <span class="strip-hours">11:00–15:00　売り切れ次第終了</span>
+    </div>
+
+    <span class="scroll-hint">Scroll</span>
+  </section>
+
+  <!-- コンセプト -->
+  <section class="band" id="concept">
+    <div class="band-head">
+      <h2><span class="v">つくりかた</span></h2>
+      <p class="en">concept</p>
+    </div>
+    <div class="band-body">
+      <p class="big">無添加の食パンを、ひとりで。</p>
+      <p>2020年、三股町の民家の一角ではじめました。つくるのは無添加の食パンと、季節の果物で仕込むジャム。毎朝ひとりで生地をあわせ、焼き上がった分を店先に並べます。</p>
+      <p>数は多くありません。売り切れたら、その日はおしまいです。</p>
+    </div>
+  </section>
+
+  <!-- 商品 -->
+  <section class="products" id="products">
+    <div class="section-head">
+      <h2>つくるもの</h2>
+      <p class="en">products</p>
+    </div>
+
+    <article class="row">
+      <div class="row-photo"><img src="../assets/web/board.webp" width="640" height="480" loading="lazy" alt="まな板にのせた無添加の食パン"></div>
+      <div class="row-text">
+        <p class="num">01</p>
+        <h3>食卓の食パン</h3>
+        <p>毎日の食卓に寄りそう無添加の食パン。一日に焼ける数は決まっているので、確実に手に入れたい日はお電話ください。</p>
+      </div>
+    </article>
+
+    <article class="row is-flip">
+      <div class="row-photo"><img src="../assets/web/jam-jar.webp" width="880" height="660" loading="lazy" alt="&amp;.&amp; オリジナルジャムの瓶"></div>
+      <div class="row-text">
+        <p class="num">02</p>
+        <h3>季節の自家製ジャム</h3>
+        <p>いちご・ブルーベリー・きんかん・キウイ&amp;レモン・白桃&amp;レモン。季節の果物をゆっくり煮て小さな瓶に詰めています。果物が来ない時期はお休み。</p>
+      </div>
+    </article>
+
+    <article class="row">
+      <div class="row-photo is-list">
+        <ul>
+          <li>メロンパン</li><li>抹茶メロンパン</li><li>ハムチーズパン</li><li>ピザパン</li>
+          <li>ウインナーパン</li><li>小豆パン</li><li>塩パン</li><li>もちもちパン</li>
+        </ul>
+      </div>
+      <div class="row-text">
+        <p class="num">03</p>
+        <h3>その日の菓子パン</h3>
+        <p>焼く菓子パンはその日に決めています。何があるかは、着いてからのお楽しみ。</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- 店舗情報 -->
+  <section class="shop" id="shop">
+    <img class="shop-bg" src="../assets/web/exterior.webp" width="640" height="640" loading="lazy" alt="">
+    <div class="shop-inner">
+      <div class="section-head is-light">
+        <h2>店舗情報</h2>
+        <p class="en">store info</p>
+      </div>
+
+      <dl class="facts">
+        <dt>住所</dt>
+        <dd>〒889-1901　宮崎県北諸県郡三股町樺山1273-1</dd>
+
+        <dt>電話</dt>
+        <dd><a href="tel:0986510511">0986-51-0511</a>　<span class="muted">受付 9:00–15:00（営業日）</span></dd>
+
+        <dt>営業日</dt>
+        <dd>木・金・土・日　<span class="muted">※第五日曜日は休み</span></dd>
+
+        <dt>営業時間</dt>
+        <dd>11:00 – 15:00　<span class="muted">売り切れ次第終了</span></dd>
+
+        <dt>そのほか</dt>
+        <dd>駐車場あり ／ テイクアウト専門</dd>
+      </dl>
+
+      <div class="shop-actions">
+        <a class="ghost" href="tel:0986510511">電話する</a>
+        <a class="ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1" target="_blank" rel="noopener">地図を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram -->
+  <section class="insta" id="instagram">
+    <div class="section-head">
+      <h2>日々の記録</h2>
+      <p class="en">instagram</p>
+    </div>
+    <div class="insta-strip">
+      <img src="../assets/web/jam-red.webp" width="800" height="887" loading="lazy" alt="店頭に並ぶ、いちご＆ブルーベリーのジャム">
+      <img src="../assets/web/breakfast.webp" width="820" height="1025" loading="lazy" alt="ジャムをのせたトーストのある朝の食卓">
+      <img src="../assets/web/blueberry.webp" width="640" height="480" loading="lazy" alt="摘みたてのブルーベリーと自家製ジャム">
+      <img src="../assets/web/shelf.webp" width="640" height="480" loading="lazy" alt="木の棚に並んだ食パン">
+    </div>
+    <a class="ghost is-center" href="https://www.instagram.com/and.and_hibinosyokupan" target="_blank" rel="noopener">@and.and_hibinosyokupan</a>
+  </section>
+
+  <!-- 予約 -->
+  <section class="cta">
+    <p class="cta-lead">ご予約・お問い合わせは、お電話で承ります。<br>つくり手がひとりのため、パンを焼いている間は出られないことがあります。</p>
+    <a class="cta-num" href="tel:0986510511">0986-51-0511</a>
+    <p class="cta-note">木・金・土・日　9:00 – 15:00</p>
+  </section>
+
+  <footer class="foot">
+    <span>&amp;.&amp; 日々の食パン</span>
+    <span>© 2026 HIBINO SHOKUPAN</span>
+  </footer>
+
+</main>
+
+<!-- スマホ用の固定電話バー -->
+<a class="callbar" href="tel:0986510511">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+  お電話でご予約　0986-51-0511
+</a>
+
+<script>
+// 本日の営業状況。営業日は木・金・土・日、ただし第五日曜は休み。
+(function () {
+  var f = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo', month: 'numeric', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false
+  });
+  var p = {};
+  f.formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+
+  var wd = p.weekday;                      // 日 月 火 …
+  var day = parseInt(p.day, 10);
+  var mins = parseInt(p.hour, 10) * 60 + parseInt(p.minute, 10);
+
+  var openDay = ['木', '金', '土', '日'].indexOf(wd) !== -1;
+  var fifthSunday = (wd === '日' && Math.ceil(day / 7) === 5);
+  var isBusinessDay = openDay && !fifthSunday;
+  var nowOpen = isBusinessDay && mins >= 11 * 60 && mins < 15 * 60;
+
+  var state = nowOpen ? 'ただいま営業中' : (isBusinessDay ? '本日は営業日' : '本日は定休日');
+
+  document.getElementById('stripDate').textContent = p.month + '月' + p.day + '日（' + wd + '）';
+  var el = document.getElementById('stripState');
+  el.textContent = state;
+  if (nowOpen) el.classList.add('is-open');
+  if (!isBusinessDay) el.classList.add('is-closed');
+  document.getElementById('today').hidden = false;
+})();
+</script>
+
+</body>
+</html>
