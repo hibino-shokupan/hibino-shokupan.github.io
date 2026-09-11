@@ -31,7 +31,9 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
-img { display: block; max-width: 100%; }
+/* height:auto は必須。HTMLの height 属性が残ると aspect-ratio が無視され、
+   商品・店舗・Instagram の写真が原寸の高さで縦に伸びる */
+img { display: block; max-width: 100%; height: auto; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { color: #7A5836; }
 p, h1, h2, h3, figure { margin: 0; }
@@ -197,6 +199,7 @@ h1, h2, h3 { font-weight: 400; }
   top: 150px;
   width: 400px;
   height: 400px;
+  max-width: none; /* はみ出させる前提。親の overflow:hidden で切る */
   object-fit: contain;
   opacity: 0.055;
   pointer-events: none;
