@@ -133,16 +133,16 @@ h1, h2, h3 { font-weight: 400; }
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  /* 1枚 0.5 秒 × 8枚 = 1周 4 秒。速いので拡大アニメーションは付けない */
-  animation: heroFade 4s linear infinite;
+  /* 1枚 1 秒 × 8枚 = 1周 8 秒。速いので拡大アニメーションは付けない */
+  animation: heroFade 8s linear infinite;
 }
-.hero-slide:nth-child(2) { animation-delay: 0.5s; }
-.hero-slide:nth-child(3) { animation-delay: 1s; }
-.hero-slide:nth-child(4) { animation-delay: 1.5s; }
-.hero-slide:nth-child(5) { animation-delay: 2s; }
-.hero-slide:nth-child(6) { animation-delay: 2.5s; }
-.hero-slide:nth-child(7) { animation-delay: 3s; }
-.hero-slide:nth-child(8) { animation-delay: 3.5s; }
+.hero-slide:nth-child(2) { animation-delay: 1s; }
+.hero-slide:nth-child(3) { animation-delay: 2s; }
+.hero-slide:nth-child(4) { animation-delay: 3s; }
+.hero-slide:nth-child(5) { animation-delay: 4s; }
+.hero-slide:nth-child(6) { animation-delay: 5s; }
+.hero-slide:nth-child(7) { animation-delay: 6s; }
+.hero-slide:nth-child(8) { animation-delay: 7s; }
 .hero-slide.is-logo {
   object-fit: contain;
   background: var(--bg);
@@ -150,9 +150,9 @@ h1, h2, h3 { font-weight: 400; }
 }
 @keyframes heroFade {
   0%    { opacity: 0; }
-  3%    { opacity: 1; }   /* 約0.12秒でフェードイン */
-  12.5% { opacity: 1; }   /* 0.5秒地点まで表示 */
-  15.5% { opacity: 0; }   /* 次の1枚と入れ替わる */
+  2%    { opacity: 1; }   /* 約0.16秒でフェードイン */
+  12.5% { opacity: 1; }   /* 1秒地点まで表示 */
+  14.5% { opacity: 0; }   /* 次の1枚と入れ替わる */
   100%  { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
