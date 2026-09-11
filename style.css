@@ -14,7 +14,7 @@
   --panel:  #F4EDE2;
 
   /* ヒーローのスライド切り替え間隔。ここだけ変えれば全体が追従する */
-  --slide: 1.5s;
+  --slide: 2.5s;
 
   --gutter: 24px;
   --serif: "Noto Serif JP", "Hiragino Mincho ProN", serif;
@@ -139,7 +139,7 @@ h1, h2, h3 { font-weight: 400; }
   opacity: 0;
   /* 切り替え間隔は --slide（:root）で一括変更できる。
      1周 = --slide × 枚数。速い設定でも不自然にならないよう拡大は付けない */
-  animation: heroFade calc(var(--slide) * 8) linear infinite;
+  animation: heroFade calc(var(--slide) * 8) ease-in-out infinite;
   animation-delay: calc(var(--i) * var(--slide));
 }
 .hero-slide:nth-child(1) { --i: 0; }
@@ -157,10 +157,11 @@ h1, h2, h3 { font-weight: 400; }
 }
 @keyframes heroFade {
   0%    { opacity: 0; }
-  1.5%  { opacity: 1; }   /* フェードイン */
-  8.5%  { opacity: 1; }   /* 表示 */
-  10.5% { opacity: 0; }   /* ここで消える。次は 12.5% から出るので */
-  100%  { opacity: 0; }   /* その間フレームの白が見える */
+  /* 1枚 = 12.5%。--slide 2.5s なら 内訳は フェードイン0.3 / 表示1.6 / 消え0.3 / 白0.3 秒 */
+  1.5%  { opacity: 1; }
+  9.5%  { opacity: 1; }
+  11%   { opacity: 0; }
+  100%  { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
