@@ -13,6 +13,9 @@
   --gold:   #C0A882;
   --panel:  #F4EDE2;
 
+  /* ヒーローのスライド切り替え間隔。ここだけ変えれば全体が追従する */
+  --slide: 1.5s;
+
   --gutter: 24px;
   --serif: "Noto Serif JP", "Hiragino Mincho ProN", serif;
   --sans:  "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
@@ -133,16 +136,19 @@ h1, h2, h3 { font-weight: 400; }
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  /* 1枚 1 秒 × 8枚 = 1周 8 秒。速いので拡大アニメーションは付けない */
-  animation: heroFade 8s linear infinite;
+  /* 切り替え間隔は --slide（:root）で一括変更できる。
+     1周 = --slide × 枚数。速い設定でも不自然にならないよう拡大は付けない */
+  animation: heroFade calc(var(--slide) * 8) linear infinite;
+  animation-delay: calc(var(--i) * var(--slide));
 }
-.hero-slide:nth-child(2) { animation-delay: 1s; }
-.hero-slide:nth-child(3) { animation-delay: 2s; }
-.hero-slide:nth-child(4) { animation-delay: 3s; }
-.hero-slide:nth-child(5) { animation-delay: 4s; }
-.hero-slide:nth-child(6) { animation-delay: 5s; }
-.hero-slide:nth-child(7) { animation-delay: 6s; }
-.hero-slide:nth-child(8) { animation-delay: 7s; }
+.hero-slide:nth-child(1) { --i: 0; }
+.hero-slide:nth-child(2) { --i: 1; }
+.hero-slide:nth-child(3) { --i: 2; }
+.hero-slide:nth-child(4) { --i: 3; }
+.hero-slide:nth-child(5) { --i: 4; }
+.hero-slide:nth-child(6) { --i: 5; }
+.hero-slide:nth-child(7) { --i: 6; }
+.hero-slide:nth-child(8) { --i: 7; }
 .hero-slide.is-logo {
   object-fit: contain;
   background: var(--bg);
@@ -150,9 +156,9 @@ h1, h2, h3 { font-weight: 400; }
 }
 @keyframes heroFade {
   0%    { opacity: 0; }
-  2%    { opacity: 1; }   /* 約0.16秒でフェードイン */
-  12.5% { opacity: 1; }   /* 1秒地点まで表示 */
-  14.5% { opacity: 0; }   /* 次の1枚と入れ替わる */
+  1.7%  { opacity: 1; }   /* フェードイン（1周の1.7%） */
+  12.5% { opacity: 1; }   /* --slide の時間まで表示 */
+  14.2% { opacity: 0; }   /* 次の1枚と入れ替わる */
   100%  { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
