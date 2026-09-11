@@ -22,13 +22,15 @@
 /* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* body だけに overflow-x を指定しても iOS Safari では横スクロールが止まらない。
+   html にも掛け、さらに clip（スクロールコンテナを作らない）を使う */
+html, body { overflow-x: hidden; overflow-x: clip; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
   font-weight: 300;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 /* height:auto は必須。HTMLの height 属性が残ると aspect-ratio が無視され、
@@ -192,6 +194,7 @@ h1, h2, h3 { font-weight: 400; }
   gap: 22px;
   padding: 66px var(--gutter) 46px;
   overflow: hidden;
+  overflow: clip;
 }
 .hero-watermark {
   position: absolute;
@@ -283,6 +286,7 @@ section { padding: 60px var(--gutter) 64px; }
   object-fit: cover;
   border-radius: 999px 999px 0 0;
 }
+/* 写真2枚と同じ 4:3 の枠に 8 行を収める。はみ出すと枠の高さが揃わない */
 .product-panel {
   aspect-ratio: 4 / 3;
   border-radius: 999px 999px 0 0;
@@ -291,12 +295,17 @@ section { padding: 60px var(--gutter) 64px; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 26px 20px;
+  gap: 3px;
+  padding: clamp(10px, 4.4vw, 16px) 16px;
 }
-.product-panel .eyebrow { font-size: 10px; margin-bottom: 6px; }
-.product-panel li { font-size: clamp(10.7px, 3.22vw, 13px); letter-spacing: 0.1em; color: var(--body); }
-.product-panel ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.product-panel .eyebrow { font-size: 9px; letter-spacing: 0.28em; margin-bottom: 3px; }
+.product-panel li {
+  font-size: clamp(10px, 3vw, 12px);
+  line-height: 1.45;
+  letter-spacing: 0.08em;
+  color: var(--body);
+}
+.product-panel ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: clamp(3px, 1.2vw, 5px); align-items: center; }
 .product-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .product-title h3 { font-family: var(--serif); font-size: clamp(15.5px, 4.7vw, 19px); letter-spacing: 0.08em; }
 .product-title span { font-family: var(--latin); font-style: italic; font-size: 14px; color: var(--faint); }
