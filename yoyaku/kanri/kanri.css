@@ -1,0 +1,133 @@
+@charset "utf-8";
+
+/* 管理ページ。トークンと基本部品は ../style.css から受け継ぐ。
+   使うのはお母様ひとりなので、お客様向けより文字とボタンを大きくする。 */
+
+.kanri { font-size: 16px; }
+
+.kanri .head { padding: 26px var(--gutter) 20px; }
+.kanri .head h1 {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.kanri .head-note {
+  margin-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px var(--gutter) 0;
+}
+.updated { font-size: 12.5px; color: var(--faint); }
+.btn-small {
+  width: auto;
+  min-height: 40px;
+  margin-top: 0;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+.notice-msg {
+  margin: 14px var(--gutter) 0;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--panel);
+  font-size: 14.5px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+.kanri .error { margin: 14px var(--gutter) 0; font-size: 14.5px; }
+.empty { padding: 40px var(--gutter); text-align: center; color: var(--faint); }
+
+/* ---------- 日付のかたまり ---------- */
+.day-block { padding: 26px var(--gutter) 0; }
+.day-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--gold);
+}
+.day-label {
+  font-family: var(--serif);
+  font-size: 19px;
+  letter-spacing: 0.06em;
+}
+.day-sum { font-size: 13px; color: var(--muted); }
+.day-sum b { font-weight: 500; color: var(--ink); }
+
+/* ---------- 1件ぶんのカード ---------- */
+.card {
+  padding: 15px 0 17px;
+  border-bottom: 1px solid var(--line);
+}
+.card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.card-time {
+  padding: 3px 9px;
+  border-radius: 2px;
+  background: var(--panel);
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.card-name { font-size: 17px; }
+.card-kin {
+  margin-left: auto;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.card-sub {
+  margin-top: 9px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.card-sub a { text-decoration: underline; }
+.card-note {
+  margin-top: 9px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border-radius: 2px;
+  font-size: 13.5px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+.card-id { margin-top: 8px; font-size: 11.5px; color: var(--faint); }
+
+.card .btn { min-height: 50px; font-size: 14.5px; }
+.btn-cancel { border-color: #C9A8A0; color: #A8442F; background: transparent; }
+.btn-undo   { border-color: var(--line); color: var(--muted); background: transparent; }
+.card .btn:disabled { opacity: 0.5; cursor: default; }
+
+/* キャンセル済みの行は、残すが目立たせない */
+.card.is-cancelled .card-name,
+.card.is-cancelled .card-kin { text-decoration: line-through; color: var(--faint); }
+.card.is-cancelled .card-time { color: var(--faint); }
+.card.is-cancelled .card-sub { color: var(--faint); }
+.cancelled-tag {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.kanri .foot { padding-top: 34px; }
