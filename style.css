@@ -413,33 +413,6 @@ section { padding: 60px var(--gutter) 64px; }
 }
 .reservation-num { font-family: var(--latin); font-size: clamp(26px, 7.6vw, 31px); letter-spacing: 0.04em; color: var(--ink); }
 .reservation-card .btn { width: 100%; max-width: 262px; }
-/* 予約カードは「ウェブ予約」と「電話」の2段構え。
-   .reservation p は暗い背景向けの色なので、カード内は個別に指定し直す */
-.reservation-part {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-}
-.reservation-card .reservation-label {
-  font-size: clamp(11px, 3.3vw, 12.5px);
-  letter-spacing: 0.14em;
-  color: var(--accent);
-}
-.reservation-card .reservation-note {
-  font-size: clamp(10px, 3vw, 11.5px);
-  line-height: 1.95;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-}
-.reservation-sep {
-  width: 100%;
-  height: 1px;
-  margin: 2px 0;
-  background: var(--line);
-  border: 0;
-}
 .reservation-hours {
   text-align: center;
   font-size: clamp(9px, 2.72vw, 11px);
