@@ -7,7 +7,7 @@
  */
 
 /* ▼▼ GASをデプロイしたら、ここにウェブアプリのURLを貼る ▼▼ */
-const API_URL = 'ここにGASのウェブアプリURLを貼る';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyggmGYQnjH77zXWvWeuqfwoEHyOu8dfQA1kGE2v2tDJV7j37eJjyJh9gjSaQvULAyD/exec';
 /* ▲▲ https://script.google.com/macros/s/……/exec の形 ▲▲ */
 
 const TEL = '0986-51-0511';
