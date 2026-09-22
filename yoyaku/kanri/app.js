@@ -28,15 +28,64 @@ const qtyText = (kin) => kin + '斤（' + kin / kinPerLoaf + '本）';
 
 // ───────────────────────── 鍵 ─────────────────────────
 
+function saveKey(key) {
+  try { localStorage.setItem(KEY_STORE, key); } catch (e) { /* 保存できなくても今回は動く */ }
+}
+
 function loadKey() {
   const fromHash = (location.hash.match(/key=([A-Za-z0-9_-]+)/) || [])[1];
   if (fromHash) {
-    try { localStorage.setItem(KEY_STORE, fromHash); } catch (e) { /* 保存できなくても今回は動く */ }
+    saveKey(fromHash);
     // アドレスバーから鍵を消す。履歴やスクリーンショットから漏れないように
     history.replaceState(null, '', location.pathname + location.search);
     return fromHash;
   }
   try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; }
+}
+
+/** 貼り付けられた文字から鍵を取り出す。URLごと貼られても、鍵だけでも受ける。 */
+function extractKey(text) {
+  const s = String(text || '').trim();
+  const inUrl = s.match(/key=([A-Za-z0-9_-]+)/);
+  if (inUrl) return inUrl[1];
+  return /^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '';
+}
+
+function showUnlock(message) {
+  $('unlock').hidden = false;
+  $('board').hidden = true;
+  if (message) {
+    $('unlock-error').textContent = message;
+    $('unlock-error').hidden = false;
+  } else {
+    $('unlock-error').hidden = true;
+  }
+}
+
+async function unlock() {
+  const key = extractKey($('unlock-input').value);
+  if (!key) {
+    showUnlock('鍵が読み取れませんでした。届いたURLか鍵を、そのまま貼り付けてください。');
+    return;
+  }
+  // 実際に通るか確かめてから保存する。間違った鍵を覚えてしまわないように
+  const btn = $('unlock-go');
+  btn.disabled = true;
+  btn.textContent = '確認中…';
+  try {
+    const res = await api({ action: 'admin', key: key });
+    if (!res.ok) { showUnlock(res.error || 'この鍵では開けませんでした。'); return; }
+    saveKey(key);
+    KEY = key;
+    $('unlock').hidden = true;
+    $('board').hidden = false;
+    await load();
+  } catch (e) {
+    showUnlock(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '開く';
+  }
 }
 
 // ───────────────────────── 通信 ─────────────────────────
@@ -221,12 +270,14 @@ function move(step) {
 $('prev-day').addEventListener('click', () => move(-1));
 $('next-day').addEventListener('click', () => move(1));
 $('reload').addEventListener('click', () => { say('notice', ''); load(); });
+$('unlock-go').addEventListener('click', unlock);
+$('unlock-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
 
 KEY = loadKey();
 if (!KEY) {
-  say('error', 'このページを開くための鍵がありません。お店専用のURLから開いてください。');
-  $('updated').textContent = '';
-  $('day-label').textContent = '—';
+  // 鍵は端末ごとに保存される。PCで開けていても、電話では最初にここを通る
+  showUnlock('');
 } else {
+  $('board').hidden = false;
   load();
 }

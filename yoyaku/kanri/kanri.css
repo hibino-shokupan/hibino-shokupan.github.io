@@ -224,3 +224,53 @@
 }
 
 .kanri .foot { padding-top: 36px; font-size: 13.5px; }
+
+/* ---------- 鍵の入力（端末に鍵が無いとき） ---------- */
+/* 鍵は端末ごとに保存されるので、PCで開けていても電話では必ずここを通る。
+   鍵付きURLを開き直さなくても、貼り付けだけで入れるようにしておく */
+.unlock {
+  margin: 26px var(--gutter);
+  padding: 26px 22px 24px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  background: var(--paper);
+  text-align: center;
+}
+.unlock-lead {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+.unlock-lead b { font-weight: 500; color: var(--accent); }
+.unlock-note {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--body);
+}
+.unlock input {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 14px;
+  border: 2px solid var(--line);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;      /* 16px未満だとiPhoneで入力時に拡大される */
+  font-weight: 300;
+  text-align: center;
+}
+.unlock input:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+.unlock .btn { min-height: 58px; font-size: 17px; }
+.unlock-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--alert);
+  background: #FDF3F0;
+  color: var(--alert);
+  font-size: 15px;
+  line-height: 1.75;
+  text-align: left;
+}

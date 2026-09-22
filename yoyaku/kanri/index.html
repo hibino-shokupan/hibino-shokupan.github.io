@@ -20,6 +20,17 @@
 </header>
 
 <main id="main">
+  <!-- 鍵が端末に無いとき。鍵は端末ごとに保存されるので、PCで開けても電話では出る -->
+  <section id="unlock" class="unlock" hidden>
+    <p class="unlock-lead">このページを開くには<br>お店専用の<b>鍵</b>が必要です。</p>
+    <p class="unlock-note">届いているURL、または鍵の文字をそのまま貼り付けてください。</p>
+    <input id="unlock-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+           placeholder="ここに貼り付け">
+    <button type="button" id="unlock-go" class="btn btn-main">開く</button>
+    <p id="unlock-error" class="unlock-error" hidden></p>
+  </section>
+
+  <div id="board" class="board" hidden>
   <div class="bar">
     <span id="updated" class="updated"></span>
     <button type="button" id="reload" class="btn btn-sub btn-small">最新にする</button>
@@ -41,6 +52,7 @@
 
   <div id="grid" class="grid"></div>
   <p id="empty" class="empty" hidden></p>
+  </div><!-- /board -->
 </main>
 
 <footer class="foot">
