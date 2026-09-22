@@ -3,6 +3,9 @@
  * 仕組みと手順は C:\Users\kchic\claude code\LINE\design.md を参照。
  * サーバー側は同フォルダの gas\Code.gs が「正」。
  *
+ * 1日ずつめくって見る。1画面に複数日を混ぜない。
+ * 作業中に開くので、いま見ているのがいつの分かを取り違えないことを優先する。
+ *
  * このページは URL の # 以降に入れた鍵で開く。鍵は初回に端末へ保存し、
  * アドレスからは消す（履歴や共有で鍵が漏れないようにするため）。
  */
@@ -12,10 +15,14 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyggmGYQnjH77zXWvWeuqfw
 /* ▲▲ https://script.google.com/macros/s/……/exec の形 ▲▲ */
 
 const KEY_STORE = 'hibino-kanri-key';
+const CANCELLED = 'キャンセル';
 
 const $ = (id) => document.getElementById(id);
+
 let KEY = '';
 let kinPerLoaf = 2;
+let days = [];       // サーバーから受け取った日の一覧
+let index = 0;       // いま見ている日
 
 const qtyText = (kin) => kin + '斤（' + kin / kinPerLoaf + '本）';
 
@@ -53,7 +60,7 @@ async function api(params, body) {
   return res.json();
 }
 
-// ───────────────────────── 表示 ─────────────────────────
+// ───────────────────────── 表示の部品 ─────────────────────────
 
 function say(id, message) {
   const el = $(id);
@@ -70,6 +77,8 @@ function el(tag, className, text) {
   return node;
 }
 
+// ───────────────────────── 読み込み ─────────────────────────
+
 async function load(quiet) {
   if (!quiet) $('updated').textContent = '読み込み中…';
   say('error', '');
@@ -77,74 +86,88 @@ async function load(quiet) {
     const data = await api({ action: 'admin', key: KEY });
     if (!data.ok) throw new Error(data.error || '読み込めませんでした。');
     kinPerLoaf = data.kinPerLoaf;
-    render(data);
+
+    // 見ていた日をできるだけ保つ。消えていたら近い日へ寄せる
+    const keeping = days[index] ? days[index].date : null;
+    days = data.dates || [];
+    if (keeping) {
+      const found = days.findIndex((d) => d.date === keeping);
+      index = found >= 0 ? found : Math.min(index, days.length - 1);
+    }
+    if (index < 0 || index >= days.length) index = 0;
+
+    render();
     const now = new Date();
     $('updated').textContent = '最終更新 '
       + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
   } catch (e) {
     $('updated').textContent = '';
-    $('list').innerHTML = '';
+    $('grid').innerHTML = '';
+    $('day-label').textContent = '—';
     say('error', e.message);
   }
 }
 
-function render(data) {
-  const list = $('list');
-  list.innerHTML = '';
-  $('empty').hidden = data.dates.length > 0;
+// ───────────────────────── 描画 ─────────────────────────
 
-  data.dates.forEach((day) => {
-    const block = el('section', 'day-block');
+function render() {
+  const day = days[index];
+  $('prev-day').disabled = index <= 0;
+  $('next-day').disabled = index >= days.length - 1;
 
-    const head = el('div', 'day-head');
-    const label = el('span', 'day-label');
-    // 「きょう」「あす」を先に出す。作業中に日付だけ見ても判断しにくいため
-    if (day.rel) label.appendChild(el('b', 'day-rel', day.rel));
-    label.appendChild(document.createTextNode(day.label));
-    head.appendChild(label);
+  if (!day) {
+    $('day-label').textContent = '—';
+    $('day-rel').hidden = true;
+    $('day-sum').textContent = '';
+    $('grid').innerHTML = '';
+    $('empty').hidden = true;
+    return;
+  }
 
-    const sum = el('div', 'day-sum');
-    const total = el('b', null, 'ご予約 ' + qtyText(day.total));
-    sum.appendChild(total);
-    sum.appendChild(document.createTextNode('　' + day.items.filter((i) => i.status !== 'キャンセル').length + '件'));
-    sum.appendChild(el('span', 'day-left', '残り ' + qtyText(day.remaining)));
-    head.appendChild(sum);
-    block.appendChild(head);
+  $('day-label').textContent = day.label;
+  $('day-rel').textContent = day.rel || '';
+  $('day-rel').hidden = !day.rel;
 
-    day.items.forEach((item) => block.appendChild(card(item, day)));
-    list.appendChild(block);
-  });
+  const live = day.items.filter((i) => i.status !== CANCELLED);
+  const kin = live.reduce((s, i) => s + i.kin, 0);
+  $('day-sum').innerHTML = day.closed
+    ? '<b>定休日</b>'
+    : 'ご予約 <b>' + qtyText(kin) + '</b>　' + live.length + '件'
+      + '<span class="day-left">残り ' + qtyText(day.remaining) + '</span>';
+
+  const grid = $('grid');
+  grid.innerHTML = '';
+  day.items.forEach((item) => grid.appendChild(card(item, day)));
+
+  $('empty').hidden = day.items.length > 0;
+  $('empty').textContent = day.closed ? 'この日は定休日です。' : 'この日のご予約はまだありません。';
 }
 
 function card(item, day) {
-  const cancelled = item.status === 'キャンセル';
+  const cancelled = item.status === CANCELLED;
   const node = el('article', 'card' + (cancelled ? ' is-cancelled' : ''));
 
-  const top = el('div', 'card-top');
-  top.appendChild(el('span', 'card-time', item.time));
-  top.appendChild(el('span', 'card-name', item.name + ' 様'));
-  top.appendChild(el('span', 'card-kin', qtyText(item.kin)));
-  node.appendChild(top);
+  node.appendChild(el('p', 'card-time', item.time));
+  node.appendChild(el('p', 'card-name', item.name + ' 様'));
+  node.appendChild(el('p', 'card-kin', qtyText(item.kin)));
 
-  const sub = el('p', 'card-sub');
-  const tel = el('a', null, item.phone);
+  const tel = el('a', 'card-tel', item.phone);
   tel.href = 'tel:' + item.phone.replace(/-/g, '');
-  sub.appendChild(tel);
-  node.appendChild(sub);
+  node.appendChild(tel);
 
   if (item.note) node.appendChild(el('p', 'card-note', item.note));
-  node.appendChild(el('p', 'card-id', '予約番号 ' + item.id));
+  node.appendChild(el('p', 'card-id', item.id));
 
   if (cancelled) {
     node.appendChild(el('span', 'cancelled-tag', 'キャンセル済み'));
-    const undo = el('button', 'btn btn-undo', 'キャンセルを取り消す');
+    const undo = el('button', 'btn btn-undo', '取り消す');
     undo.type = 'button';
     undo.addEventListener('click', () => setStatus(undo, item, day, '予約済'));
     node.appendChild(undo);
   } else {
     const cancel = el('button', 'btn btn-cancel', 'キャンセル');
     cancel.type = 'button';
-    cancel.addEventListener('click', () => setStatus(cancel, item, day, 'キャンセル'));
+    cancel.addEventListener('click', () => setStatus(cancel, item, day, CANCELLED));
     node.appendChild(cancel);
   }
   return node;
@@ -153,10 +176,10 @@ function card(item, day) {
 // ───────────────────────── 操作 ─────────────────────────
 
 async function setStatus(btn, item, day, status) {
-  const toCancel = status === 'キャンセル';
-  const ask = toCancel
-    ? day.label + '\n' + item.name + ' 様\n' + qtyText(item.kin) + '\n\nこのご予約をキャンセルしますか？'
-    : day.label + '\n' + item.name + ' 様\n' + qtyText(item.kin) + '\n\nキャンセルを取り消して、ご予約に戻しますか？';
+  const ask = day.label + '\n' + item.name + ' 様\n' + qtyText(item.kin) + '\n\n'
+    + (status === CANCELLED
+        ? 'このご予約をキャンセルしますか？'
+        : 'キャンセルを取り消して、ご予約に戻しますか？');
   if (!window.confirm(ask)) return;
 
   const label = btn.textContent;
@@ -183,14 +206,27 @@ async function setStatus(btn, item, day, status) {
   }
 }
 
+function move(step) {
+  const next = index + step;
+  if (next < 0 || next >= days.length) return;
+  index = next;
+  say('notice', '');
+  say('error', '');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // ───────────────────────── 起動 ─────────────────────────
 
+$('prev-day').addEventListener('click', () => move(-1));
+$('next-day').addEventListener('click', () => move(1));
 $('reload').addEventListener('click', () => { say('notice', ''); load(); });
 
 KEY = loadKey();
 if (!KEY) {
   say('error', 'このページを開くための鍵がありません。お店専用のURLから開いてください。');
   $('updated').textContent = '';
+  $('day-label').textContent = '—';
 } else {
   load();
 }

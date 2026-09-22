@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="../style.css?v=20260921a">
-<link rel="stylesheet" href="kanri.css?v=20260921a">
+<link rel="stylesheet" href="../style.css?v=20260922a">
+<link rel="stylesheet" href="kanri.css?v=20260922a">
 </head>
 <body class="kanri">
 
@@ -25,12 +25,22 @@
     <button type="button" id="reload" class="btn btn-sub btn-small">最新にする</button>
   </div>
 
+  <!-- 1日ずつめくる -->
+  <nav class="daynav">
+    <button type="button" id="prev-day" class="nav-btn" aria-label="前の日">‹</button>
+    <div class="daynav-body">
+      <b id="day-rel" class="day-rel" hidden></b>
+      <span id="day-label" class="day-label">読み込み中</span>
+    </div>
+    <button type="button" id="next-day" class="nav-btn" aria-label="次の日">›</button>
+  </nav>
+  <p id="day-sum" class="day-sum"></p>
+
   <p id="notice" class="notice-msg" hidden></p>
   <p id="error" class="error" hidden></p>
 
-  <div id="list"></div>
-
-  <p id="empty" class="empty" hidden>これからのご予約はまだありません。</p>
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="empty" hidden></p>
 </main>
 
 <footer class="foot">
@@ -38,6 +48,6 @@
   <p>このページはお店専用です。<br>お客様には見えません。</p>
 </footer>
 
-<script src="app.js?v=20260921a"></script>
+<script src="app.js?v=20260922a"></script>
 </body>
 </html>
