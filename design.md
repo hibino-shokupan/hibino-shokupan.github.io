@@ -319,11 +319,19 @@ GitHub Pages は CSS/画像に `Cache-Control: max-age=600` を返す。push直�
 
 ## 9. 公開
 
-**公開URL: https://kchick17r-dev.github.io/and-hibino-shokupan/**（2026-09-10 公開）
+**公開URL: https://hibino-shokupan.github.io/**（2026-09-10 公開 / 2026-09-22 URL変更）
 
-- リポジトリ: `kchick17r-dev/and-hibino-shokupan`（公開）
+- リポジトリ: `hibino-shokupan/hibino-shokupan.github.io`（公開）
 - GitHub Pages: mainブランチのルートから配信
 - 更新方法: ファイルを編集して `git add` → `git commit` → `git push`。1〜2分で反映される
+
+**2026-09-22: URLを変更した。** 旧 `kchick17r-dev.github.io/and-hibino-shokupan/`。
+お客様に見えるURLに個人のGitHubアカウント名が入るのを避けるため、無料の組織アカウント
+`hibino-shokupan` を作ってリポジトリを移し、名前を `hibino-shokupan.github.io` にした。
+リポジトリ名を `組織名.github.io` にすると、サイトがルート直下に来てURLからリポジトリ名が消える。
+
+**旧URLは転送されない。** 404になるので、外部に貼ったリンクは各自で貼り替えが必要
+（Googleビジネスプロフィールのウェブサイト欄がこれに当たる）。
 
 無料アカウントではPagesに公開リポジトリが必須のため、リポジトリ自体も公開になっている。掲載しているのは店舗の写真・住所・電話番号のみで、いずれもサイトに載せる前提の情報。
 
