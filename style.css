@@ -229,9 +229,12 @@ h1, h2, h3 { font-weight: 400; }
   flex: 1 1 auto;
   min-width: 0;
   font-family: var(--serif);
-  font-size: clamp(18.5px, 6.4vw, 26px);
+  /* 「～日々の食パン～」は8文字。6.4vw だと狭い端末で末尾の ～ だけが
+     次の行に落ちるため、320px でも1行に収まる大きさまで詰めてある */
+  font-size: clamp(17px, 5.8vw, 26px);
   line-height: 1.35;
   letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 .hero-eyebrow { display: flex; align-items: center; gap: 13px; }
 .hero-eyebrow .dash { width: 26px; height: 1px; background: var(--accent); flex-shrink: 0; }
@@ -507,9 +510,12 @@ section { padding: 60px var(--gutter) 64px; }
   }
   .badge-ja { font-size: 17px; letter-spacing: 0.12em; }
   .badge-en { font-size: 9px; letter-spacing: 0.24em; }
-  .lockup { gap: 28px; }
-  .lockup img { width: 152px; height: 152px; }
-  .lockup h1 { font-size: 44px; line-height: 1.3; letter-spacing: 0.1em; }
+  /* 店名が「～日々の食パン～」の8文字になり、44pxでは見出し枠（261px）に入らない。
+     ロゴを少し詰めて枠を285pxまで広げ、収まる最大サイズの32pxにしてある。
+     文字数を変えるときは、必ずPC幅で末尾が切れていないか確認すること */
+  .lockup { gap: 24px; }
+  .lockup img { width: 132px; height: 132px; }
+  .lockup h1 { font-size: 32px; line-height: 1.3; letter-spacing: 0.1em; }
   .hero-eyebrow .dash { width: 34px; }
   .hero-eyebrow .eyebrow { font-size: 12px; letter-spacing: 0.36em; }
   .catch { font-size: 38px; line-height: 1.55; letter-spacing: 0.07em; }
