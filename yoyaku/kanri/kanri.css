@@ -1,0 +1,169 @@
+@charset "utf-8";
+
+/* 管理ページ。トークンと基本部品は ../style.css から受け継ぐ。
+ *
+ * 使うのは60歳前後・老眼が入っていて、スマホ操作も得意ではない人。
+ * お客様向けページより一段大きく、余白を広く、押す場所を大きく取る。
+ * 薄いグレーの文字は本文に使わない（読めないため）。 */
+
+.kanri { font-size: 18px; line-height: 1.9; }
+
+.kanri .head { padding: 30px var(--gutter) 24px; }
+.kanri .head h1 {
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.kanri .head-note {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--body);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px var(--gutter) 0;
+}
+.updated { font-size: 14px; color: var(--muted); }
+.btn-small {
+  width: auto;
+  min-height: 50px;
+  margin-top: 0;
+  padding: 0 22px;
+  font-size: 16px;
+}
+
+.notice-msg {
+  margin: 18px var(--gutter) 0;
+  padding: 18px 20px;
+  border-left: 5px solid var(--accent);
+  background: var(--panel);
+  font-size: 17.5px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.kanri .error {
+  margin: 18px var(--gutter) 0;
+  padding: 18px 20px;
+  border-left: 5px solid var(--alert);
+  font-size: 17.5px;
+  line-height: 1.8;
+}
+.empty { padding: 50px var(--gutter); text-align: center; font-size: 17px; color: var(--muted); }
+
+/* ---------- 日付のかたまり ---------- */
+.day-block { padding: 30px var(--gutter) 0; }
+.day-head {
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--gold);
+}
+.day-label {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+/* 「きょう」「あす」は日付より先に目に入ってほしい */
+.day-rel {
+  padding: 3px 12px;
+  border-radius: 3px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.day-sum {
+  margin-top: 10px;
+  font-size: 17px;
+  color: var(--body);
+}
+.day-sum b { font-weight: 500; font-size: 19px; color: var(--ink); }
+.day-left {
+  margin-left: 14px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* ---------- 1件ぶんのカード ---------- */
+.card {
+  padding: 20px 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+.card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.card-time {
+  padding: 5px 12px;
+  border-radius: 3px;
+  background: var(--panel);
+  font-size: 17px;
+  white-space: nowrap;
+}
+.card-name { font-size: 22px; font-weight: 500; }
+.card-kin {
+  margin-left: auto;
+  font-size: 21px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 電話番号は「押して掛ける」ための場所。指で押せる大きさにする */
+.card-sub { margin-top: 12px; }
+.card-sub a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.card-note {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border-radius: 3px;
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.card-id { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
+.card .btn { min-height: 64px; margin-top: 16px; font-size: 18px; }
+.btn-cancel { border: 2px solid #C08D82; color: #A8442F; background: transparent; }
+.btn-undo   { border: 2px solid var(--line); color: var(--body); background: transparent; }
+.card .btn:disabled { opacity: 0.5; cursor: default; }
+
+/* キャンセル済みの行は、残すが目立たせない */
+.card.is-cancelled .card-name,
+.card.is-cancelled .card-kin { text-decoration: line-through; color: var(--muted); }
+.card.is-cancelled .card-time,
+.card.is-cancelled .card-sub a { color: var(--muted); }
+.cancelled-tag {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--panel);
+  font-size: 15px;
+  color: var(--body);
+}
+
+.kanri .foot { padding-top: 40px; font-size: 14px; }
