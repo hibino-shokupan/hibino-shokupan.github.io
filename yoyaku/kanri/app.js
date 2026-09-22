@@ -97,9 +97,17 @@ function render(data) {
     const block = el('section', 'day-block');
 
     const head = el('div', 'day-head');
-    head.appendChild(el('span', 'day-label', day.label));
-    const sum = el('span', 'day-sum');
-    sum.innerHTML = 'ご予約 <b>' + qtyText(day.total) + '</b> ／ 残り ' + qtyText(day.remaining);
+    const label = el('span', 'day-label');
+    // 「きょう」「あす」を先に出す。作業中に日付だけ見ても判断しにくいため
+    if (day.rel) label.appendChild(el('b', 'day-rel', day.rel));
+    label.appendChild(document.createTextNode(day.label));
+    head.appendChild(label);
+
+    const sum = el('div', 'day-sum');
+    const total = el('b', null, 'ご予約 ' + qtyText(day.total));
+    sum.appendChild(total);
+    sum.appendChild(document.createTextNode('　' + day.items.filter((i) => i.status !== 'キャンセル').length + '件'));
+    sum.appendChild(el('span', 'day-left', '残り ' + qtyText(day.remaining)));
     head.appendChild(sum);
     block.appendChild(head);
 
