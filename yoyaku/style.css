@@ -361,3 +361,33 @@ a { color: var(--accent); }
   letter-spacing: 0.1em;
   color: var(--ink);
 }
+
+/* ---------- 読み込み中 ---------- */
+/* サーバー（GAS）は起動に時間がかかり、初回は20秒近いこともある。
+   何も出さないと、止まっていると思われて離脱する */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 44px 20px;
+}
+.loading-dot {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 13.5px; letter-spacing: 0.04em; color: var(--muted); }
+.loading-slow {
+  font-size: 12.5px;
+  line-height: 1.9;
+  text-align: center;
+  color: var(--faint);
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-dot { animation: none; border-top-color: var(--line); }
+}

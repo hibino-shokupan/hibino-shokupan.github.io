@@ -15,6 +15,8 @@ const TEL = '0986-51-0511';
 const $ = (id) => document.getElementById(id);
 const DOW = ['日', '月', '火', '水', '木', '金', '土'];
 
+let slowTimer = null;    // 「時間がかかっています」を出すまでのタイマー
+
 const state = {
   ym: null,        // 表示中の月 'yyyy-MM'
   cal: null,       // サーバーから受け取った月データ
@@ -28,21 +30,33 @@ const qtyText = (kin) => kin + '斤（' + kin / state.cal.kinPerLoaf + '本）';
 
 // ───────────────────────── 通信 ─────────────────────────
 
+/* サーバー（GAS）は起動に時間がかかり、初回は20秒近いこともある。
+   いつまでも待たせず、かといって数秒で諦めもしない値にしてある。 */
+const TIMEOUT_MS = 40000;
+
 async function api(params, body) {
   if (API_URL.indexOf('http') !== 0) {
     throw new Error('予約システムの設定が未完了です。お手数ですがお電話（' + TEL + '）でご注文ください。');
   }
   const url = API_URL + (params ? '?' + new URLSearchParams(params) : '');
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   const opt = body
     // text/plain で送ると事前確認（プリフライト）が走らず、GASと通信できる
-    ? { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }
-    : { method: 'GET' };
+    ? { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), signal: ctrl.signal }
+    : { method: 'GET', signal: ctrl.signal };
 
   let res;
   try {
     res = await fetch(url, opt);
   } catch (e) {
+    if (e && e.name === 'AbortError') {
+      throw new Error('サーバーの応答がありませんでした。もう一度お試しいただくか、'
+        + 'お急ぎの場合はお電話（' + TEL + '）でご注文ください。');
+    }
     throw new Error('通信できませんでした。電波の良い場所でもう一度お試しください。');
+  } finally {
+    clearTimeout(timer);
   }
   if (!res.ok) throw new Error('通信に失敗しました（' + res.status + '）。少し時間をおいてお試しください。');
   return res.json();
@@ -66,9 +80,25 @@ function showError(id, message) {
 
 // ───────────────────────── カレンダー ─────────────────────────
 
+/** 待っているのか止まっているのか分かるようにする */
+function setLoading(on) {
+  $('cal-loading').hidden = !on;
+  // 空の枠（min-height 260px）を残すと、読み込み表示が画面の下に押しやられる
+  $('cal-grid').hidden = on;
+  $('loading-slow').hidden = true;
+  if (slowTimer) { clearTimeout(slowTimer); slowTimer = null; }
+  if (on) {
+    // 数秒で出すと、速いときに不安を煽るだけになる
+    slowTimer = setTimeout(() => { $('loading-slow').hidden = false; }, 6000);
+  }
+}
+
 async function loadCalendar(ym) {
   showError('cal-error', '');
+  $('cal-retry').hidden = true;     // 隠すのはここだけ。setLoading では触らない
   $('cal-title').textContent = '読み込み中';
+  $('cal-grid').innerHTML = '';
+  setLoading(true);
   try {
     const data = await api(ym ? { action: 'calendar', ym } : { action: 'calendar' });
     if (!data.ok) throw new Error(data.error || 'カレンダーを読み込めませんでした。');
@@ -79,6 +109,9 @@ async function loadCalendar(ym) {
     $('cal-title').textContent = '—';
     $('cal-grid').innerHTML = '';
     showError('cal-error', e.message);
+    $('cal-retry').hidden = false;
+  } finally {
+    setLoading(false);
   }
 }
 
@@ -247,6 +280,7 @@ function formatDateJa(ymd) {
 
 // ───────────────────────── 起動 ─────────────────────────
 
+$('cal-retry').addEventListener('click', () => loadCalendar(state.ym));
 $('prev-month').addEventListener('click', () => shiftMonth(-1));
 $('next-month').addEventListener('click', () => shiftMonth(1));
 $('change-date').addEventListener('click', () => showStep('step-date'));

@@ -42,7 +42,18 @@
     </div>
     <div id="cal-grid" class="cal-grid"></div>
 
+    <!-- GASは起動に時間がかかる（初回は20秒近いことも）。待っているのか
+         止まっているのか分からないと、お客様は離脱する -->
+    <div id="cal-loading" class="loading" hidden>
+      <span class="loading-dot"></span>
+      <p class="loading-text">空き状況を読み込んでいます…</p>
+      <p id="loading-slow" class="loading-slow" hidden>
+        少し時間がかかっています。<br>そのままお待ちください。
+      </p>
+    </div>
+
     <p id="cal-error" class="error" hidden></p>
+    <button type="button" id="cal-retry" class="btn btn-sub" hidden>もう一度読み込む</button>
   </section>
 
   <!-- ステップ2：内容を入力する -->
