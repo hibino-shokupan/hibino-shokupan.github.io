@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="style.css?v=20260921a">
+<link rel="stylesheet" href="style.css?v=20260925a">
 </head>
 <body>
 
@@ -67,11 +67,38 @@
     <p id="chosen-remaining" class="remaining"></p>
 
     <form id="form" novalidate>
-      <label class="field">
-        <span class="label">数量<b class="req">必須</b></span>
-        <select id="qty" required></select>
-        <span class="hint">1斤（0.5本）からご注文いただけます。</span>
-      </label>
+      <div class="field">
+        <span class="label">数量とカット<b class="req">必須</b></span>
+
+        <!-- 1件の中で厚さを混ぜられる（6斤のうち4枚切り2斤・5枚切り4斤、など）ので、
+             数量をひとつ選ばせるのではなく、厚さごとに斤数を積む形にしている -->
+        <div class="cuts" id="cuts">
+          <div class="cut" data-cut="cut4">
+            <span class="cut-name">4枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="4枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut4">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="4枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut5">
+            <span class="cut-name">5枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="5枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut5">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="5枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut0">
+            <span class="cut-name">カットなし</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="カットなしを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut0">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="カットなしを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+        </div>
+
+        <p class="cut-total" id="cut-total" aria-live="polite"></p>
+        <span class="hint">1斤（0.5本）からご注文いただけます。<br>厚さを分けたいときは、それぞれに斤数を入れてください。</span>
+      </div>
 
       <label class="field">
         <span class="label">お受け取りの時間<b class="req">必須</b></span>
@@ -143,6 +170,6 @@
   <p><a href="tel:0986510511">0986-51-0511</a></p>
 </footer>
 
-<script src="app.js?v=20260921a"></script>
+<script src="app.js?v=20260925a"></script>
 </body>
 </html>

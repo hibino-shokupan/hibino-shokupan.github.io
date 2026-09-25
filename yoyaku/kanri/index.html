@@ -8,9 +8,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="../style.css?v=20260922a">
-<link rel="stylesheet" href="kanri.css?v=20260922a">
+<!-- この画面は全部を太字で出す。700と900を読み込んでおかないと、
+     ブラウザが細い字を機械的に太らせた汚い字になる -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260925a">
+<link rel="stylesheet" href="kanri.css?v=20260925a">
 </head>
 <body class="kanri">
 
@@ -31,27 +33,147 @@
   </section>
 
   <div id="board" class="board" hidden>
-  <div class="bar">
-    <span id="updated" class="updated"></span>
-    <button type="button" id="reload" class="btn btn-sub btn-small">最新にする</button>
+
+  <!-- 2つの画面を行き来する -->
+  <nav class="tabs">
+    <button type="button" id="tab-day" class="tab is-on">ご予約</button>
+    <button type="button" id="tab-reg" class="tab">定期のお客様</button>
+  </nav>
+
+  <!-- ══════════ ご予約（1日ずつめくる） ══════════ -->
+  <div id="view-day">
+    <div class="bar">
+      <span id="updated" class="updated"></span>
+      <button type="button" id="reload" class="btn btn-sub btn-small">最新にする</button>
+    </div>
+
+    <nav class="daynav">
+      <button type="button" id="prev-day" class="nav-btn" aria-label="前の日">‹</button>
+      <div class="daynav-body">
+        <b id="day-rel" class="day-rel" hidden></b>
+        <span id="day-label" class="day-label">読み込み中</span>
+      </div>
+      <button type="button" id="next-day" class="nav-btn" aria-label="次の日">›</button>
+    </nav>
+    <p id="day-sum" class="day-sum"></p>
+
+    <p id="notice" class="notice-msg" hidden></p>
+    <p id="error" class="error" hidden></p>
+
+    <div id="grid" class="grid"></div>
+    <p id="empty" class="empty" hidden></p>
   </div>
 
-  <!-- 1日ずつめくる -->
-  <nav class="daynav">
-    <button type="button" id="prev-day" class="nav-btn" aria-label="前の日">‹</button>
-    <div class="daynav-body">
-      <b id="day-rel" class="day-rel" hidden></b>
-      <span id="day-label" class="day-label">読み込み中</span>
-    </div>
-    <button type="button" id="next-day" class="nav-btn" aria-label="次の日">›</button>
-  </nav>
-  <p id="day-sum" class="day-sum"></p>
+  <!-- ══════════ 定期のお客様 ══════════ -->
+  <div id="view-reg" hidden>
+    <p class="reg-lead">
+      毎回のご予約をされず、決まった曜日や日にちに取りに来られる方です。<br>
+      ここに入れた分は<b>1日の上限から先に引かれます</b>。
+    </p>
 
-  <p id="notice" class="notice-msg" hidden></p>
-  <p id="error" class="error" hidden></p>
+    <p id="reg-notice" class="notice-msg" hidden></p>
+    <p id="reg-error" class="error" hidden></p>
 
-  <div id="grid" class="grid"></div>
-  <p id="empty" class="empty" hidden></p>
+    <button type="button" id="reg-new" class="btn btn-main">＋ 定期のお客様を追加</button>
+
+    <div id="reg-list" class="reg-list"></div>
+    <p id="reg-empty" class="empty" hidden>まだ登録がありません。</p>
+
+    <!-- 追加・変更のフォーム -->
+    <section id="reg-form" class="reg-form" hidden>
+      <h2 id="reg-form-title">定期のお客様を追加</h2>
+
+      <label class="field">
+        <span class="label">お名前<b class="req">必須</b></span>
+        <input id="reg-name" type="text" autocomplete="off" placeholder="日々 花子">
+      </label>
+
+      <label class="field">
+        <span class="label">お電話<span class="opt">任意</span></span>
+        <input id="reg-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="09012345678">
+      </label>
+
+      <label class="field">
+        <span class="label">どのくらいの間隔で<b class="req">必須</b></span>
+        <select id="reg-repeat">
+          <option value="毎週">毎週（決まった曜日）</option>
+          <option value="毎月">毎月（決まった日にち）</option>
+        </select>
+      </label>
+
+      <label class="field" id="reg-field-dow">
+        <span class="label">曜日<b class="req">必須</b></span>
+        <select id="reg-dow">
+          <option value="4">木曜日</option>
+          <option value="5">金曜日</option>
+          <option value="6">土曜日</option>
+          <option value="0">日曜日</option>
+        </select>
+        <span class="hint">お店が開いている木・金・土・日から選べます。</span>
+      </label>
+
+      <label class="field" id="reg-field-dom" hidden>
+        <span class="label">日にち<b class="req">必須</b></span>
+        <select id="reg-dom"></select>
+        <span class="hint">その日が定休日にあたる月は、お休みになります。</span>
+      </label>
+
+      <label class="field">
+        <span class="label">お受け取りの時間<b class="req">必須</b></span>
+        <select id="reg-time"></select>
+      </label>
+
+      <div class="field">
+        <span class="label">数量とカット<b class="req">必須</b></span>
+        <div class="cuts" id="reg-cuts">
+          <div class="cut" data-cut="cut4">
+            <span class="cut-name">4枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="4枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut4">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="4枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut5">
+            <span class="cut-name">5枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="5枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut5">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="5枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut0">
+            <span class="cut-name">カットなし</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="カットなしを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut0">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="カットなしを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+        </div>
+        <p class="cut-total" id="reg-cut-total"></p>
+      </div>
+
+      <label class="field">
+        <span class="label">いつから<span class="opt">任意</span></span>
+        <input id="reg-start" type="date">
+        <span class="hint">空のままなら、今日から始まります。</span>
+      </label>
+
+      <label class="field">
+        <span class="label">いつまで<span class="opt">任意</span></span>
+        <input id="reg-end" type="date">
+        <span class="hint">空のままなら、ずっと続きます。</span>
+      </label>
+
+      <label class="field">
+        <span class="label">覚え書き<span class="opt">任意</span></span>
+        <textarea id="reg-note" rows="2" maxlength="200" placeholder="耳を厚めに、など"></textarea>
+      </label>
+
+      <p id="reg-form-error" class="error" hidden></p>
+      <button type="button" id="reg-save" class="btn btn-main">保存する</button>
+      <button type="button" id="reg-cancel" class="btn btn-sub">やめる</button>
+    </section>
+  </div>
+
   </div><!-- /board -->
 </main>
 
@@ -60,6 +182,6 @@
   <p>このページはお店専用です。<br>お客様には見えません。</p>
 </footer>
 
-<script src="app.js?v=20260922a"></script>
+<script src="app.js?v=20260925a"></script>
 </body>
 </html>

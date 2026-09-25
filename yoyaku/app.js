@@ -17,13 +17,26 @@ const DOW = ['日', '月', '火', '水', '木', '金', '土'];
 
 let slowTimer = null;    // 「時間がかかっています」を出すまでのタイマー
 
+const CUT_KEYS = ['cut4', 'cut5', 'cut0'];
+const CUT_NAMES = { cut4: '4枚切り', cut5: '5枚切り', cut0: 'カットなし' };
+
 const state = {
   ym: null,        // 表示中の月 'yyyy-MM'
   cal: null,       // サーバーから受け取った月データ
   date: null,      // 選んだ受取日 'yyyy-MM-dd'
   remaining: 0,    // その日の残り（斤）
+  cuts: { cut4: 0, cut5: 0, cut0: 0 },   // 厚さごとの斤数。合計が注文の斤数になる
   entry: null,     // 確認画面に出している内容
 };
+
+/** いま積んである合計（斤） */
+const cutTotal = () => CUT_KEYS.reduce((n, k) => n + state.cuts[k], 0);
+
+/** 「4枚切り 2斤 ／ カットなし 1斤」。0のものは出さない。Code.gs の cutsText_ と揃えること */
+function cutsText(c) {
+  const parts = CUT_KEYS.filter((k) => c[k] > 0).map((k) => CUT_NAMES[k] + ' ' + c[k] + '斤');
+  return parts.length ? parts.join(' ／ ') : '—';
+}
 
 /** 「3斤（1.5本）」の形にそろえる。Code.gs の qty_() と同じ */
 const qtyText = (kin) => kin + '斤（' + kin / state.cal.kinPerLoaf + '本）';
@@ -187,10 +200,9 @@ function selectDate(day) {
   $('chosen-date').textContent = formatDateJa(day.date);
   $('chosen-remaining').textContent = 'この日の残り ' + qtyText(day.remaining);
 
-  // 数量は1斤刻み。その日に残っている斤数までしか選べない
-  const qty = $('qty');
-  qty.innerHTML = '';
-  for (let k = 1; k <= day.remaining; k++) qty.add(new Option(qtyText(k), k));
+  // 日を変えたら積んだ斤数は捨てる。前の日の残数に合わせた数が残ると辻褄が合わない
+  CUT_KEYS.forEach((k) => { state.cuts[k] = 0; });
+  renderCuts();
 
   const time = $('time');
   if (!time.options.length) {
@@ -201,15 +213,52 @@ function selectDate(day) {
   showStep('step-form');
 }
 
+/** 画面の数字・合計・ボタンの押せる押せないを、いまの state に合わせる */
+function renderCuts() {
+  const total = cutTotal();
+  const left = state.remaining - total;
+
+  document.querySelectorAll('.cut').forEach((row) => {
+    const key = row.dataset.cut;
+    const n = state.cuts[key];
+    row.querySelector('[data-num]').textContent = n;
+    row.classList.toggle('is-on', n > 0);
+    row.querySelectorAll('.cut-btn').forEach((btn) => {
+      const step = Number(btn.dataset.step);
+      // その日の残りを超えて積めないようにする。減らす側は0で止める
+      btn.disabled = step > 0 ? left <= 0 : n <= 0;
+    });
+  });
+
+  const el = $('cut-total');
+  el.classList.toggle('is-zero', total === 0);
+  // 「6斤（3本）（残り4斤）」とカッコが二重になると読みにくいので、間は全角space
+  el.textContent = total === 0
+    ? 'カット数をお選びください'
+    : '合計 ' + qtyText(total) + '　この日の残り ' + left + '斤';
+}
+
+function stepCut(key, step) {
+  const next = state.cuts[key] + step;
+  if (next < 0) return;
+  if (step > 0 && cutTotal() >= state.remaining) return;
+  state.cuts[key] = next;
+  showError('form-error', '');
+  renderCuts();
+}
+
 function readForm() {
-  const kin = Number($('qty').value);
+  const cuts = Object.assign({}, state.cuts);
   return {
     date: state.date,
     time: $('time').value,
     name: $('name').value.trim(),
     phone: $('phone').value.trim(),
     note: $('note').value.trim(),
-    kin,
+    kin: cutTotal(),
+    cut4: cuts.cut4,
+    cut5: cuts.cut5,
+    cut0: cuts.cut0,
   };
 }
 
@@ -217,7 +266,9 @@ function readForm() {
 function validate(v) {
   if (!v.date) return '受取日を選んでください。';
   if (!v.time) return 'お受け取りの時間を選んでください。';
-  if (!v.kin) return '数量を選んでください。';
+  // カット数を1つも選んでいなければ合計0斤。ここで止めるので確定まで進めない
+  if (!v.kin) return 'カット数をお選びください。4枚切り・5枚切り・カットなしのいずれかに、斤数を入れてください。';
+  if (v.kin > state.remaining) return 'この日の残りは ' + qtyText(state.remaining) + ' です。数量を減らしてください。';
   if (!v.name) return 'お名前をフルネームでご記入ください。';
   const digits = v.phone.replace(/-/g, '');
   if (!/^\d{10,11}$/.test(digits)) return 'お電話番号は数字10桁または11桁でご記入ください。';
@@ -231,6 +282,7 @@ function renderSummary(el, v) {
     ['受取日', formatDateJa(v.date)],
     ['お時間', v.time],
     ['数量', qtyText(v.kin)],
+    ['カット', cutsText(v)],
     ['お名前', v.name + ' 様'],
     ['お電話', v.phone],
     ['備考', v.note || '—'],
@@ -279,6 +331,13 @@ function formatDateJa(ymd) {
 }
 
 // ───────────────────────── 起動 ─────────────────────────
+
+// 増減ボタンは3行ぶんあるので、まとめて1か所で受ける
+$('cuts').addEventListener('click', (e) => {
+  const btn = e.target.closest('.cut-btn');
+  if (!btn || btn.disabled) return;
+  stepCut(btn.closest('.cut').dataset.cut, Number(btn.dataset.step));
+});
 
 $('cal-retry').addEventListener('click', () => loadCalendar(state.ym));
 $('prev-month').addEventListener('click', () => shiftMonth(-1));

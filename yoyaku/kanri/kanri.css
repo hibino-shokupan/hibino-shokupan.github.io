@@ -1,5 +1,17 @@
 @charset "utf-8";
 
+/* =========================================================
+   ご予約の管理（お店専用）
+
+   【文字はすべて太字】
+   厨房で、手を止めて、一瞬見て分かることを最優先する。
+   ふつうの本文が 700、もともと太字だったところが 900。
+   Google Fonts の読み込みに 700 と 900 を入れておくこと。
+   入れ忘れるとブラウザが細い字を機械的に太らせ、潰れた字になる。
+   ========================================================= */
+.kanri,
+.kanri * { font-weight: 700; }
+
 /* 管理ページ。トークンと基本部品は ../style.css から受け継ぐ。
  *
  * 使うのは60歳前後・老眼が入っていて、スマホ操作も得意ではない人。
@@ -12,7 +24,7 @@
 .kanri .head h1 {
   font-family: var(--serif);
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: 0.06em;
 }
 .kanri .head-note {
@@ -65,14 +77,14 @@
   background: var(--accent);
   color: #fff;
   font-size: 14.5px;
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
 .day-label {
   font-family: var(--serif);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
@@ -96,7 +108,7 @@
   font-size: 16px;
   color: var(--body);
 }
-.day-sum b { font-weight: 500; font-size: 18px; color: var(--ink); }
+.day-sum b { font-weight: 900; font-size: 18px; color: var(--ink); }
 .day-left { margin-left: 12px; font-size: 14px; color: var(--muted); }
 
 /* ---------- お知らせ ---------- */
@@ -155,13 +167,13 @@
 .card-name {
   margin-top: 12px;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 900;
   line-height: 1.45;
 }
 .card-kin {
   margin-top: 6px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 900;
   color: var(--accent);
 }
 .card-tel {
@@ -242,7 +254,7 @@
   line-height: 1.7;
   letter-spacing: 0.04em;
 }
-.unlock-lead b { font-weight: 500; color: var(--accent); }
+.unlock-lead b { font-weight: 900; color: var(--accent); }
 .unlock-note {
   margin-top: 12px;
   font-size: 15px;
@@ -259,7 +271,7 @@
   color: var(--ink);
   font-family: inherit;
   font-size: 16px;      /* 16px未満だとiPhoneで入力時に拡大される */
-  font-weight: 300;
+  font-weight: 700;
   text-align: center;
 }
 .unlock input:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
@@ -273,4 +285,142 @@
   font-size: 15px;
   line-height: 1.75;
   text-align: left;
+}
+
+
+/* ---------- もともと太字だったところは、さらに一段上げる ---------- */
+.kanri b,
+.kanri strong,
+.kanri h1,
+.kanri h2,
+.kanri .btn,
+.kanri .tab.is-on,
+.kanri .cancelled-tag,
+.kanri .reg-tag { font-weight: 900; }
+
+/* ---------- 2つの画面を行き来するタブ ---------- */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.tab {
+  min-height: 52px;
+  padding: 0 10px;
+  border: 2px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.tab.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ---------- 予約カードのカット数 ---------- */
+.card-cuts {
+  margin-top: 2px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--body);
+}
+.card.is-cancelled .card-cuts { color: var(--muted); text-decoration: line-through; }
+
+/* ---------- 定期のカード（ご予約の画面） ---------- */
+/* 予約と見分けがつかないと、電話でキャンセルを受けたときに取り違える */
+.card.is-regular { border-color: var(--gold); background: #FEFCF8; }
+.reg-tag {
+  display: inline-block;
+  /* カードは縦積みのフレックスなので、指定しないと横いっぱいに伸びる */
+  align-self: flex-start;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.card.is-skipped { border-color: var(--line); background: #FCFAF7; }
+.card.is-skipped .card-name,
+.card.is-skipped .card-kin,
+.card.is-skipped .card-cuts { text-decoration: line-through; color: var(--muted); }
+.card.is-skipped .reg-tag { background: var(--muted); }
+
+.day-reg { margin-left: 12px; font-size: 14px; color: var(--gold); }
+.day-reg b { font-size: 16px; color: var(--gold); }
+
+/* ---------- 定期のお客様の画面 ---------- */
+.reg-lead {
+  margin-bottom: 16px;
+  padding: 13px 15px;
+  border-left: 3px solid var(--gold);
+  background: #FBF7F0;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--body);
+}
+#reg-new { margin-bottom: 20px; }
+
+.reg-list { display: flex; flex-direction: column; gap: 14px; }
+.reg-card {
+  padding: 16px 16px 14px;
+  border: 2px solid var(--gold);
+  border-radius: 2px;
+  background: var(--paper);
+}
+.reg-card.is-paused { border-color: var(--line); background: #FCFAF7; }
+.reg-card.is-paused .reg-name,
+.reg-card.is-paused .reg-when,
+.reg-card.is-paused .reg-kin { color: var(--muted); }
+
+.reg-name { font-size: 19px; line-height: 1.5; color: var(--ink); }
+.reg-when {
+  margin-top: 4px;
+  font-size: 15.5px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+.reg-kin { margin-top: 6px; font-size: 17px; color: var(--ink); }
+.reg-cuts { font-size: 15px; line-height: 1.6; color: var(--body); }
+.reg-term { margin-top: 6px; font-size: 13.5px; color: var(--muted); }
+.reg-next { margin-top: 6px; font-size: 13.5px; color: var(--muted); }
+
+.reg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.reg-actions .btn { flex: 1 1 auto; min-width: 92px; margin: 0; }
+
+/* ---------- 追加・変更のフォーム ---------- */
+.reg-form {
+  margin-top: 22px;
+  padding: 18px 16px 22px;
+  border: 2px solid var(--accent);
+  border-radius: 2px;
+  background: var(--paper);
+}
+.reg-form h2 {
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.reg-form .field { margin-top: 18px; }
+.reg-form .label { font-size: 14.5px; color: var(--body); }
+.reg-form .hint { font-size: 13px; }
+.reg-form .btn { margin-top: 16px; }
+.reg-form .cut-name { font-size: 16px; }
+.reg-form .cut-num { font-size: 19px; }
+
+@media (max-width: 359px) {
+  .tab { font-size: 14.5px; }
+  .reg-actions .btn { min-width: 0; }
 }

@@ -284,6 +284,73 @@ a { color: var(--accent); }
   outline-offset: -1px;
 }
 
+/* ---------- カット数（厚さごとの斤数） ---------- */
+/* 1件の中で厚さを混ぜられるので、数量をひとつ選ばせる形にはしていない。
+   ボタンは指で押すものなので 44px を下回らせない。 */
+.cuts { display: flex; flex-direction: column; gap: 9px; }
+.cut {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper);
+}
+/* 入っている行だけ枠を金にして、どれを頼んだか一目で分かるようにする */
+.cut.is-on { border-color: var(--gold); }
+.cut-name {
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.cut-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+.cut-btn:disabled { opacity: 0.3; cursor: default; }
+.cut-num {
+  min-width: 1.8em;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.cut-unit { font-size: 13px; color: var(--muted); }
+
+.cut-total {
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+/* 1斤も入っていないときは、そこが未入力だと分かる色にする */
+.cut-total.is-zero { color: var(--accent); }
+
+@media (max-width: 359px) {
+  /* 320px幅だと「カットなし」と −0＋斤 が競る。名前を折り返させず、間を詰める */
+  .cut { gap: 5px; padding-left: 10px; }
+  .cut-name { font-size: 13.5px; white-space: nowrap; }
+  .cut-btn { width: 44px; }
+  .cut-num { min-width: 1.4em; font-size: 16px; }
+}
+
 /* ---------- 確認・完了 ---------- */
 .summary {
   border-top: 1px solid var(--line);
