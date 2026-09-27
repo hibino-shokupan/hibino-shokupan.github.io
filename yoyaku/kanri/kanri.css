@@ -430,6 +430,13 @@
   letter-spacing: 0.04em;
   color: var(--ink);
 }
+/* 第◯曜日は「第2」と「金曜日」を横に並べる。
+   縦に積むと、どちらが週でどちらが曜日か分からなくなる */
+.nth-row { display: flex; gap: 8px; }
+.nth-row select { min-width: 0; }
+.nth-row .nth-week { flex: 0 0 36%; }
+.nth-row .nth-dow { flex: 1 1 auto; }
+
 .reg-form .field { margin-top: 18px; }
 .reg-form .label { font-size: 14.5px; color: var(--body); }
 .reg-form .hint { font-size: 13px; }

@@ -11,8 +11,8 @@
 <!-- この画面は全部を太字で出す。700と900を読み込んでおかないと、
      ブラウザが細い字を機械的に太らせた汚い字になる -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700;900&display=swap">
-<link rel="stylesheet" href="../style.css?v=20260927a">
-<link rel="stylesheet" href="kanri.css?v=20260927a">
+<link rel="stylesheet" href="../style.css?v=20260927b">
+<link rel="stylesheet" href="kanri.css?v=20260927b">
 </head>
 <body class="kanri">
 
@@ -115,6 +115,7 @@
         <span class="label">どのくらいの間隔で<b class="req">必須</b></span>
         <select id="reg-repeat">
           <option value="毎週">毎週（決まった曜日）</option>
+          <option value="第N曜日">毎月（第◯曜日）</option>
           <option value="毎月">毎月（決まった日にち）</option>
         </select>
       </label>
@@ -129,6 +130,30 @@
         </select>
         <span class="hint">お店が開いている木・金・土・日から選べます。</span>
       </label>
+
+      <!-- 第2金曜日・第4日曜日のような方。欄が2つあるので label ではなく div -->
+      <div class="field" id="reg-field-nth" hidden>
+        <span class="label">第何◯曜日<b class="req">必須</b></span>
+        <div class="nth-row">
+          <select id="reg-nth" class="nth-week" aria-label="第何週">
+            <option value="1">第1</option>
+            <option value="2">第2</option>
+            <option value="3">第3</option>
+            <option value="4">第4</option>
+            <option value="5">第5</option>
+          </select>
+          <select id="reg-nthdow" class="nth-dow" aria-label="曜日">
+            <option value="4">木曜日</option>
+            <option value="5">金曜日</option>
+            <option value="6">土曜日</option>
+            <option value="0">日曜日</option>
+          </select>
+        </div>
+        <span class="hint">
+          月の1日から7日ごとに数えます（1〜7日が第1）。<br>
+          第5◯曜日は、その曜日が5回ある月だけになります。第5日曜日はお休みなので選べません。
+        </span>
+      </div>
 
       <label class="field" id="reg-field-dom" hidden>
         <span class="label">日にち<b class="req">必須</b></span>
@@ -200,6 +225,6 @@
   <p>このページはお店専用です。<br>お客様には見えません。</p>
 </footer>
 
-<script src="app.js?v=20260927a"></script>
+<script src="app.js?v=20260927b"></script>
 </body>
 </html>

@@ -551,8 +551,20 @@ function openRegForm(g) {
   $('reg-name').value = g ? g.name : '';
   $('reg-phone').value = g ? g.phone : '';
   $('reg-repeat').value = g ? g.repeat : '毎週';
-  if (g && g.repeat === '毎月') $('reg-dom').value = g.when;
-  else $('reg-dow').value = g ? g.when : '4';
+  // 繰り返しごとに欄が違う。まず全部を既定に戻してから、使う欄だけ入れ直す。
+  // 戻さないと前に開いた人の曜日が残り、別の人の設定に化ける
+  $('reg-dow').value = '4';
+  $('reg-dom').value = '1';
+  $('reg-nth').value = '2';
+  $('reg-nthdow').value = '5';
+  if (g && g.repeat === '毎月') {
+    $('reg-dom').value = g.when;
+  } else if (g && g.repeat === '第N曜日') {
+    const p = parseNthDow(g.when);
+    if (p) { $('reg-nth').value = p.nth; $('reg-nthdow').value = p.dow; }
+  } else if (g) {
+    $('reg-dow').value = g.when;
+  }
   $('reg-time').value = g ? g.time : (slots[0] || '');
   CUT_KEYS.forEach((k) => { regCuts[k] = g ? Number(g[k]) || 0 : 0; });
   $('reg-start').value = g ? g.start : '';
@@ -573,11 +585,27 @@ function closeRegForm() {
   editingId = '';
 }
 
-/** 毎週なら曜日、毎月なら日にちだけを出す */
+/* 第N曜日は '2-5'（第2金曜日）の形でまとめて1つの値として送る。
+   Code.gs の parseNthDow_ と同じ形。片方だけ変えると保存した内容が読めなくなる。 */
+function parseNthDow(when) {
+  const m = /^([1-5])-([0-6])$/.exec(String(when || '').trim());
+  return m ? { nth: m[1], dow: m[2] } : null;
+}
+
+/** いま選ばれている繰り返しに合わせて「曜日/日」の値を作る */
+function regWhenValue() {
+  const r = $('reg-repeat').value;
+  if (r === '毎月') return $('reg-dom').value;
+  if (r === '第N曜日') return $('reg-nth').value + '-' + $('reg-nthdow').value;
+  return $('reg-dow').value;
+}
+
+/** 繰り返しに関係のある欄だけを出す */
 function syncRepeat() {
-  const weekly = $('reg-repeat').value === '毎週';
-  $('reg-field-dow').hidden = !weekly;
-  $('reg-field-dom').hidden = weekly;
+  const r = $('reg-repeat').value;
+  $('reg-field-dow').hidden = r !== '毎週';
+  $('reg-field-nth').hidden = r !== '第N曜日';
+  $('reg-field-dom').hidden = r !== '毎月';
 }
 
 function renderRegCuts() {
@@ -597,13 +625,12 @@ function renderRegCuts() {
 }
 
 async function saveRegular(btn) {
-  const weekly = $('reg-repeat').value === '毎週';
   const reg = {
     id: editingId,
     name: $('reg-name').value.trim(),
     phone: $('reg-phone').value.trim(),
     repeat: $('reg-repeat').value,
-    when: weekly ? $('reg-dow').value : $('reg-dom').value,
+    when: regWhenValue(),
     time: $('reg-time').value,
     cut4: regCuts.cut4, cut5: regCuts.cut5, cut0: regCuts.cut0,
     start: $('reg-start').value,
