@@ -11,8 +11,8 @@
 <!-- この画面は全部を太字で出す。700と900を読み込んでおかないと、
      ブラウザが細い字を機械的に太らせた汚い字になる -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700;900&display=swap">
-<link rel="stylesheet" href="../style.css?v=20260925a">
-<link rel="stylesheet" href="kanri.css?v=20260925a">
+<link rel="stylesheet" href="../style.css?v=20260927a">
+<link rel="stylesheet" href="kanri.css?v=20260927a">
 </head>
 <body class="kanri">
 
@@ -49,12 +49,30 @@
 
     <nav class="daynav">
       <button type="button" id="prev-day" class="nav-btn" aria-label="前の日">‹</button>
-      <div class="daynav-body">
+      <!-- 日付そのものを押すとカレンダーが開く -->
+      <button type="button" id="day-pick" class="daynav-body" aria-expanded="false" aria-controls="daycal">
         <b id="day-rel" class="day-rel" hidden></b>
         <span id="day-label" class="day-label">読み込み中</span>
-      </div>
+        <span class="day-pick-hint">押すとカレンダー</span>
+      </button>
       <button type="button" id="next-day" class="nav-btn" aria-label="次の日">›</button>
     </nav>
+
+    <section id="daycal" class="daycal" hidden>
+      <div class="daycal-nav">
+        <button type="button" id="cal-prev" class="nav-btn" aria-label="前の月">‹</button>
+        <span id="cal-title" class="daycal-title"></span>
+        <button type="button" id="cal-next" class="nav-btn" aria-label="次の月">›</button>
+      </div>
+      <div class="daycal-dow" aria-hidden="true">
+        <span class="sun">日</span><span>月</span><span>火</span><span>水</span>
+        <span>木</span><span>金</span><span class="sat">土</span>
+      </div>
+      <div id="daycal-grid" class="daycal-grid"></div>
+      <p class="daycal-key">予＝ご予約（定期ふくむ）　残＝残り　単位は斤</p>
+      <button type="button" id="cal-close" class="btn btn-sub btn-small">閉じる</button>
+    </section>
+
     <p id="day-sum" class="day-sum"></p>
 
     <p id="notice" class="notice-msg" hidden></p>
@@ -182,6 +200,6 @@
   <p>このページはお店専用です。<br>お客様には見えません。</p>
 </footer>
 
-<script src="app.js?v=20260925a"></script>
+<script src="app.js?v=20260927a"></script>
 </body>
 </html>

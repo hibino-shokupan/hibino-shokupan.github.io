@@ -21,8 +21,12 @@ const $ = (id) => document.getElementById(id);
 
 let KEY = '';
 let kinPerLoaf = 2;
-let days = [];       // サーバーから受け取った日の一覧
+let days = [];       // いま表示している月の、全部の日
 let index = 0;       // いま見ている日
+let ym = '';         // 表示中の月 'yyyy-MM'
+let todayYmd = '';   // サーバー（日本時間）での今日
+let hasPrev = false; // 前の月へ行けるか
+let hasNext = false;
 
 // 定期のお客様
 let regulars = [];   // 一覧
@@ -145,24 +149,44 @@ function el(tag, className, text) {
 
 // ───────────────────────── 読み込み ─────────────────────────
 
-async function load(quiet) {
+/**
+ * 1か月ぶんを読み込む。
+ *   targetYm … 'yyyy-MM'。省略すると今月
+ *   want     … 表示したい日。'first' / 'last' / 'yyyy-MM-dd' / 省略（いまの日を保つ）
+ */
+async function load(quiet, targetYm, want) {
   if (!quiet) $('updated').textContent = '読み込み中…';
   say('error', '');
   try {
-    const data = await api({ action: 'admin', key: KEY });
+    const params = { action: 'admin', key: KEY };
+    if (targetYm) params.ym = targetYm;
+    const data = await api(params);
     if (!data.ok) throw new Error(data.error || '読み込めませんでした。');
-    kinPerLoaf = data.kinPerLoaf;
 
-    // 見ていた日をできるだけ保つ。消えていたら近い日へ寄せる
-    const keeping = days[index] ? days[index].date : null;
-    days = data.dates || [];
-    if (keeping) {
-      const found = days.findIndex((d) => d.date === keeping);
-      index = found >= 0 ? found : Math.min(index, days.length - 1);
+    kinPerLoaf = data.kinPerLoaf;
+    todayYmd = data.todayYmd || '';
+    ym = data.ym || ym;
+    hasPrev = !!data.hasPrev;
+    hasNext = !!data.hasNext;
+
+    const keeping = (want && want !== 'first' && want !== 'last')
+      ? want
+      : (days[index] ? days[index].date : todayYmd);
+
+    days = data.days || [];
+
+    if (want === 'first') index = 0;
+    else if (want === 'last') index = days.length - 1;
+    else {
+      // 見ていた日を保つ。月が変わって無ければ今日、それも無ければ1日
+      let at = days.findIndex((d) => d.date === keeping);
+      if (at < 0) at = days.findIndex((d) => d.date === todayYmd);
+      index = at < 0 ? 0 : at;
     }
-    if (index < 0 || index >= days.length) index = 0;
+    if (index < 0) index = 0;
 
     render();
+    if (!$('daycal').hidden) renderCal();
     const now = new Date();
     $('updated').textContent = '最終更新 '
       + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
@@ -178,8 +202,8 @@ async function load(quiet) {
 
 function render() {
   const day = days[index];
-  $('prev-day').disabled = index <= 0;
-  $('next-day').disabled = index >= days.length - 1;
+  $('prev-day').disabled = index <= 0 && !hasPrev;
+  $('next-day').disabled = index >= days.length - 1 && !hasNext;
 
   if (!day) {
     $('day-label').textContent = '—';
@@ -213,7 +237,7 @@ function render() {
 
   const count = day.items.length + regs.length;
   $('empty').hidden = count > 0;
-  $('empty').textContent = day.closed ? 'この日は定休日です。' : 'この日のご予約はまだありません。';
+  $('empty').textContent = day.closed ? 'この日は定休日です。' : 'ご予約なし';
 }
 
 function card(item, day) {
@@ -344,10 +368,89 @@ async function setStatus(btn, item, day, status) {
 
 function move(step) {
   const next = index + step;
-  if (next < 0 || next >= days.length) return;
-  index = next;
   say('notice', '');
   say('error', '');
+
+  // 月末・月初を越えるときは、隣の月を読み込んでその端の日を出す
+  if (next < 0) {
+    if (hasPrev) load(true, shiftYm(ym, -1), 'last');
+    return;
+  }
+  if (next >= days.length) {
+    if (hasNext) load(true, shiftYm(ym, 1), 'first');
+    return;
+  }
+  index = next;
+  render();
+  if (!$('daycal').hidden) renderCal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function shiftYm(v, step) {
+  const [y, m] = v.split('-').map(Number);
+  const d = new Date(y, m - 1 + step, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+// ───────────────────── カレンダー ─────────────────────
+
+function toggleCal() {
+  if ($('daycal').hidden) {
+    $('daycal').hidden = false;
+    $('day-pick').setAttribute('aria-expanded', 'true');
+    renderCal();
+    $('daycal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    closeCal();
+  }
+}
+
+function closeCal() {
+  $('daycal').hidden = true;
+  $('day-pick').setAttribute('aria-expanded', 'false');
+}
+
+function renderCal() {
+  if (!days.length) return;
+  const [y, m] = ym.split('-').map(Number);
+  $('cal-title').textContent = y + '年 ' + m + '月';
+  $('cal-prev').disabled = !hasPrev;
+  $('cal-next').disabled = !hasNext;
+
+  const grid = $('daycal-grid');
+  grid.innerHTML = '';
+  // 1日の曜日まで空きマスを置く
+  for (let i = 0; i < days[0].dow; i++) grid.appendChild(el('span', 'dc-blank'));
+
+  days.forEach((d, i) => {
+    const cell = el('button', 'dc-day');
+    cell.type = 'button';
+    if (d.closed) cell.classList.add('is-closed');
+    if (d.past) cell.classList.add('is-past');
+    if (d.date === todayYmd) cell.classList.add('is-today');
+    if (i === index) cell.classList.add('is-selected');
+
+    cell.appendChild(el('span', 'dc-d', String(Number(d.date.slice(8)))));
+    if (d.closed) {
+      cell.appendChild(el('span', 'dc-off', '休'));
+    } else {
+      // 予約が入っている日だけ色を付ける。0が並ぶ中から拾えるように
+      cell.appendChild(el('span', 'dc-b' + (d.total > 0 ? ' has' : ''), '予' + d.total));
+      cell.appendChild(el('span', 'dc-r' + (d.remaining > 0 ? '' : ' none'), '残' + d.remaining));
+    }
+    cell.setAttribute('aria-label', d.label + (d.closed
+      ? ' 定休日'
+      : ' ご予約' + d.total + '斤、残り' + d.remaining + '斤'));
+    cell.addEventListener('click', () => pickDay(i));
+    grid.appendChild(cell);
+  });
+}
+
+function pickDay(i) {
+  index = i;
+  say('notice', '');
+  say('error', '');
+  closeCal();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -362,6 +465,7 @@ function showView(which) {
   $('tab-reg').classList.toggle('is-on', isReg);
   // 見出しの説明文は「ご予約」の画面の話なので、定期の画面では出さない
   document.querySelector('.head-note').hidden = isReg;
+  if (isReg) closeCal();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (isReg && !regulars.length) loadRegulars();
 }
@@ -573,6 +677,11 @@ $('next-day').addEventListener('click', () => move(1));
 $('reload').addEventListener('click', () => { say('notice', ''); load(); });
 $('unlock-go').addEventListener('click', unlock);
 $('unlock-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+$('day-pick').addEventListener('click', toggleCal);
+$('cal-close').addEventListener('click', closeCal);
+$('cal-prev').addEventListener('click', () => { if (hasPrev) load(true, shiftYm(ym, -1)); });
+$('cal-next').addEventListener('click', () => { if (hasNext) load(true, shiftYm(ym, 1)); });
 
 $('tab-day').addEventListener('click', () => showView('day'));
 $('tab-reg').addEventListener('click', () => showView('reg'));
