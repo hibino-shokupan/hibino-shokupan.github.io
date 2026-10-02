@@ -300,6 +300,9 @@ section { padding: 60px var(--gutter) 64px; }
 /* 横に動かすのは scroll-snap に任せる。JSは下の丸印だけ。
    アーチは写真ではなく枠側に持たせる（写真が入れ替わっても形が崩れない）。 */
 .gallery { display: block; }
+/* 矢印を写真の上に重ねるための基準。丸印はこの外に置く
+   （この中に入れると、矢印が写真＋丸印の真ん中に来てしまう） */
+.gallery-frame { position: relative; }
 .gallery-track {
   display: flex;
   overflow-x: auto;
@@ -317,6 +320,33 @@ section { padding: 60px var(--gutter) 64px; }
   scroll-snap-stop: always;
 }
 .gallery-track:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* インスタのような左右の矢印。写真の縦中央に重ねる */
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 2px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(42, 37, 34, 0.18);
+}
+/* display: flex が効いていると hidden が無視される */
+.gallery-arrow[hidden] { display: none; }
+.gallery-arrow.is-prev { left: 7px; }
+.gallery-arrow.is-next { right: 7px; }
 
 .gallery-dots {
   display: flex;

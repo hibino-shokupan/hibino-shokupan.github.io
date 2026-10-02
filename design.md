@@ -197,12 +197,15 @@ Instagramプロフィールを最優先の一次ソースとする（店舗本�
 
 | 商品 | 枚数 | 写真 |
 | --- | --- | --- |
-| 食卓の食パン | 2 | `loaves` `shelf` |
+| 食卓の食パン | 3 | `loaves` `shelf` `breakfast-set` |
 | その日の菓子パン | 3 | `sweets` `sweets-2` `sweets-3` |
-| 季節の自家製ジャム | 4 | `jam-jar` `jam-stack` `jam-orange` `jam-red` |
+| 季節の自家製ジャム | 4 | `jam-stack` `jam-orange` `jam-red` `jam-jar` |
 | 我が家の果物 | 5 | `grapes` `kiwi` `grapes-2` `shelf-fruit` `blueberry-bush` |
 
-**食パンだけ2枚しかない。** `パン写真` のどのフォルダにも食パンの写真はこの2枚だけだった。
+- `breakfast-set.webp` は `メイン` フォルダの **PNGスクリーンショット**（`…100800.png`）から作った。
+  画面の写り込みは無く、元が 682×907 と小さいので**拡大はせず 682×512 のまま**出している
+- **左右の矢印（インスタ風）**を写真に重ねてある。端では消える。44×44
+- 丸印・矢印とも、押した瞬間に見た目を合わせる（スクロールの通知を待たない）
 
 - 横に動かすのは **CSSの `scroll-snap`** に任せている。JSが動かなくても指でなぞれば写真は見られる
 - JSは下の丸印だけを受け持つ。位置の追従は **IntersectionObserver と `scroll` の両方**を掛けてある
