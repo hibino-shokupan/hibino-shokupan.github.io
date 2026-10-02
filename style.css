@@ -544,7 +544,8 @@ section { padding: 60px var(--gutter) 64px; }
   .concept-body { display: flex; flex-direction: column; gap: 26px; max-width: 660px; padding-top: 8px; }
   .concept p { font-size: 15px; line-height: 2.35; letter-spacing: 0.07em; }
 
-  .product-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 3.4vw, 48px); align-items: start; }
+  /* 商品が4つになったので2列×2段にする。3列だと4つめが1つだけ次の段に残る */
+  .product-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 3.6vw, 56px); align-items: start; }
   .product { gap: 24px; }
   .product-title h3 { font-size: 21px; letter-spacing: 0.1em; }
   .product-title span { font-size: 15px; }
