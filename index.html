@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="style.css?v=20261002a">
+<link rel="stylesheet" href="style.css?v=20261002c">
 
 <script type="application/ld+json">
 {
@@ -144,7 +144,13 @@
 
     <div class="product-list">
       <article class="product">
-        <img class="product-media" src="assets/web/loaves.webp" width="1000" height="750" loading="lazy" alt="スノコに並んだ、焼きあがったばかりの食パン">
+      <div class="gallery">
+        <div class="gallery-track" tabindex="0" role="group" aria-label="食卓の食パン の写真 2枚">
+          <img class="product-media" src="assets/web/loaves.webp" width="1000" height="750" loading="lazy" alt="スノコに並んだ、焼きあがったばかりの食パン">
+          <img class="product-media" src="assets/web/shelf.webp" width="1000" height="750" loading="lazy" alt="木の棚に並んだ食パン">
+        </div>
+        <div class="gallery-dots"></div>
+      </div>
         <div class="product-title">
           <h3>食卓の食パン</h3>
           <span>shokupan</span>
@@ -153,7 +159,14 @@
       </article>
 
       <article class="product">
-        <img class="product-media" src="assets/web/sweets.webp" width="1000" height="750" loading="lazy" alt="焼きあがった菓子パン。かのこ豆チーズパン、ピザパン、シナモンロールなど">
+      <div class="gallery">
+        <div class="gallery-track" tabindex="0" role="group" aria-label="その日の菓子パン の写真 3枚">
+          <img class="product-media" src="assets/web/sweets.webp" width="1000" height="750" loading="lazy" alt="焼きあがった菓子パン。かのこ豆チーズパン、ピザパン、シナモンロールなど">
+          <img class="product-media" src="assets/web/sweets-2.webp" width="760" height="570" loading="lazy" alt="店頭に並ぶ、袋詰めの菓子パン">
+          <img class="product-media" src="assets/web/sweets-3.webp" width="760" height="570" loading="lazy" alt="粉砂糖をまぶした菓子パン">
+        </div>
+        <div class="gallery-dots"></div>
+      </div>
         <div class="product-title">
           <h3>その日の菓子パン</h3>
           <span>sweets</span>
@@ -162,7 +175,15 @@
       </article>
 
       <article class="product">
-        <img class="product-media" src="assets/web/jam-jar.webp" width="1000" height="750" loading="lazy" alt="&amp;.&amp; オリジナルジャムの瓶">
+      <div class="gallery">
+        <div class="gallery-track" tabindex="0" role="group" aria-label="季節の自家製ジャム の写真 4枚">
+          <img class="product-media" src="assets/web/jam-jar.webp" width="1000" height="750" loading="lazy" alt="&amp;.&amp; オリジナルジャムの瓶">
+          <img class="product-media" src="assets/web/jam-stack.webp" width="760" height="570" loading="lazy" alt="店頭に積まれた自家製ジャムの瓶">
+          <img class="product-media" src="assets/web/jam-orange.webp" width="800" height="600" loading="lazy" alt="自家製ジャムの瓶と、お店のロゴボード">
+          <img class="product-media" src="assets/web/jam-red.webp" width="800" height="600" loading="lazy" alt="赤いジャムの瓶が2つ並んだところ">
+        </div>
+        <div class="gallery-dots"></div>
+      </div>
         <div class="product-title">
           <h3>季節の自家製ジャム</h3>
           <span>jam</span>
@@ -171,7 +192,16 @@
       </article>
 
       <article class="product">
-        <img class="product-media" src="assets/web/grapes.webp" width="1000" height="750" loading="lazy" alt="我が家で育てたシャインマスカットの袋詰め">
+      <div class="gallery">
+        <div class="gallery-track" tabindex="0" role="group" aria-label="我が家の果物 の写真 5枚">
+          <img class="product-media" src="assets/web/grapes.webp" width="1000" height="750" loading="lazy" alt="我が家で育てたシャインマスカットの袋詰め">
+          <img class="product-media" src="assets/web/kiwi.webp" width="1000" height="750" loading="lazy" alt="我が家で育てたゴールドキウイとレインボーレッド">
+          <img class="product-media" src="assets/web/grapes-2.webp" width="760" height="570" loading="lazy" alt="袋詰めにしたシャインマスカット">
+          <img class="product-media" src="assets/web/shelf-fruit.webp" width="760" height="570" loading="lazy" alt="棚に並ぶシャインマスカットとパン">
+          <img class="product-media" src="assets/web/blueberry-bush.webp" width="760" height="570" loading="lazy" alt="色づきはじめたブルーベリーの実">
+        </div>
+        <div class="gallery-dots"></div>
+      </div>
         <div class="product-title">
           <h3>我が家の果物</h3>
           <span>fruits</span>
@@ -288,6 +318,74 @@
   </div>
   <span class="footer-copy">© 2026 &amp;.&amp; HIBINO SHOKUPAN</span>
 </footer>
+
+<script>
+/* 商品写真のスライド。
+   横に動かすのはCSS（scroll-snap）に任せ、ここは下の丸印だけを受け持つ。
+   JSが動かなくても、指でなぞれば写真は見られる。 */
+(function () {
+  document.querySelectorAll('.gallery').forEach(function (gal) {
+    var track = gal.querySelector('.gallery-track');
+    var shots = track.querySelectorAll('img');
+    if (shots.length < 2) return;          // 1枚だけなら丸印は出さない
+
+    var dots = gal.querySelector('.gallery-dots');
+    var buttons = [];
+
+    function light(n) {
+      buttons.forEach(function (b, i) {
+        b.classList.toggle('is-on', i === n);
+        b.setAttribute('aria-current', i === n ? 'true' : 'false');
+      });
+    }
+
+    shots.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'gallery-dot';
+      b.setAttribute('aria-label', (i + 1) + '枚目の写真を見る');
+      b.addEventListener('click', function () {
+        var want = track.clientWidth * i;
+        track.scrollTo({ left: want, behavior: 'smooth' });
+        /* なめらかな移動が効かない環境（タブが裏にある、動きを減らす設定、など）では
+           何も起こらないことがある。動いていなければ、すぐに飛ばす。 */
+        setTimeout(function () {
+          if (Math.abs(track.scrollLeft - want) > 4) {
+            track.scrollTo({ left: want, behavior: 'instant' });
+          }
+        }, 350);
+        light(i);        // 丸印はその場で合わせる（監視の通知を待たない）
+      });
+      dots.appendChild(b);
+      buttons.push(b);
+    });
+
+    /* どの写真が見えているかは IntersectionObserver で拾う。
+       scroll イベントを数える作りだと、ブラウザが描画を間引いている場面で
+       丸印が止まったままになる。見えているかどうかを直接見るほうが確実。 */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) light([].indexOf.call(shots, e.target));
+        });
+      }, { root: track, threshold: 0.6 });
+      shots.forEach(function (img) { io.observe(img); });
+    }
+    // 監視と scroll の両方を掛けておく。片方しか動かない環境があるため
+    var timer = null;
+    track.addEventListener('scroll', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        light(Math.round(track.scrollLeft / track.clientWidth));
+      }, 90);
+    }, { passive: true });
+    window.addEventListener('resize', function () {
+      light(Math.round(track.scrollLeft / track.clientWidth));
+    });
+    light(0);
+  });
+})();
+</script>
 
 </body>
 </html>
