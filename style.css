@@ -137,7 +137,7 @@ h1, h2, h3 { font-weight: 400; }
   object-fit: cover;
   opacity: 0;
   /* 切り替え間隔は --slide（:root）で一括変更できる。1周 = --slide × 枚数 */
-  animation: heroFade calc(var(--slide) * 8) linear infinite;
+  animation: heroFade calc(var(--slide) * 13) linear infinite;
   animation-delay: calc(var(--i) * var(--slide));
 }
 .hero-slide:nth-child(1) { --i: 0; }
@@ -148,26 +148,33 @@ h1, h2, h3 { font-weight: 400; }
 .hero-slide:nth-child(6) { --i: 5; }
 .hero-slide:nth-child(7) { --i: 6; }
 .hero-slide:nth-child(8) { --i: 7; }
+.hero-slide:nth-child(9) { --i: 8; }
+.hero-slide:nth-child(10) { --i: 9; }
+.hero-slide:nth-child(11) { --i: 10; }
+.hero-slide:nth-child(12) { --i: 11; }
+.hero-slide:nth-child(13) { --i: 12; }
 .hero-slide.is-logo {
   object-fit: contain;
   background: var(--bg);
   padding: 12%;
   animation-name: heroFadeFlat;
 }
+/* 割合は枚数から決まる。1枚ぶん = 100/13%、切り替えにかける時間は0.256秒ぶん。
+   **枚数を変えたら、この数字と上の nth-child を必ず作り直すこと。** */
 @keyframes heroFade {
-  0%    { opacity: 0; transform: scale(1); }
-  1.6%  { opacity: 1; }
-  12.5% { opacity: 1; }
-  14.1% { opacity: 0; transform: scale(1.05); }
-  100%  { opacity: 0; transform: scale(1.05); }
+  0%     { opacity: 0; transform: scale(1); }
+  0.98%  { opacity: 1; }
+  7.69%  { opacity: 1; }
+  8.68%  { opacity: 0; transform: scale(1.05); }
+  100%   { opacity: 0; transform: scale(1.05); }
 }
 /* ロゴのコマは拡大させない（切り取られて見えるため） */
 @keyframes heroFadeFlat {
-  0%    { opacity: 0; }
-  1.6%  { opacity: 1; }
-  12.5% { opacity: 1; }
-  14.1% { opacity: 0; }
-  100%  { opacity: 0; }
+  0%     { opacity: 0; }
+  0.98%  { opacity: 1; }
+  7.69%  { opacity: 1; }
+  8.68%  { opacity: 0; }
+  100%   { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
