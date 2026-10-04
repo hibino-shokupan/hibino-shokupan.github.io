@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hibino-shokupan.github.io/sitemap.xml
