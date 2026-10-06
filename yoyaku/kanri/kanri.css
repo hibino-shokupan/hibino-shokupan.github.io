@@ -603,6 +603,140 @@
 .reg-form .cut-name { font-size: 16px; }
 .reg-form .cut-num { font-size: 19px; }
 
+/* =========================================================
+   押せるもの／押せないものの色分け
+
+   【守るルール】
+     押せるものには必ず「色の塗り」と「茶色（または赤・緑）の2px枠」がある。
+     押せない枠（カード・パネル）は うすい灰色の線だけで、塗りは白のまま。
+
+     茶色 … ふつうの操作（変更する・見る・めくる）
+     こげ茶の塗り＋白文字 … その画面でいちばんしたい操作
+     赤   … 取り消す側（キャンセル・停止・削除・消す）
+     緑   … 戻す側（キャンセルを取り消す・お休みをやめる・再開する）
+
+   **カードの枠に茶色を使わないこと。** ボタンと同じ色になり、
+   「押せる枠」と「ただの枠」が見分けられなくなる。
+   ここは色の指定だけを置く。大きさや並べ方は上の各ブロックが持つ。
+   ========================================================= */
+.kanri {
+  --press:      #F1E4D2;   /* 押せる（ふつう）の塗り */
+  --press-ink:  #7B5A36;
+  --stop:       #FBEDE9;   /* 取り消す側 */
+  --stop-line:  #B4503C;
+  --stop-ink:   #9C3F2B;
+  --back:       #EDF2E8;   /* 戻す側 */
+  --back-line:  #718A5E;
+  --back-ink:   #466036;
+}
+
+/* ── 押せるもの ── */
+.kanri .btn {
+  border-width: 2px;
+  border-radius: 6px;      /* 枠は角ばったまま。丸みでも押せると分かるように */
+}
+.kanri .btn-main {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.kanri .btn-sub {
+  background: var(--press);
+  border-color: var(--accent);
+  color: var(--press-ink);
+}
+.kanri .btn-cancel {
+  background: var(--stop);
+  border: 2px solid var(--stop-line);
+  color: var(--stop-ink);
+}
+.kanri .btn-undo {
+  background: var(--back);
+  border: 2px solid var(--back-line);
+  color: var(--back-ink);
+}
+.kanri .btn:disabled { opacity: 0.45; }
+
+/* めくる矢印と、日付（押すとカレンダー）も押せるもの */
+.kanri .nav-btn {
+  background: var(--press);
+  border-color: var(--accent);
+  border-radius: 6px;
+  color: var(--press-ink);
+}
+.kanri .nav-btn:disabled {
+  background: var(--paper);
+  border-color: var(--line);
+  color: #D6CEC3;
+}
+.kanri .daynav-body {
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: var(--paper);
+}
+.kanri .daynav-body:hover { background: var(--press); }
+.kanri .day-pick-hint { color: var(--accent); }
+
+/* ＋ − と、選ぶボタンの並び */
+.kanri .cut-btn {
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: var(--press);
+  color: var(--press-ink);
+}
+.kanri .cut-btn:disabled { background: var(--paper); border-color: var(--line); color: #CFC7BC; }
+.kanri .tab,
+.kanri .lay,
+.kanri .res-hit {
+  background: var(--press);
+  border-color: var(--accent);
+  border-radius: 6px;
+  color: var(--press-ink);
+}
+.kanri .tab.is-on,
+.kanri .lay.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── 押せない枠。茶色を使わない ── */
+.kanri .daynav {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.kanri .card,
+.kanri .card.is-regular,
+.kanri .reg-card,
+.kanri .daycal { border-color: var(--line); }
+
+/* 入力中の囲みは「いま作業している場所」。枠ではなく上の帯で示す */
+.kanri .res-form,
+.kanri .reg-form {
+  border: 2px solid var(--line);
+  border-top: 5px solid var(--accent);
+}
+
+/* 電話番号は押すと電話がかかる＝押せるもの。見た目もそろえる */
+.kanri .card-tel {
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: var(--press);
+  color: var(--press-ink);
+}
+
+/* 覚え書きは読むだけ。塗った箱にするとボタンに見える */
+.kanri .card-note {
+  padding: 2px 0 2px 10px;
+  border-left: 3px solid var(--line);
+  background: transparent;
+  border-radius: 0;
+}
+
+/* 「定期」の札は押せない。押せるボタンと同じ色にしない */
+.kanri .reg-tag { background: var(--panel); color: var(--press-ink); }
+
 @media (max-width: 359px) {
   .tab { font-size: 14.5px; }
   .reg-actions .btn { min-width: 0; }

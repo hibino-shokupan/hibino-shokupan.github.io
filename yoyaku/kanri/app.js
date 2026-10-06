@@ -714,7 +714,8 @@ function regRow(g) {
   toggle.type = 'button';
   toggle.addEventListener('click', () => regStatus(toggle, g, paused ? '有効' : '停止'));
 
-  const del = el('button', 'btn btn-sub btn-small', '削除');
+  // 削除は戻せない。停止と同じ「やめる側」の色にして、ふつうの操作と区別する
+  const del = el('button', 'btn btn-cancel btn-small', '削除');
   del.type = 'button';
   del.addEventListener('click', () => regDelete(del, g));
 
