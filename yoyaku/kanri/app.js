@@ -15,6 +15,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyggmGYQnjH77zXWvWeuqfw
 /* ▲▲ https://script.google.com/macros/s/……/exec の形 ▲▲ */
 
 const KEY_STORE = 'hibino-kanri-key';
+const LAYOUT_STORE = 'hibino-kanri-layout';
 const CANCELLED = 'キャンセル';
 
 const $ = (id) => document.getElementById(id);
@@ -29,10 +30,21 @@ let hasPrev = false; // 前の月へ行けるか
 let hasNext = false;
 
 // 定期のお客様
-let regulars = [];   // 一覧
+let regulars = [];   // 一覧。1件＝お一人（来られる日が複数あることもある）
 let slots = [];      // 受取時間の選択肢
-let editingId = '';  // 変更中の定期ID。空なら新規追加
-const regCuts = { cut4: 0, cut5: 0, cut0: 0 };
+
+/* 定期の入力中の状態。
+   同じ方が「第2木曜」「第3金曜」のように複数の日に来られることがあるので、
+   来られる日は配列で持つ。1つにしか対応しない作りにすると、
+   2つ目を足したときにお名前やお電話を2回入れることになる。 */
+let editingKey = '';         // 変更中のカード。空なら新規追加
+let editingCustomerId = '';
+let regPatterns = [];        // [{id, repeat, when, time, cut4, cut5, cut0, status}]
+let regRemoved = [];         // 画面から消した予定のID。保存のときに一緒に送る
+
+// 店頭で母が代わりに入れるご予約
+const resCuts = { cut4: 0, cut5: 0, cut0: 0 };
+let searchTimer = null;
 
 const CUT_KEYS = ['cut4', 'cut5', 'cut0'];
 const CUT_NAMES = { cut4: '4枚切り', cut5: '5枚切り', cut0: 'カットなし' };
@@ -45,6 +57,34 @@ function cutsText(c) {
   const parts = CUT_KEYS.filter((k) => Number(c[k]) > 0)
     .map((k) => CUT_NAMES[k] + ' ' + Number(c[k]) + '斤');
   return parts.length ? parts.join(' ／ ') : '（カット指定なし）';
+}
+
+// ───────────────────────── 見え方 ─────────────────────────
+
+/* 電話は2列、iPadは広く。端末ごとに別々に覚える。
+   サーバーに持たせると、電話とiPadで同じ見え方に引きずられる。
+   一度選んだら、更新しても何日あけても同じ見え方で開くこと。 */
+const LAYOUTS = ['narrow', 'wide', 'table'];
+
+function loadLayout() {
+  try {
+    const v = localStorage.getItem(LAYOUT_STORE);
+    if (LAYOUTS.indexOf(v) >= 0) return v;
+  } catch (e) { /* 読めなくても、画面幅から決められる */ }
+  // まだ選んでいないときだけ画面幅で決める。iPad 10.2インチは縦810px・横1080px
+  return window.innerWidth >= 760 ? 'wide' : 'narrow';
+}
+
+function setLayout(v, remember) {
+  const pick = LAYOUTS.indexOf(v) >= 0 ? v : 'narrow';
+  document.body.dataset.layout = pick;
+  document.querySelectorAll('.lay').forEach((b) => {
+    const on = b.dataset.layout === pick;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  if (!remember) return;
+  try { localStorage.setItem(LAYOUT_STORE, pick); } catch (e) { /* 覚えられなくても今回は効く */ }
 }
 
 // ───────────────────────── 鍵 ─────────────────────────
@@ -164,6 +204,7 @@ async function load(quiet, targetYm, want) {
     if (!data.ok) throw new Error(data.error || '読み込めませんでした。');
 
     kinPerLoaf = data.kinPerLoaf;
+    if (data.slots && data.slots.length) slots = data.slots;
     todayYmd = data.todayYmd || '';
     ym = data.ym || ym;
     hasPrev = !!data.hasPrev;
@@ -211,8 +252,12 @@ function render() {
     $('day-sum').textContent = '';
     $('grid').innerHTML = '';
     $('empty').hidden = true;
+    $('new-res').hidden = true;
     return;
   }
+
+  // 定休日と、もう空きの無い日には入れられない。押せるボタンを出すと期待させる
+  $('new-res').hidden = !$('res-form').hidden || day.closed || day.remaining <= 0;
 
   $('day-label').textContent = day.label;
   $('day-rel').textContent = day.rel || '';
@@ -366,10 +411,144 @@ async function setStatus(btn, item, day, status) {
   }
 }
 
+// ───────────── 店頭で代わりに入れるご予約 ─────────────
+
+/* スマホ操作に慣れていないお客様が、来店時に「次は◯日に」と言われる。
+   予約ページへ案内せず、母がその場で入れる。
+   前日18時の締切は見ない（対面で聞いているため）が、1日の上限は必ず守る。 */
+
+function fillResChoices() {
+  const t = $('res-time');
+  if (t.options.length === slots.length && slots.length) return;
+  t.innerHTML = '';
+  slots.forEach((x) => t.add(new Option(x, x)));
+}
+
+function openResForm() {
+  const day = days[index];
+  if (!day) return;
+  $('res-form-day').textContent = day.label + '　残り ' + qtyText(day.remaining);
+  $('res-search').value = '';
+  hideHits();
+  $('res-name').value = '';
+  $('res-phone').value = '';
+  fillResChoices();
+  $('res-time').value = slots[0] || '';
+  $('res-note').value = '';
+  CUT_KEYS.forEach((k) => { resCuts[k] = 0; });
+  renderResCuts();
+  say('res-form-error', '');
+  $('res-form').hidden = false;
+  $('new-res').hidden = true;
+  $('res-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeResForm() {
+  $('res-form').hidden = true;
+  hideHits();
+  if (searchTimer) { clearTimeout(searchTimer); searchTimer = null; }
+  const day = days[index];
+  $('new-res').hidden = !day || day.closed || day.remaining <= 0;
+}
+
+function hideHits() {
+  $('res-hits').hidden = true;
+  $('res-hits').innerHTML = '';
+}
+
+function renderResCuts() {
+  const total = CUT_KEYS.reduce((n, k) => n + resCuts[k], 0);
+  document.querySelectorAll('#res-cuts .cut').forEach((row) => {
+    const key = row.dataset.cut;
+    row.querySelector('[data-num]').textContent = resCuts[key];
+    row.classList.toggle('is-on', resCuts[key] > 0);
+    row.querySelectorAll('.cut-btn').forEach((b) => {
+      b.disabled = Number(b.dataset.step) < 0 && resCuts[key] <= 0;
+    });
+  });
+  const day = days[index];
+  const box = $('res-cut-total');
+  box.classList.toggle('is-zero', total === 0);
+  if (total === 0) { box.textContent = 'カット数を入れてください'; return; }
+  // その日の残りを超えていることは、押した時点で分かるようにする
+  const over = day && total > day.remaining;
+  box.classList.toggle('is-zero', !!over);
+  box.textContent = over
+    ? '合計 ' + qtyText(total) + '　この日の残り（' + qtyText(day.remaining) + '）を超えています'
+    : '合計 ' + qtyText(total);
+}
+
+/** お名前の一部で、前に来られた方をさがす */
+async function searchCustomers() {
+  const q = $('res-search').value.trim();
+  if (!q) { hideHits(); return; }
+  try {
+    const res = await api({ action: 'customers', key: KEY, q: q });
+    if (!res.ok) { hideHits(); return; }
+    const hits = res.customers || [];
+    const box = $('res-hits');
+    box.innerHTML = '';
+    if (!hits.length) {
+      box.appendChild(el('p', 'res-hit-none', '見つかりませんでした。下に直接書いてください。'));
+    } else {
+      hits.slice(0, 8).forEach((c) => {
+        const b = el('button', 'res-hit');
+        b.type = 'button';
+        b.appendChild(el('span', 'res-hit-name', c.name + ' 様'));
+        b.appendChild(el('span', 'res-hit-tel', c.phone || '（お電話なし）'));
+        if (c.last) b.appendChild(el('span', 'res-hit-last', '前回 ' + c.last));
+        b.addEventListener('click', () => {
+          $('res-name').value = c.name;
+          $('res-phone').value = c.phone;
+          $('res-search').value = '';
+          hideHits();
+          say('res-form-error', '');
+        });
+        box.appendChild(b);
+      });
+    }
+    box.hidden = false;
+  } catch (e) {
+    hideHits();   // さがせなくても、下に直接書けば入れられる
+  }
+}
+
+async function saveReservation(btn) {
+  const day = days[index];
+  if (!day) return;
+  const body = {
+    action: 'admin_reserve', key: KEY,
+    date: day.date,
+    time: $('res-time').value,
+    name: $('res-name').value.trim(),
+    phone: $('res-phone').value.trim(),
+    note: $('res-note').value.trim(),
+    cut4: resCuts.cut4, cut5: resCuts.cut5, cut0: resCuts.cut0,
+  };
+
+  btn.disabled = true;
+  btn.textContent = '入れています…';
+  say('res-form-error', '');
+  try {
+    const res = await api(null, body);
+    if (!res.ok) { say('res-form-error', res.error || '入れられませんでした。'); return; }
+    closeResForm();
+    await load(true);
+    say('notice', res.message);
+  } catch (e) {
+    say('res-form-error', e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'この内容で入れる';
+  }
+}
+
 function move(step) {
   const next = index + step;
   say('notice', '');
   say('error', '');
+  // 入力中のご予約は、その日のものなので持ち越さない
+  if (!$('res-form').hidden) closeResForm();
 
   // 月末・月初を越えるときは、隣の月を読み込んでその端の日を出す
   if (next < 0) {
@@ -450,6 +629,7 @@ function pickDay(i) {
   index = i;
   say('notice', '');
   say('error', '');
+  if (!$('res-form').hidden) closeResForm();
   closeCal();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -465,7 +645,7 @@ function showView(which) {
   $('tab-reg').classList.toggle('is-on', isReg);
   // 見出しの説明文は「ご予約」の画面の話なので、定期の画面では出さない
   document.querySelector('.head-note').hidden = isReg;
-  if (isReg) closeCal();
+  if (isReg) { closeCal(); if (!$('res-form').hidden) closeResForm(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (isReg && !regulars.length) loadRegulars();
 }
@@ -496,9 +676,21 @@ function regRow(g) {
   const node = el('article', 'reg-card' + (paused ? ' is-paused' : ''));
 
   node.appendChild(el('p', 'reg-name', g.name + ' 様'));
-  node.appendChild(el('p', 'reg-when', g.whenText + '　' + g.time));
-  node.appendChild(el('p', 'reg-kin', qtyText(g.kin)));
-  node.appendChild(el('p', 'reg-cuts', g.cuts));
+
+  // 来られる日は複数あることがある。1行ずつ、いつ・何時・いくつ を並べる
+  const list = el('div', 'reg-plans');
+  (g.patterns || []).forEach((x) => {
+    const plan = el('div', 'reg-plan' + (x.status === '停止' ? ' is-paused' : ''));
+    plan.appendChild(el('p', 'reg-when', x.whenText + '　' + x.time));
+    plan.appendChild(el('p', 'reg-kin', qtyText(x.kin)));
+    plan.appendChild(el('p', 'reg-cuts', x.cuts));
+    // 「本当にこの人は来るのか」を、設定ではなく実際の日付で確かめられるようにする
+    if (!paused && x.next && x.next.length) {
+      plan.appendChild(el('p', 'reg-next', '次は ' + x.next.join('、')));
+    }
+    list.appendChild(plan);
+  });
+  node.appendChild(list);
 
   if (g.phone) {
     const tel = el('a', 'card-tel', g.phone);
@@ -510,13 +702,7 @@ function regRow(g) {
     node.appendChild(el('p', 'reg-term',
       (g.start || '今日') + ' 〜 ' + (g.end || 'ずっと')));
   }
-
-  if (paused) {
-    node.appendChild(el('span', 'cancelled-tag', '停止中'));
-  } else if (g.next && g.next.length) {
-    // 「本当にこの人は来るのか」を、設定ではなく実際の日付で確かめられるようにする
-    node.appendChild(el('p', 'reg-next', '次は ' + g.next.join('、')));
-  }
+  if (paused) node.appendChild(el('span', 'cancelled-tag', '停止中'));
 
   const actions = el('div', 'reg-actions');
   const edit = el('button', 'btn btn-sub btn-small', '変更');
@@ -537,42 +723,54 @@ function regRow(g) {
   return node;
 }
 
-/** 選択肢は一度だけ作る */
+/** そのカードの予定のIDをぜんぶ。停止・削除はカード単位で行う */
+const planIds = (g) => (g.patterns || []).map((x) => x.id).filter(Boolean);
+
+/** 来られる日を1行でまとめた文。確認の問いかけに出す */
+const planText = (g) => (g.patterns || []).map((x) => x.whenText).join('、');
+
+// ───────────── 定期の入力（来られる日は何個でも） ─────────────
+
+/* 第N曜日は '2-5'（第2金曜日）の形でまとめて1つの値として送る。
+   Code.gs の parseNthDow_ と同じ形。片方だけ変えると保存した内容が読めなくなる。 */
+function parseNthDow(when) {
+  const m = /^([1-5])-([0-6])$/.exec(String(when || '').trim());
+  return m ? { nth: m[1], dow: m[2] } : null;
+}
+
+function blankPattern() {
+  return {
+    id: '', repeat: '毎週', when: '4', time: slots[0] || '',
+    cut4: 0, cut5: 0, cut0: 0, status: '有効',
+  };
+}
+
 function fillRegChoices() {
-  const t = $('reg-time');
-  if (!t.options.length) slots.forEach((x) => t.add(new Option(x, x)));
-  const d = $('reg-dom');
-  if (!d.options.length) for (let i = 1; i <= 31; i++) d.add(new Option(i + '日', String(i)));
+  // 日にちの選択肢は型（template）の中にあるので、複製するたびに入れる
+  const t = $('tpl-pattern').content.querySelector('.p-dom');
+  if (!t.options.length) for (let i = 1; i <= 31; i++) t.add(new Option(i + '日', String(i)));
 }
 
 function openRegForm(g) {
-  editingId = g ? g.id : '';
+  editingKey = g ? g.key : '';
+  editingCustomerId = g ? (g.customerId || '') : '';
+  regRemoved = [];
   $('reg-form-title').textContent = g ? g.name + ' 様の内容を変える' : '定期のお客様を追加';
   $('reg-name').value = g ? g.name : '';
   $('reg-phone').value = g ? g.phone : '';
-  $('reg-repeat').value = g ? g.repeat : '毎週';
-  // 繰り返しごとに欄が違う。まず全部を既定に戻してから、使う欄だけ入れ直す。
-  // 戻さないと前に開いた人の曜日が残り、別の人の設定に化ける
-  $('reg-dow').value = '4';
-  $('reg-dom').value = '1';
-  $('reg-nth').value = '2';
-  $('reg-nthdow').value = '5';
-  if (g && g.repeat === '毎月') {
-    $('reg-dom').value = g.when;
-  } else if (g && g.repeat === '第N曜日') {
-    const p = parseNthDow(g.when);
-    if (p) { $('reg-nth').value = p.nth; $('reg-nthdow').value = p.dow; }
-  } else if (g) {
-    $('reg-dow').value = g.when;
-  }
-  $('reg-time').value = g ? g.time : (slots[0] || '');
-  CUT_KEYS.forEach((k) => { regCuts[k] = g ? Number(g[k]) || 0 : 0; });
   $('reg-start').value = g ? g.start : '';
   $('reg-end').value = g ? g.end : '';
   $('reg-note').value = g ? g.note : '';
 
-  syncRepeat();
-  renderRegCuts();
+  regPatterns = (g && g.patterns && g.patterns.length)
+    ? g.patterns.map((x) => ({
+        id: x.id, repeat: x.repeat, when: x.when, time: x.time,
+        cut4: Number(x.cut4) || 0, cut5: Number(x.cut5) || 0, cut0: Number(x.cut0) || 0,
+        status: x.status || '有効',
+      }))
+    : [blankPattern()];
+
+  renderPatterns();
   say('reg-form-error', '');
   $('reg-form').hidden = false;
   $('reg-new').hidden = true;
@@ -582,67 +780,138 @@ function openRegForm(g) {
 function closeRegForm() {
   $('reg-form').hidden = true;
   $('reg-new').hidden = false;
-  editingId = '';
+  editingKey = '';
+  editingCustomerId = '';
+  regPatterns = [];
+  regRemoved = [];
 }
 
-/* 第N曜日は '2-5'（第2金曜日）の形でまとめて1つの値として送る。
-   Code.gs の parseNthDow_ と同じ形。片方だけ変えると保存した内容が読めなくなる。 */
-function parseNthDow(when) {
-  const m = /^([1-5])-([0-6])$/.exec(String(when || '').trim());
-  return m ? { nth: m[1], dow: m[2] } : null;
+/* 来られる日の欄を、いまの regPatterns のぶんだけ作り直す。
+   選択肢を触るたびに作り直すと入力中の欄から指が外れるので、
+   作り直すのは「増やす・消す・開く」のときだけ。
+   選んだ内容はその場で regPatterns に書き戻すので、作り直しても消えない。 */
+function renderPatterns() {
+  const box = $('reg-patterns');
+  box.innerHTML = '';
+  regPatterns.forEach((p, i) => box.appendChild(patternBlock(p, i)));
+  // 1つしか無いときに消せると、来られる日が0の定期ができてしまう
+  box.querySelectorAll('.pattern-del').forEach((b) => { b.hidden = regPatterns.length < 2; });
 }
 
-/** いま選ばれている繰り返しに合わせて「曜日/日」の値を作る */
-function regWhenValue() {
-  const r = $('reg-repeat').value;
-  if (r === '毎月') return $('reg-dom').value;
-  if (r === '第N曜日') return $('reg-nth').value + '-' + $('reg-nthdow').value;
-  return $('reg-dow').value;
-}
+function patternBlock(p, i) {
+  const node = $('tpl-pattern').content.firstElementChild.cloneNode(true);
+  const pick = (sel) => node.querySelector(sel);
 
-/** 繰り返しに関係のある欄だけを出す */
-function syncRepeat() {
-  const r = $('reg-repeat').value;
-  $('reg-field-dow').hidden = r !== '毎週';
-  $('reg-field-nth').hidden = r !== '第N曜日';
-  $('reg-field-dom').hidden = r !== '毎月';
-}
+  node.querySelector('.pattern-no').textContent = (i + 1) + 'つ目';
 
-function renderRegCuts() {
-  const total = CUT_KEYS.reduce((n, k) => n + regCuts[k], 0);
-  document.querySelectorAll('#reg-cuts .cut').forEach((row) => {
-    const key = row.dataset.cut;
-    row.querySelector('[data-num]').textContent = regCuts[key];
-    row.classList.toggle('is-on', regCuts[key] > 0);
-    row.querySelectorAll('.cut-btn').forEach((b) => {
-      // 上限はその日の残りではなく1日の上限。定期は日を特定しないので、ここでは止めない
-      b.disabled = Number(b.dataset.step) < 0 && regCuts[key] <= 0;
+  const time = pick('.p-time');
+  slots.forEach((x) => time.add(new Option(x, x)));
+  time.value = p.time || slots[0] || '';
+  time.addEventListener('change', () => { p.time = time.value; });
+
+  const repeat = pick('.p-repeat');
+  repeat.value = p.repeat;
+
+  const dow = pick('.p-dow');
+  const dom = pick('.p-dom');
+  const nth = pick('.p-nth');
+  const nthdow = pick('.p-nthdow');
+
+  // 使わない欄も既定のままにしておく。前の値が残ると、繰り返しを変えた瞬間に化ける
+  dow.value = '4';
+  dom.value = '1';
+  nth.value = '2';
+  nthdow.value = '5';
+  if (p.repeat === '毎月') {
+    dom.value = p.when;
+  } else if (p.repeat === '第N曜日') {
+    const q = parseNthDow(p.when);
+    if (q) { nth.value = q.nth; nthdow.value = q.dow; }
+  } else {
+    dow.value = p.when;
+  }
+
+  const sync = () => {
+    p.repeat = repeat.value;
+    pick('.p-field-dow').hidden = p.repeat !== '毎週';
+    pick('.p-field-nth').hidden = p.repeat !== '第N曜日';
+    pick('.p-field-dom').hidden = p.repeat !== '毎月';
+    p.when = p.repeat === '毎月' ? dom.value
+      : (p.repeat === '第N曜日' ? nth.value + '-' + nthdow.value : dow.value);
+  };
+  [repeat, dow, dom, nth, nthdow].forEach((s) => s.addEventListener('change', sync));
+  sync();
+
+  const total = node.querySelector('.p-cut-total');
+  const paint = () => {
+    const sum = CUT_KEYS.reduce((n, k) => n + p[k], 0);
+    node.querySelectorAll('.p-cuts .cut').forEach((row) => {
+      const key = row.dataset.cut;
+      row.querySelector('[data-num]').textContent = p[key];
+      row.classList.toggle('is-on', p[key] > 0);
+      row.querySelectorAll('.cut-btn').forEach((b) => {
+        b.disabled = Number(b.dataset.step) < 0 && p[key] <= 0;
+      });
     });
+    total.classList.toggle('is-zero', sum === 0);
+    total.textContent = sum === 0 ? 'カット数を入れてください' : '合計 ' + qtyText(sum);
+  };
+  node.querySelector('.p-cuts').addEventListener('click', (e) => {
+    const btn = e.target.closest('.cut-btn');
+    if (!btn || btn.disabled) return;
+    const key = btn.closest('.cut').dataset.cut;
+    const next = p[key] + Number(btn.dataset.step);
+    if (next < 0) return;
+    p[key] = next;
+    say('reg-form-error', '');
+    paint();
   });
-  const box = $('reg-cut-total');
-  box.classList.toggle('is-zero', total === 0);
-  box.textContent = total === 0 ? 'カット数を入れてください' : '合計 ' + qtyText(total);
+  paint();
+
+  node.querySelector('.pattern-del').addEventListener('click', () => {
+    if (regPatterns.length < 2) return;
+    // 保存済みの予定は、サーバー側でも消してもらう必要がある
+    if (p.id) regRemoved.push(p.id);
+    regPatterns.splice(regPatterns.indexOf(p), 1);
+    say('reg-form-error', '');
+    renderPatterns();
+  });
+
+  return node;
+}
+
+function addPattern() {
+  if (regPatterns.length >= 6) {
+    say('reg-form-error', '来られる日は6つまでです。');
+    return;
+  }
+  const last = regPatterns[regPatterns.length - 1];
+  // 2つ目以降は、直前の内容を写してから直すほうが早い
+  regPatterns.push(last
+    ? { id: '', repeat: last.repeat, when: last.when, time: last.time,
+        cut4: last.cut4, cut5: last.cut5, cut0: last.cut0, status: '有効' }
+    : blankPattern());
+  say('reg-form-error', '');
+  renderPatterns();
+  $('reg-patterns').lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 async function saveRegular(btn) {
   const reg = {
-    id: editingId,
+    customerId: editingCustomerId,
     name: $('reg-name').value.trim(),
     phone: $('reg-phone').value.trim(),
-    repeat: $('reg-repeat').value,
-    when: regWhenValue(),
-    time: $('reg-time').value,
-    cut4: regCuts.cut4, cut5: regCuts.cut5, cut0: regCuts.cut0,
     start: $('reg-start').value,
     end: $('reg-end').value,
     note: $('reg-note').value.trim(),
-    status: '有効',
+    patterns: regPatterns.map((p) => ({
+      id: p.id, repeat: p.repeat, when: p.when, time: p.time,
+      cut4: p.cut4, cut5: p.cut5, cut0: p.cut0,
+      // 停止中の予定は、内容を直しても停止したまま。勝手に再開させない
+      status: p.status || '有効',
+    })),
+    removed: regRemoved,
   };
-  // 変更のときは、いまの状態（停止中かどうか）を保つ。勝手に再開させない
-  if (editingId) {
-    const cur = regulars.filter((g) => g.id === editingId)[0];
-    if (cur) reg.status = cur.status;
-  }
 
   btn.disabled = true;
   btn.textContent = '保存中…';
@@ -663,18 +932,19 @@ async function saveRegular(btn) {
 }
 
 async function regStatus(btn, g, status) {
-  const ask = g.name + ' 様（' + g.whenText + '）\n\n'
+  const ask = g.name + ' 様（' + planText(g) + '）\n\n'
     + (status === '停止'
         ? 'この方の定期を止めますか？\nこれから先の分が、ご予約の枠に戻ります。'
         : 'この方の定期を再開しますか？');
   if (!window.confirm(ask)) return;
-  await regAction(btn, { action: 'reg_status', key: KEY, id: g.id, status: status });
+  await regAction(btn, { action: 'reg_status', key: KEY, ids: planIds(g), status: status });
 }
 
 async function regDelete(btn, g) {
-  if (!window.confirm(g.name + ' 様（' + g.whenText + '）\n\nこの定期を削除しますか？\n'
+  if (!window.confirm(g.name + ' 様（' + planText(g) + '）\n\n'
+    + 'この方の定期を、来られる日ごと すべて削除しますか？\n'
     + '記録も消えます。しばらく来られないだけなら「停止する」のほうが安全です。')) return;
-  await regAction(btn, { action: 'reg_delete', key: KEY, id: g.id });
+  await regAction(btn, { action: 'reg_delete', key: KEY, ids: planIds(g) });
 }
 
 async function regAction(btn, body) {
@@ -715,19 +985,36 @@ $('tab-reg').addEventListener('click', () => showView('reg'));
 $('reg-new').addEventListener('click', () => openRegForm(null));
 $('reg-cancel').addEventListener('click', closeRegForm);
 $('reg-save').addEventListener('click', (e) => saveRegular(e.currentTarget));
-$('reg-repeat').addEventListener('change', syncRepeat);
+$('reg-add-pattern').addEventListener('click', addPattern);
+
+// 店頭で代わりに入れるご予約
+$('new-res').addEventListener('click', openResForm);
+$('res-cancel').addEventListener('click', closeResForm);
+$('res-save').addEventListener('click', (e) => saveReservation(e.currentTarget));
+$('res-search').addEventListener('input', () => {
+  // 1文字ごとに問い合わせると、打ち終わる前に何度も待たされる
+  if (searchTimer) clearTimeout(searchTimer);
+  searchTimer = setTimeout(searchCustomers, 350);
+});
 
 // 増減ボタンは3行ぶんあるので、まとめて1か所で受ける
-$('reg-cuts').addEventListener('click', (e) => {
+$('res-cuts').addEventListener('click', (e) => {
   const btn = e.target.closest('.cut-btn');
   if (!btn || btn.disabled) return;
   const key = btn.closest('.cut').dataset.cut;
-  const next = regCuts[key] + Number(btn.dataset.step);
+  const next = resCuts[key] + Number(btn.dataset.step);
   if (next < 0) return;
-  regCuts[key] = next;
-  say('reg-form-error', '');
-  renderRegCuts();
+  resCuts[key] = next;
+  say('res-form-error', '');
+  renderResCuts();
 });
+
+// 見え方。押した瞬間に変わり、その端末に覚える
+document.querySelectorAll('.lay').forEach((b) => {
+  b.addEventListener('click', () => setLayout(b.dataset.layout, true));
+});
+setLayout(loadLayout(), false);
+fillRegChoices();
 
 KEY = loadKey();
 if (!KEY) {

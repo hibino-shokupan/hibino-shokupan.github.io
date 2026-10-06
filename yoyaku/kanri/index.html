@@ -11,8 +11,8 @@
 <!-- この画面は全部を太字で出す。700と900を読み込んでおかないと、
      ブラウザが細い字を機械的に太らせた汚い字になる -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700;900&display=swap">
-<link rel="stylesheet" href="../style.css?v=20260927b">
-<link rel="stylesheet" href="kanri.css?v=20260927b">
+<link rel="stylesheet" href="../style.css?v=20261006a">
+<link rel="stylesheet" href="kanri.css?v=20261006a">
 </head>
 <body class="kanri">
 
@@ -33,6 +33,20 @@
   </section>
 
   <div id="board" class="board" hidden>
+
+  <!-- 予約ページへの行き先と、見え方の切り替え。
+       見え方は端末ごとに覚える（電話は2列、iPadは広く、を別々に保つため） -->
+  <div class="toolbar">
+    <a class="btn btn-sub btn-small" id="go-yoyaku" href="../" target="_blank" rel="noopener">
+      予約ページを見る
+    </a>
+    <div class="layout-pick" role="group" aria-label="見え方">
+      <span class="layout-label">見え方</span>
+      <button type="button" class="lay" data-layout="narrow">2列</button>
+      <button type="button" class="lay" data-layout="wide">広く</button>
+      <button type="button" class="lay" data-layout="table">表</button>
+    </div>
+  </div>
 
   <!-- 2つの画面を行き来する -->
   <nav class="tabs">
@@ -78,6 +92,77 @@
     <p id="notice" class="notice-msg" hidden></p>
     <p id="error" class="error" hidden></p>
 
+    <!-- 店頭で「次はいつ来ます」と言われた分を、母がその場で入れる。
+         スマホ操作に慣れていないお客様が多いので、予約ページへ案内せず代わりに入れる -->
+    <div class="newres-bar">
+      <button type="button" id="new-res" class="btn btn-main">＋ この日のご予約を入れる</button>
+    </div>
+
+    <section id="res-form" class="res-form" hidden>
+      <h2>ご予約を入れる</h2>
+      <p id="res-form-day" class="res-form-day"></p>
+
+      <div class="field">
+        <span class="label">前に来られた方をさがす<span class="opt">任意</span></span>
+        <input id="res-search" type="text" autocomplete="off" autocapitalize="off"
+               spellcheck="false" placeholder="お名前の一部（例：日々）">
+        <div id="res-hits" class="res-hits" hidden></div>
+        <span class="hint">押すと、お名前とお電話が下に入ります。初めての方は、そのまま下に書いてください。</span>
+      </div>
+
+      <label class="field">
+        <span class="label">お名前<b class="req">必須</b></span>
+        <input id="res-name" type="text" autocomplete="off" placeholder="日々 花子">
+      </label>
+
+      <label class="field">
+        <span class="label">お電話<b class="req">必須</b></span>
+        <input id="res-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="09012345678">
+      </label>
+
+      <label class="field">
+        <span class="label">お受け取りの時間<b class="req">必須</b></span>
+        <select id="res-time"></select>
+      </label>
+
+      <div class="field">
+        <span class="label">数量とカット<b class="req">必須</b></span>
+        <div class="cuts" id="res-cuts">
+          <div class="cut" data-cut="cut4">
+            <span class="cut-name">4枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="4枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut4">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="4枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut5">
+            <span class="cut-name">5枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="5枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut5">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="5枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut0">
+            <span class="cut-name">カットなし</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="カットなしを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut0">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="カットなしを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+        </div>
+        <p class="cut-total" id="res-cut-total"></p>
+      </div>
+
+      <label class="field">
+        <span class="label">覚え書き<span class="opt">任意</span></span>
+        <textarea id="res-note" rows="2" maxlength="200" placeholder="耳を厚めに、など"></textarea>
+      </label>
+
+      <p id="res-form-error" class="error" hidden></p>
+      <button type="button" id="res-save" class="btn btn-main">この内容で入れる</button>
+      <button type="button" id="res-cancel" class="btn btn-sub">やめる</button>
+    </section>
+
     <div id="grid" class="grid"></div>
     <p id="empty" class="empty" hidden></p>
   </div>
@@ -111,87 +196,16 @@
         <input id="reg-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="09012345678">
       </label>
 
-      <label class="field">
-        <span class="label">どのくらいの間隔で<b class="req">必須</b></span>
-        <select id="reg-repeat">
-          <option value="毎週">毎週（決まった曜日）</option>
-          <option value="第N曜日">毎月（第◯曜日）</option>
-          <option value="毎月">毎月（決まった日にち）</option>
-        </select>
-      </label>
-
-      <label class="field" id="reg-field-dow">
-        <span class="label">曜日<b class="req">必須</b></span>
-        <select id="reg-dow">
-          <option value="4">木曜日</option>
-          <option value="5">金曜日</option>
-          <option value="6">土曜日</option>
-          <option value="0">日曜日</option>
-        </select>
-        <span class="hint">お店が開いている木・金・土・日から選べます。</span>
-      </label>
-
-      <!-- 第2金曜日・第4日曜日のような方。欄が2つあるので label ではなく div -->
-      <div class="field" id="reg-field-nth" hidden>
-        <span class="label">第何◯曜日<b class="req">必須</b></span>
-        <div class="nth-row">
-          <select id="reg-nth" class="nth-week" aria-label="第何週">
-            <option value="1">第1</option>
-            <option value="2">第2</option>
-            <option value="3">第3</option>
-            <option value="4">第4</option>
-            <option value="5">第5</option>
-          </select>
-          <select id="reg-nthdow" class="nth-dow" aria-label="曜日">
-            <option value="4">木曜日</option>
-            <option value="5">金曜日</option>
-            <option value="6">土曜日</option>
-            <option value="0">日曜日</option>
-          </select>
-        </div>
-        <span class="hint">
-          月の1日から7日ごとに数えます（1〜7日が第1）。<br>
-          第5◯曜日は、その曜日が5回ある月だけになります。第5日曜日はお休みなので選べません。
-        </span>
-      </div>
-
-      <label class="field" id="reg-field-dom" hidden>
-        <span class="label">日にち<b class="req">必須</b></span>
-        <select id="reg-dom"></select>
-        <span class="hint">その日が定休日にあたる月は、お休みになります。</span>
-      </label>
-
-      <label class="field">
-        <span class="label">お受け取りの時間<b class="req">必須</b></span>
-        <select id="reg-time"></select>
-      </label>
-
       <div class="field">
-        <span class="label">数量とカット<b class="req">必須</b></span>
-        <div class="cuts" id="reg-cuts">
-          <div class="cut" data-cut="cut4">
-            <span class="cut-name">4枚切り</span>
-            <button type="button" class="cut-btn" data-step="-1" aria-label="4枚切りを1斤へらす">−</button>
-            <output class="cut-num" data-num="cut4">0</output>
-            <button type="button" class="cut-btn" data-step="1" aria-label="4枚切りを1斤ふやす">＋</button>
-            <span class="cut-unit">斤</span>
-          </div>
-          <div class="cut" data-cut="cut5">
-            <span class="cut-name">5枚切り</span>
-            <button type="button" class="cut-btn" data-step="-1" aria-label="5枚切りを1斤へらす">−</button>
-            <output class="cut-num" data-num="cut5">0</output>
-            <button type="button" class="cut-btn" data-step="1" aria-label="5枚切りを1斤ふやす">＋</button>
-            <span class="cut-unit">斤</span>
-          </div>
-          <div class="cut" data-cut="cut0">
-            <span class="cut-name">カットなし</span>
-            <button type="button" class="cut-btn" data-step="-1" aria-label="カットなしを1斤へらす">−</button>
-            <output class="cut-num" data-num="cut0">0</output>
-            <button type="button" class="cut-btn" data-step="1" aria-label="カットなしを1斤ふやす">＋</button>
-            <span class="cut-unit">斤</span>
-          </div>
-        </div>
-        <p class="cut-total" id="reg-cut-total"></p>
+        <span class="label">来られる日<b class="req">必須</b></span>
+        <div id="reg-patterns" class="patterns"></div>
+        <button type="button" id="reg-add-pattern" class="btn btn-sub btn-small">
+          ＋ 来られる日を増やす
+        </button>
+        <span class="hint">
+          第2木曜日と第3金曜日、のように いくつでも登録できます。<br>
+          お受け取りの時間とカット数は、来られる日ごとに変えられます。
+        </span>
       </div>
 
       <label class="field">
@@ -218,6 +232,99 @@
   </div>
 
   </div><!-- /board -->
+
+  <!-- 「来られる日」1つぶんの型。JS が必要なだけ複製する。
+       同じ中身をJSの文字列で組み立てると、HTMLとJSの2か所に同じ画面が散らばる -->
+  <template id="tpl-pattern">
+    <div class="pattern">
+      <div class="pattern-head">
+        <span class="pattern-no"></span>
+        <button type="button" class="pattern-del btn btn-sub btn-small">この日を消す</button>
+      </div>
+
+      <label class="field">
+        <span class="label">どのくらいの間隔で</span>
+        <select class="p-repeat">
+          <option value="毎週">毎週（決まった曜日）</option>
+          <option value="第N曜日">毎月（第◯曜日）</option>
+          <option value="毎月">毎月（決まった日にち）</option>
+        </select>
+      </label>
+
+      <label class="field p-field-dow">
+        <span class="label">曜日</span>
+        <select class="p-dow">
+          <option value="4">木曜日</option>
+          <option value="5">金曜日</option>
+          <option value="6">土曜日</option>
+          <option value="0">日曜日</option>
+        </select>
+        <span class="hint">お店が開いている木・金・土・日から選べます。</span>
+      </label>
+
+      <div class="field p-field-nth" hidden>
+        <span class="label">第何◯曜日</span>
+        <div class="nth-row">
+          <select class="p-nth nth-week" aria-label="第何週">
+            <option value="1">第1</option>
+            <option value="2">第2</option>
+            <option value="3">第3</option>
+            <option value="4">第4</option>
+            <option value="5">第5</option>
+          </select>
+          <select class="p-nthdow nth-dow" aria-label="曜日">
+            <option value="4">木曜日</option>
+            <option value="5">金曜日</option>
+            <option value="6">土曜日</option>
+            <option value="0">日曜日</option>
+          </select>
+        </div>
+        <span class="hint">
+          月の1日から7日ごとに数えます（1〜7日が第1）。<br>
+          第5◯曜日は、その曜日が5回ある月だけになります。第5日曜日はお休みなので選べません。
+        </span>
+      </div>
+
+      <label class="field p-field-dom" hidden>
+        <span class="label">日にち</span>
+        <select class="p-dom"></select>
+        <span class="hint">その日が定休日にあたる月は、お休みになります。</span>
+      </label>
+
+      <label class="field">
+        <span class="label">お受け取りの時間</span>
+        <select class="p-time"></select>
+      </label>
+
+      <div class="field">
+        <span class="label">数量とカット</span>
+        <div class="cuts p-cuts">
+          <div class="cut" data-cut="cut4">
+            <span class="cut-name">4枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="4枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut4">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="4枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut5">
+            <span class="cut-name">5枚切り</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="5枚切りを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut5">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="5枚切りを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+          <div class="cut" data-cut="cut0">
+            <span class="cut-name">カットなし</span>
+            <button type="button" class="cut-btn" data-step="-1" aria-label="カットなしを1斤へらす">−</button>
+            <output class="cut-num" data-num="cut0">0</output>
+            <button type="button" class="cut-btn" data-step="1" aria-label="カットなしを1斤ふやす">＋</button>
+            <span class="cut-unit">斤</span>
+          </div>
+        </div>
+        <p class="cut-total p-cut-total"></p>
+      </div>
+    </div>
+  </template>
 </main>
 
 <footer class="foot">
@@ -225,6 +332,6 @@
   <p>このページはお店専用です。<br>お客様には見えません。</p>
 </footer>
 
-<script src="app.js?v=20260927b"></script>
+<script src="app.js?v=20261006a"></script>
 </body>
 </html>
