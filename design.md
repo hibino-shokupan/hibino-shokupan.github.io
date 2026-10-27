@@ -193,6 +193,21 @@ Instagramプロフィールを最優先の一次ソースとする（店舗本�
 
 ### 入手経路
 
+**2026-10-27：AI検索向けに sitemap.xml・llms.txt を整えた（未公開）。**
+
+| | |
+| --- | --- |
+| `robots.txt` | 変更なし（全部許可）。AI検索には今のままで載る。AIの学習に使わせるかは保留中で、断るなら GPTBot・ClaudeBot・Google-Extended などだけを `Disallow` にする |
+| `sitemap.xml` | `lastmod` を追加。値は `index.html` の最終コミット日 |
+| `llms.txt` | 新規。店の一言・営業日・時間・住所・電話・商品・主要ページ |
+| `/v2/` `/v3/` | `noindex` を追加（トップと同じ title の比較用ページが検索に出ないように） |
+
+**トップの中身を変えたら、合わせて直すもの：**
+- `sitemap.xml` の `lastmod` をその日付に
+- 営業日・時間・電話・商品が変わったら `llms.txt` も（末尾の「最終更新」も）
+
+---
+
 **2026-10-04：検索に出ない原因を直した。**
 
 **`<link rel="canonical" href="https://and-hibino-shokupan.example/">` が残っていた。**
