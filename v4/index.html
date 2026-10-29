@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>&amp;.&amp;～日々の食パン～｜三股町の食パンと自家製ジャム</title>
+  <meta name="description" content="宮崎県三股町の食パンの店、&amp;.&amp;～日々の食パン～。無添加の食パンと自家製ジャム。木・金・土・日の11:00〜15:00、売り切れ次第おわり。第5日曜はお休みです。お電話でご予約いただけます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&amp;family=Klee+One:wght@600&amp;family=Zen+Maru+Gothic:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top">
+        <img src="assets/logo-alpha.png" width="936" height="936" alt="&amp;.&amp;～日々の食パン～">
+        <span class="brand-name">&amp;.&amp;<span>～日々の食パン～</span></span>
+      </a>
+      <nav class="main-nav" aria-label="ページ内のご案内">
+        <a href="#calendar">営業日</a>
+        <a href="#bread">食パン</a>
+        <a href="#jam">ジャム</a>
+        <a href="#reserve">ご予約</a>
+        <a href="#access">お店のこと</a>
+      </nav>
+      <a class="button button-phone header-phone" href="tel:0986510511"><span aria-hidden="true">☎</span>電話する</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero container" id="top" aria-labelledby="hero-title">
+      <figure class="hero-photo photo-paper">
+        <img src="assets/board.jpg" width="640" height="480" alt="まな板の上の食パンと自家製ジャム" fetchpriority="high">
+      </figure>
+      <div class="hero-copy">
+        <p class="hero-kicker">since 2020　三股町の食パン屋</p>
+        <h1 id="hero-title">日々の食卓に、<br>食パンと<br class="desktop-break">自家製ジャムを。</h1>
+        <p class="hero-description">木曜から日曜まで、11時に開けて、売り切れたら閉めます。</p>
+        <div class="day-status" data-status role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <p><strong data-status-title>営業日 木・金・土・日（第5日曜はお休み）11:00〜15:00</strong><span data-status-detail></span></p>
+        </div>
+        <div class="hero-actions">
+          <a class="button button-phone" href="tel:0986510511"><span aria-hidden="true">☎</span>電話で予約する</a>
+          <a class="text-link" href="#calendar">営業日を見る<span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="calendar-section container" id="calendar" aria-labelledby="calendar-title">
+      <div class="calendar-card paper">
+        <div class="calendar-heading">
+          <div class="section-heading">
+            <p class="eyebrow">Calendar</p>
+            <h2 id="calendar-title">営業日</h2>
+          </div>
+          <p class="calendar-hours"><span>営業時間</span><strong>11:00〜15:00</strong><span>（売り切れ次第おわり）</span></p>
+        </div>
+        <ol class="week" aria-label="月曜から日曜までの営業日" role="list">
+          <li class="day-off" data-weekday="1"><span class="weekday">月</span><span class="day-label">休</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li class="day-off" data-weekday="2"><span class="weekday">火</span><span class="day-label">休</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li class="day-off" data-weekday="3"><span class="weekday">水</span><span class="day-label">休</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li data-weekday="4"><span class="weekday">木</span><span class="day-label">営業</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li data-weekday="5"><span class="weekday">金</span><span class="day-label">営業</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li data-weekday="6"><span class="weekday">土</span><span class="day-label">営業</span><span class="today-mark" aria-hidden="true">今日</span></li>
+          <li data-weekday="0"><span class="weekday">日</span><span class="day-label" data-sunday-label>営業</span><span class="today-mark" aria-hidden="true">今日</span></li>
+        </ol>
+        <div class="calendar-notes">
+          <p>第5日曜はお休みです。</p>
+          <p>臨時のお休みがある時は、お電話でお確かめください。</p>
+        </div>
+        <div class="upcoming" id="upcoming" data-upcoming hidden>
+          <p>次の5回の営業日</p>
+          <ol class="upcoming-dates" data-open-days role="list"></ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="bread-section container section-space" id="bread" aria-labelledby="bread-title">
+      <div class="bread-copy">
+        <div class="section-heading"><p class="eyebrow">Bread</p><h2 id="bread-title">食パン</h2></div>
+        <p>毎日の食卓で食べる食パンです。無添加で焼いています。1斤から予約できます。カットは4枚切り・5枚切り・カットなしから選べます。</p>
+      </div>
+      <div class="bread-photos">
+        <figure class="loaves-photo photo-paper"><img src="assets/loaves.jpg" width="1600" height="1200" alt="焼き上がった食パン3斤" loading="lazy"></figure>
+        <figure class="shelf-photo photo-paper"><img src="assets/shelf.jpg" width="640" height="480" alt="棚に並んだ食パン" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="jam-section container section-space" id="jam" aria-labelledby="jam-title">
+      <div class="jam-card paper">
+        <div class="jam-intro">
+          <div class="section-heading"><p class="eyebrow">Jam</p><h2 id="jam-title">自家製ジャム</h2></div>
+          <p>果物から作るジャムです。食パンと一緒にどうぞ。</p>
+        </div>
+        <div class="jam-photos">
+          <figure><img src="assets/jam-jar.jpg" width="1108" height="831" alt="自家製きんかんジャムの瓶" loading="lazy"></figure>
+          <figure><img src="assets/jam-red.webp" width="758" height="840" alt="店頭に並ぶ赤い果物のジャム" loading="lazy"></figure>
+          <figure><img src="assets/jam-orange.webp" width="807" height="816" alt="店頭に並ぶオレンジ色のジャム" loading="lazy"></figure>
+        </div>
+        <ul class="flavor-list" aria-label="ジャムの種類" role="list">
+          <li><span class="flavor-dot strawberry" aria-hidden="true"></span>いちご</li>
+          <li><span class="flavor-dot blueberry" aria-hidden="true"></span>ブルーベリー</li>
+          <li><span class="flavor-dot kumquat" aria-hidden="true"></span>きんかん</li>
+          <li><span class="flavor-dot hyuganatsu" aria-hidden="true"></span>日向夏</li>
+          <li><span class="flavor-dot orange" aria-hidden="true"></span>みかん</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sweets-section container section-space" id="sweets" aria-labelledby="sweets-title">
+      <div class="sweets-copy">
+        <div class="section-heading"><p class="eyebrow">Sweet bread</p><h2 id="sweets-title">菓子パン</h2></div>
+        <p>その日に焼くものを決めているので、並ぶパンは日によって変わります。たとえば、こんなパンです。</p>
+        <ul class="bread-tags" aria-label="菓子パンの例" role="list">
+          <li>メロンパン</li><li>抹茶メロンパン</li><li>ハムチーズパン</li><li>ピザパン</li><li>かのこ豆チーズパン</li><li>小豆パン</li><li>塩パン</li><li>きなこちぎりパン</li>
+        </ul>
+      </div>
+      <figure class="breakfast-photo photo-paper"><img src="assets/breakfast.jpg" width="1440" height="1800" alt="ジャムをのせたトーストの朝食" loading="lazy"></figure>
+    </section>
+
+    <section class="reserve-section container section-space" id="reserve" aria-labelledby="reserve-title">
+      <div class="reserve-card paper">
+        <div class="reservation-contact">
+          <div class="section-heading"><p class="eyebrow">Reservation</p><h2 id="reserve-title">ご予約</h2></div>
+          <p>お電話でご予約いただけます。</p>
+          <a class="phone-number" href="tel:0986510511">0986-51-0511</a>
+          <p class="reception">受付　営業日（木〜日）の9:00〜15:00</p>
+          <a class="button button-phone" href="tel:0986510511"><span aria-hidden="true">☎</span>電話で予約する</a>
+        </div>
+        <div class="reservation-guide">
+          <p>一人で作っているので、電話に出られないことがあります。その時は、少し時間をおいておかけ直しください。</p>
+          <div class="reservation-note">
+            <h3>伝えていただくこと</h3>
+            <p>お名前・お電話番号・受け取りの日と時間・食パンの数とカット</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="access-section container section-space" id="access" aria-labelledby="access-title">
+      <div class="access-heading section-heading"><p class="eyebrow">Shop</p><h2 id="access-title">お店のこと</h2></div>
+      <figure class="exterior-photo photo-paper"><img src="assets/exterior.jpg" width="640" height="640" alt="木目の壁とロゴの看板があるお店の外観" loading="lazy"></figure>
+      <div class="access-copy">
+        <p>民家の横の小さなお店です。お持ち帰りだけで、店内は1〜2人ほど入れます。</p>
+        <dl class="shop-info">
+          <div><dt>住所</dt><dd>〒889-1901<br>宮崎県北諸県郡三股町樺山1273-1</dd></div>
+          <div><dt>電話</dt><dd><a href="tel:0986510511">0986-51-0511</a></dd></div>
+          <div><dt>営業日</dt><dd>木・金・土・日（第5日曜はお休み）</dd></div>
+          <div><dt>営業時間</dt><dd>11:00〜15:00（売り切れ次第おわり）</dd></div>
+          <div><dt>定休日</dt><dd>月・火・水</dd></div>
+          <div><dt>駐車場</dt><dd>あり（店の前）</dd></div>
+        </dl>
+        <a class="button button-outline" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1">Googleマップで開く<span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="instagram-section container section-space" id="instagram" aria-labelledby="instagram-title">
+      <div class="instagram-card paper">
+        <figure class="blueberry-photo"><img src="assets/blueberry.jpg" width="640" height="480" alt="ブルーベリーと自家製ジャム" loading="lazy"></figure>
+        <div class="instagram-copy">
+          <div class="section-heading"><p class="eyebrow">Instagram</p><h2 id="instagram-title">これまでの投稿</h2></div>
+          <p>Instagramに、これまでのパンとジャムの写真があります。</p>
+          <a class="button button-outline" href="https://www.instagram.com/and.and_hibinosyokupan/">Instagramを見る<span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <img src="assets/logo-alpha.png" width="936" height="936" alt="&amp;.&amp;～日々の食パン～" loading="lazy">
+    <p class="footer-name">&amp;.&amp;～日々の食パン～</p>
+    <p>〒889-1901 宮崎県北諸県郡三股町樺山1273-1</p>
+    <a class="footer-phone" href="tel:0986510511">0986-51-0511</a>
+    <p class="copyright">© &amp;.&amp;～日々の食パン～</p>
+  </footer>
+
+  <div class="mobile-phone-bar"><a class="button button-phone" href="tel:0986510511"><span aria-hidden="true">☎</span>電話で予約する</a></div>
+</body>
+</html>

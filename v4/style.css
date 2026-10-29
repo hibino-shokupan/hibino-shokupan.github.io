@@ -1,0 +1,263 @@
+:root {
+  --ground: #f3ebdd;
+  --paper: #fffdf8;
+  --ink: #3b2f25;
+  --muted: #6e5e50;
+  --line: #e3d6c2;
+  --butter: #f2c14e;
+  /* 休みのマスでも4.5:1を保つ。 */
+  --rest-ink: #69594b;
+  --header-offset: 104px;
+  --shadow: 0 7px 22px rgb(59 47 37 / 5%);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--ground);
+  background-image: radial-gradient(rgb(110 94 80 / 9%) .6px, transparent .6px);
+  background-size: 7px 7px;
+  font-family: "Zen Maru Gothic", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.95;
+  -webkit-text-size-adjust: 100%;
+}
+a { color: inherit; text-underline-offset: .25em; }
+button, a { -webkit-tap-highlight-color: rgb(242 193 78 / 35%); }
+a:focus-visible { outline: 3px solid var(--ink); outline-offset: 5px; }
+img { display: block; max-width: 100%; height: auto; object-fit: cover; }
+figure, p, h1, h2, h3 { margin: 0; }
+h1, h2, h3 { font-family: "Klee One", cursive; font-weight: 600; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+[hidden] { display: none !important; }
+section[id], main[id] { scroll-margin-top: var(--header-offset); }
+.container { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+.section-space { margin-top: 76px; }
+.paper { border: 1px solid var(--line); border-radius: 12px; background: var(--paper); box-shadow: var(--shadow); }
+.photo-paper { padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); box-shadow: var(--shadow); }
+.photo-paper img { width: 100%; border-radius: 6px; }
+.section-heading { margin-bottom: 22px; }
+.eyebrow { color: var(--muted); font-family: "Caveat", "Klee One", cursive; font-size: 28px; font-weight: 600; line-height: 1.1; }
+h2 { margin-top: 7px; font-size: 30px; line-height: 1.5; letter-spacing: .06em; }
+.button { display: inline-flex; min-height: 52px; justify-content: center; align-items: center; gap: 10px; padding: 10px 24px; border: 1px solid transparent; border-radius: 8px; font-weight: 700; line-height: 1.5; text-decoration: none; text-align: center; }
+.button-phone { color: #fff; background: var(--ink); }
+.button-phone > span { font-size: 21px; font-weight: 400; line-height: 1; }
+.button-outline { border-color: var(--ink); background: var(--paper); }
+.text-link { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 12px; font-size: 14px; font-weight: 500; }
+.skip-link { position: fixed; top: 8px; left: 16px; z-index: 100; display: flex; min-height: 44px; align-items: center; padding: 8px 16px; background: var(--paper); transform: translateY(-160%); }
+.skip-link:focus { transform: none; }
+
+/* 上に残る店名と電話。 */
+.site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); background: var(--ground); }
+.header-inner { display: grid; width: min(1200px, calc(100% - 32px)); min-height: 80px; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 8px; margin-inline: auto; }
+.brand { display: flex; min-width: 0; min-height: 60px; align-items: center; gap: 8px; text-decoration: none; }
+.brand img { width: 44px; height: 44px; flex: 0 0 44px; }
+.brand-name { font-family: "Klee One", cursive; font-size: 17px; font-weight: 600; line-height: 1.35; }
+.brand-name > span { display: block; font-size: 12px; white-space: nowrap; }
+.header-phone { min-height: 44px; gap: 6px; padding: 9px 12px; font-size: 14px; }
+.header-phone > span { font-size: 18px; }
+.main-nav { display: none; }
+
+/* 最初の写真はスマホで上、PCで右。 */
+.hero { display: grid; gap: 28px; padding-top: 28px; }
+.hero-photo { width: 100%; max-width: 576px; justify-self: center; transform: rotate(-.6deg); }
+.hero-photo img { aspect-ratio: 4 / 3; }
+.hero-kicker { margin-bottom: 14px; color: var(--muted); font-size: 13px; font-weight: 500; letter-spacing: .02em; }
+h1 { font-size: clamp(28px, 7.5vw, 42px); line-height: 1.65; letter-spacing: .01em; }
+.desktop-break { display: none; }
+.hero-description { max-width: 28em; margin-top: 18px; }
+.day-status { display: flex; align-items: flex-start; gap: 10px; margin-top: 24px; padding: 14px 16px; border-left: 4px solid var(--butter); border-radius: 0 8px 8px 0; background: var(--paper); }
+.status-dot { width: 11px; height: 11px; flex: 0 0 11px; margin-top: 8px; border: 1px solid var(--ink); border-radius: 50%; background: var(--butter); }
+.day-status[data-open="false"] .status-dot { background: var(--line); }
+.day-status strong { display: block; font-size: 15px; font-weight: 700; }
+.day-status [data-status-detail] { display: block; font-size: 13px; line-height: 1.9; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 22px; }
+.hero-actions .button { flex-grow: 1; }
+
+/* 7マスを常に一列にする。 */
+.calendar-section { margin-top: 42px; }
+.calendar-card { padding: 24px 12px; }
+.calendar-heading { padding-inline: 6px; }
+.calendar-heading .section-heading { margin-bottom: 12px; }
+.calendar-hours { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; margin-bottom: 24px; }
+.calendar-hours > span { font-size: 13px; }
+.calendar-hours strong { font-size: 22px; letter-spacing: .01em; }
+.calendar-hours > span:last-child { flex-basis: 100%; }
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.week > li { position: relative; display: flex; min-width: 0; min-height: 98px; flex-direction: column; align-items: center; padding: 13px 0 24px; border: 1px solid var(--line); border-radius: 6px; background: var(--ground); line-height: 1.65; }
+.week .day-off, .week > [data-exception="true"] { color: var(--rest-ink); border-color: var(--line); background: var(--line); }
+.weekday { font-size: 16px; font-weight: 500; }
+.day-label { margin-top: 8px; font-size: 14px; font-weight: 700; }
+.week > [aria-current="date"] { outline: 2px solid var(--ink); outline-offset: 1px; }
+.today-mark { position: absolute; bottom: 5px; display: none; padding-inline: 2px; border-radius: 3px; color: var(--ink); background: var(--butter); font-size: 14px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+[aria-current="date"] .today-mark { display: block; }
+.calendar-notes { margin-top: 19px; padding-inline: 6px; color: var(--muted); font-size: 14px; }
+.calendar-notes p:first-child { color: var(--ink); font-weight: 700; }
+.upcoming { margin-top: 20px; padding: 17px 6px 0; border-top: 1px dashed var(--line); }
+.upcoming > p { margin-bottom: 9px; font-size: 14px; font-weight: 700; }
+.upcoming-dates { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.upcoming-dates li { font-size: 14px; }
+
+/* 食パンの大小の写真。 */
+.bread-copy > p { max-width: 29em; }
+.bread-photos { position: relative; margin-top: 28px; padding: 0 14% 14% 0; }
+.loaves-photo { transform: rotate(-.6deg); }
+.loaves-photo img { aspect-ratio: 4 / 3; }
+.shelf-photo { position: absolute; right: 0; bottom: 0; width: 45%; max-width: 300px; transform: rotate(1deg); }
+.shelf-photo img { aspect-ratio: 4 / 3; }
+
+.jam-card { padding: 28px 20px; }
+.jam-intro > p { max-width: 29em; }
+.jam-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 24px; }
+.jam-photos img { width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 8px; }
+.flavor-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin-top: 24px; }
+.flavor-list li { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; }
+.flavor-dot { width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%; }
+.strawberry { background: #a5483d; }
+.blueberry { background: #5b536f; }
+.kumquat { background: #c17a20; }
+.hyuganatsu { background: var(--butter); }
+.orange { background: #d1893d; }
+
+.bread-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.bread-tags li { padding: 5px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); font-size: 14px; }
+.breakfast-photo { width: min(100%, 350px); margin: 30px auto 0; transform: rotate(.6deg); }
+.breakfast-photo img { aspect-ratio: 4 / 5; }
+
+.reserve-card { position: relative; padding: 34px 20px; border-top: 7px solid var(--butter); }
+.phone-number { display: flex; width: fit-content; min-height: 60px; align-items: center; margin-top: 11px; font-size: clamp(28px, 8.5vw, 40px); font-weight: 700; line-height: 1.5; text-decoration-thickness: 1px; white-space: nowrap; }
+.reception { margin-top: 7px; color: var(--muted); font-size: 13px; }
+.reservation-contact > .button { width: 100%; margin-top: 24px; }
+.reservation-guide { margin-top: 30px; padding-top: 27px; border-top: 1px dashed var(--line); }
+.reservation-note { margin-top: 23px; padding: 16px; border-radius: 8px; background: var(--ground); }
+.reservation-note h3 { margin-bottom: 8px; font-size: 18px; }
+.reservation-note > p { font-size: 14px; }
+
+.exterior-photo { width: 100%; max-width: 480px; margin: 28px auto; transform: rotate(-.6deg); }
+.exterior-photo img { aspect-ratio: 1; }
+.shop-info { margin: 22px 0 24px; }
+.shop-info > div { display: grid; grid-template-columns: 4em minmax(0, 1fr); gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.shop-info dt { color: var(--muted); font-weight: 500; }
+.shop-info dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.shop-info a { display: inline-flex; min-height: 44px; align-items: center; }
+.access-copy > .button { width: 100%; }
+
+.instagram-card { padding: 20px; }
+.blueberry-photo { max-width: 480px; margin-inline: auto; }
+.blueberry-photo img { width: 100%; aspect-ratio: 4 / 3; border-radius: 8px; }
+.instagram-copy { padding-top: 26px; }
+.instagram-copy .button { margin-top: 22px; }
+
+.site-footer { display: flex; flex-direction: column; align-items: center; margin-top: 74px; padding-top: 34px; padding-bottom: calc(112px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); color: var(--muted); text-align: center; }
+.site-footer > img { width: 88px; height: 88px; margin-bottom: 14px; }
+.footer-name { margin-bottom: 8px; color: var(--ink); font-family: "Klee One", cursive; font-size: 18px; font-weight: 600; }
+.site-footer > p:not(.footer-name) { font-size: 13px; }
+.footer-phone { display: inline-flex; min-height: 44px; align-items: center; font-size: 14px; }
+.copyright { margin-top: 22px; }
+.mobile-phone-bar { position: fixed; right: 0; bottom: 0; left: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--paper); }
+.mobile-phone-bar .button { width: 100%; }
+
+@media (hover: hover) {
+  .button-phone:hover { color: var(--ink); background: var(--butter); }
+  .button-outline:hover { background: var(--ground); }
+  .main-nav a:hover { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 6px; }
+}
+
+@media (min-width: 768px) {
+  :root { --header-offset: 152px; }
+  .container { width: min(1120px, calc(100% - 64px)); }
+  .section-space { margin-top: 110px; }
+  .header-inner { width: calc(100% - 48px); grid-template-rows: 78px 44px; }
+  .brand { gap: 12px; }
+  .brand img { width: 52px; height: 52px; flex-basis: 52px; }
+  .brand-name { font-size: 21px; }
+  .brand-name > span { display: inline; font-size: 16px; }
+  .header-phone { min-height: 46px; padding-inline: 18px; }
+  .main-nav { display: flex; grid-row: 2; grid-column: 1 / -1; justify-content: center; gap: 30px; }
+  .main-nav a { display: inline-flex; min-height: 44px; align-items: center; font-size: 14px; font-weight: 500; text-decoration: none; }
+  .header-phone { grid-row: 1; grid-column: 2; }
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 30px; padding-top: 56px; }
+  .hero-photo { grid-row: 1; grid-column: 2; }
+  .hero-copy { grid-row: 1; grid-column: 1; }
+  h1 { font-size: clamp(30px, 3.6vw, 42px); }
+  .desktop-break { display: initial; }
+  .hero-kicker { font-size: 12px; }
+  .hero-description { font-size: 16px; }
+  .hero-actions { gap: 8px 15px; }
+  .hero-actions .button { flex-grow: 0; padding-inline: 20px; }
+  .calendar-section { margin-top: 60px; }
+  .calendar-card { padding: 32px 36px; }
+  .calendar-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 0; }
+  .calendar-heading .section-heading { margin-bottom: 24px; }
+  .calendar-hours { justify-content: flex-end; margin-bottom: 18px; }
+  .calendar-hours > span:last-child { text-align: right; }
+  .week { gap: 10px; }
+  .week > li { min-height: 106px; }
+  .weekday { font-size: 18px; }
+  .day-label { font-size: 15px; }
+  .today-mark { padding-inline: 7px; }
+  .calendar-notes { padding: 0; }
+  .upcoming { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 26px; padding-inline: 0; }
+  .upcoming > p { margin: 0; }
+  .upcoming-dates { gap: 8px 20px; }
+  h2 { font-size: 36px; }
+  .eyebrow { font-size: 32px; }
+  .bread-section { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: 44px; }
+  .bread-photos { margin-top: 0; }
+  .jam-card { padding: 40px; }
+  .jam-intro { display: flex; justify-content: space-between; align-items: center; gap: 36px; }
+  .jam-intro .section-heading { flex-shrink: 0; margin-bottom: 0; }
+  .jam-intro > p { max-width: 22em; }
+  .jam-photos { gap: 20px; margin-top: 32px; }
+  .jam-photos img { max-height: 330px; }
+  .flavor-list { gap: 12px 28px; margin-top: 30px; }
+  .flavor-list li { font-size: 16px; }
+  .sweets-section { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: center; gap: 60px; }
+  .sweets-copy { grid-row: 1; grid-column: 2; }
+  .breakfast-photo { grid-row: 1; grid-column: 1; margin: 0 auto; }
+  .reserve-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; padding: 40px 32px; }
+  .phone-number { font-size: clamp(29px, 3.4vw, 40px); }
+  .reservation-guide { align-self: center; margin: 0; padding: 0 0 0 32px; border-top: 0; border-left: 1px dashed var(--line); }
+  .reception { font-size: 14px; }
+  .access-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 44px; }
+  .access-heading { grid-column: 2; }
+  .exterior-photo { grid-row: 1 / 3; grid-column: 1; align-self: start; margin: 8px auto 0; }
+  .access-copy { grid-column: 2; }
+  .shop-info > div { grid-template-columns: 4em minmax(0, 1fr); gap: 14px; }
+  .access-copy > .button { width: auto; }
+  .instagram-card { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: center; gap: 36px; padding: 28px; }
+  .instagram-copy { padding-top: 0; }
+  .instagram-copy h2 { font-size: 30px; }
+  .site-footer { margin-top: 90px; padding-bottom: 38px; }
+  .mobile-phone-bar { display: none; }
+}
+
+@media (min-width: 1100px) {
+  :root { --header-offset: 116px; }
+  .header-inner { width: min(1200px, calc(100% - 64px)); min-height: 92px; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto; gap: 28px; }
+  .main-nav { grid-row: 1; grid-column: 2; justify-content: flex-end; gap: 25px; }
+  .header-phone { grid-column: 3; }
+  .hero { gap: 64px; padding-top: 60px; }
+  .hero-kicker { font-size: 14px; }
+  h1 { font-size: 44px; }
+  .hero-description { max-width: 27em; font-size: 16px; }
+  .day-status { max-width: 470px; }
+  .calendar-card { padding: 32px 44px; }
+  .bread-section { gap: 88px; }
+  .jam-card { padding: 44px 56px; }
+  .jam-photos { gap: 28px; }
+  .sweets-section { gap: 100px; padding-inline: 56px; }
+  .reserve-card { gap: 56px; padding: 48px 56px; }
+  .reservation-contact > .button { width: auto; min-width: 240px; }
+  .reservation-guide { padding-left: 48px; }
+  .access-section { column-gap: 80px; }
+  .instagram-card { gap: 56px; padding: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
