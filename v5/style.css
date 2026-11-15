@@ -240,9 +240,14 @@ a:hover .arrow { transform: translateX(4px); }
 .menu-list .menu-list__etc { color: var(--ink-soft); font-size: 15px; }
 @media (min-width: 900px) { .menu-list { grid-template-columns: repeat(4, 1fr); column-gap: 32px; margin-top: 56px; } }
 .home-fruit { display: grid; gap: 32px; margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--line); }
-.home-fruit__photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.home-fruit__photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.home-fruit__main { grid-column: 1 / -1; }
+.home-fruit__photos { display: grid; grid-template-columns: 1fr; gap: 10px; }
+/* 縦横の比は枠に持たせ、写真は枠いっぱいに敷く。キウイは本人が切った横長のまま（2026-11-15） */
+.home-fruit__photos figure { position: relative; overflow: hidden; }
+.home-fruit__photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.home-fruit__main { aspect-ratio: 4 / 3; }
+.home-fruit__kiwi { aspect-ratio: 1351 / 761; }
+.home-fruit__berry { aspect-ratio: 16 / 9; }
+.home-fruit__berry img { object-position: center 55%; }
 .home-fruit__text h3 { margin-bottom: 20px; font-size: clamp(24px, 2.3vw, 31px); letter-spacing: .14em; }
 @media (min-width: 900px) {
   /* 文を上に2列で、写真は大きいぶどう1枚（2×2）と小さい4枚（菓子パンの段と同じ幅） */
@@ -251,9 +256,10 @@ a:hover .arrow { transform: translateX(4px); }
   .home-fruit__text .heading__en { grid-column: 1; }
   .home-fruit__text h3 { grid-column: 1; margin-bottom: 0; }
   .home-fruit__text .body-copy { grid-column: 2; grid-row: 1 / 3; }
-  .home-fruit__photos { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .home-fruit__main { grid-column: 1 / 3; grid-row: 1 / 3; }
-  .home-fruit__main img { height: 100%; }
+  /* 左に大きいぶどう、右にキウイとブルーベリー。ぶどうの高さは右の2枚に合わせる */
+  .home-fruit__photos { grid-template-columns: 1.8fr 1fr; gap: 16px; }
+  .home-fruit__main { grid-row: 1 / 3; aspect-ratio: auto; }
+  .home-fruit__berry { aspect-ratio: 4 / 3; }
 }
 
 /* ---- Instagram：投稿が横に流れる（牛輝・Rayと同じ動き） ---- */
