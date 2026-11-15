@@ -17,10 +17,10 @@
   --latin: "Cormorant Garamond", "Shippori Mincho", serif;
   --gutter: 20px;
   --header-h: 100px;
-  --section-y: 88px;
+  --section-y: 56px;
 }
-@media (min-width: 600px) { :root { --gutter: 32px; --section-y: 112px; } }
-@media (min-width: 900px) { :root { --gutter: 48px; --header-h: 84px; --section-y: 140px; } }
+@media (min-width: 600px) { :root { --gutter: 32px; --section-y: 80px; } }
+@media (min-width: 900px) { :root { --gutter: 48px; --header-h: 84px; --section-y: 104px; } }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); -webkit-text-size-adjust: 100%; }
@@ -178,6 +178,7 @@ a:hover .arrow { transform: translateX(4px); }
 /* ---- 半分ずつの段（文と写真） ---- */
 .split { display: grid; gap: 40px; align-items: center; }
 .split__photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+#jam .split__photo img { aspect-ratio: 16 / 10; object-position: center 85%; }
 @media (min-width: 900px) {
   .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(48px, 7vw, 112px); }
   .split--photo-first { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
@@ -217,36 +218,35 @@ a:hover .arrow { transform: translateX(4px); }
 .sweets__head { display: grid; gap: 8px; margin-bottom: 40px; }
 .sweets__head .heading { margin-bottom: 16px; }
 @media (min-width: 900px) { .sweets__head { grid-template-columns: 1fr 1fr; align-items: end; margin-bottom: 56px; } .sweets__head .heading { margin-bottom: 0; } }
-/* 菓子パンの写真4枚（2026-11-15 本人「これらをうまく配置して」）
-   スマホ：左に縦長の天板、右に粉砂糖と袋、下に店頭の棚を横いっぱい。
-   PC：天板・粉砂糖・袋を同じ高さで横に並べ（幅の比を写真の縦横の比に合わせる）、下に店頭の棚を横いっぱい。 */
-/* 縦横の比は枠（figure）に持たせ、写真は枠いっぱいに敷く（WebKitで幅を変えた時に高さが古いまま残るのを防ぐ） */
-.mosaic { display: grid; grid-template-columns: 1.1fr 1fr; gap: 10px; }
-.mosaic figure { position: relative; overflow: hidden; }
+/* 菓子パンの写真4枚（本人が切った写真。2026-11-15）。写真は切らず、縦横の比のまま、行ごとに高さをそろえて並べる。
+   PC：1行目 天板＋店頭の棚、2行目 袋＋粉砂糖。スマホ：天板＋粉砂糖、袋、店頭の棚。
+   縦横の比は枠に持たせ、写真は枠いっぱいに敷く（WebKitで幅を変えた時に高さが古いまま残るのを防ぐ） */
+.mosaic { --gap: 10px; display: flex; flex-wrap: wrap; gap: var(--gap); }
+.mosaic figure { position: relative; overflow: hidden; aspect-ratio: var(--r); }
 .mosaic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.mosaic__tray { grid-row: 1 / 3; }
-.mosaic__donut { aspect-ratio: 1; }
-.mosaic__donut img { object-position: center 70%; }
-.mosaic__bag { aspect-ratio: 4 / 3; }
-.mosaic__shelf { grid-column: 1 / -1; aspect-ratio: 1280 / 527; }
+.mosaic__tray { --r: 867 / 1165; order: 1; width: calc((100% - var(--gap)) * 0.7442 / 1.6480); }
+.mosaic__donut { --r: 827 / 915; order: 2; width: calc((100% - var(--gap)) * 0.9038 / 1.6480); }
+.mosaic__bag { --r: 1391 / 767; order: 3; width: 100%; }
+.mosaic__shelf { --r: 1235 / 1108; order: 4; width: 100%; }
 @media (min-width: 900px) {
-  .mosaic { grid-template-columns: .75fr .75fr 1.333fr; gap: 24px; }
-  .mosaic__tray { grid-row: auto; aspect-ratio: 3 / 4; }
-  .mosaic__donut { aspect-ratio: 3 / 4; }
-  .mosaic__donut img { object-position: center; }
+  .mosaic { --gap: 24px; }
+  .mosaic__tray { order: 1; width: calc((100% - var(--gap)) * 0.7442 / 1.8588); }
+  .mosaic__shelf { order: 2; width: calc((100% - var(--gap)) * 1.1146 / 1.8588); }
+  .mosaic__bag { order: 3; width: calc((100% - var(--gap)) * 1.8136 / 2.7174); }
+  .mosaic__donut { order: 4; width: calc((100% - var(--gap)) * 0.9038 / 2.7174); }
 }
 .menu-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; margin-top: 40px; border-top: 1px solid var(--line); }
 .menu-list li { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; letter-spacing: .08em; }
 .menu-list .menu-list__etc { color: var(--ink-soft); font-size: 15px; }
 @media (min-width: 900px) { .menu-list { grid-template-columns: repeat(4, 1fr); column-gap: 32px; margin-top: 56px; } }
-.home-fruit { display: grid; gap: 32px; margin-top: 72px; padding-top: 72px; border-top: 1px solid var(--line); }
+.home-fruit { display: grid; gap: 32px; margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--line); }
 .home-fruit__photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .home-fruit__photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .home-fruit__main { grid-column: 1 / -1; }
 .home-fruit__text h3 { margin-bottom: 20px; font-size: clamp(24px, 2.3vw, 31px); letter-spacing: .14em; }
 @media (min-width: 900px) {
   /* 文を上に2列で、写真は大きいぶどう1枚（2×2）と小さい4枚（菓子パンの段と同じ幅） */
-  .home-fruit { gap: 48px; margin-top: 120px; padding-top: 120px; }
+  .home-fruit { gap: 48px; margin-top: 80px; padding-top: 80px; }
   .home-fruit__text { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; align-items: end; }
   .home-fruit__text .heading__en { grid-column: 1; }
   .home-fruit__text h3 { grid-column: 1; margin-bottom: 0; }
@@ -272,12 +272,12 @@ a:hover .arrow { transform: translateX(4px); }
 .marquee.is-running .marquee__track > li { padding-right: 12px; }
 .marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
 /* ジャムの写真の列：縦長の札で、左へゆっくり流す（Instagramは右へ） */
-.jam-marquee { margin-top: 56px; }
+.jam-marquee { margin-top: 40px; }
 .jam-marquee .marquee__track img { width: clamp(140px, 34vw, 240px); aspect-ratio: 3 / 4; }
 .jam-marquee.is-running .marquee__track { animation-duration: 50s; }
 /* Instagram は右へ流す（ジャムは左へ。2026-11-15 本人） */
 .ig-marquee.is-running .marquee__track { animation-direction: reverse; }
-@media (min-width: 900px) { .jam-marquee { margin-top: 96px; } }
+@media (min-width: 900px) { .jam-marquee { margin-top: 72px; } }
 @keyframes ig-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
   .marquee.is-running { overflow-x: auto; }
