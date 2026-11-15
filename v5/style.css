@@ -54,12 +54,18 @@ ul { padding: 0; list-style: none; }
 .heading__en::after { content: ""; width: 48px; height: 1px; background: currentColor; }
 h2 { font-size: clamp(24px, 2.3vw, 31px); font-weight: 500; line-height: 1.7; letter-spacing: .14em; }
 h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em; }
-.body-copy { font-size: 16px; line-height: 2.1; }
+.body-copy { font-size: 16px; line-height: 2.1; text-wrap: pretty; }
 .body-copy + .body-copy { margin-top: 1.4em; }
 
 /* ---- ボタン：細い枠＋明朝＋線の矢印 ---- */
-.arrow { position: relative; display: inline-block; width: 32px; height: 1px; background: currentColor; flex: none; }
-.arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 8px; height: 1px; background: currentColor; transform: rotate(35deg); transform-origin: right center; }
+/* 線の矢印：細い線と、先の上下2本の短い線（2026-11-15 本人「この矢印変だよ」で、上だけの線から描き直した） */
+.arrow {
+  display: inline-block; flex: none; width: 30px; height: 11px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 11'%3E%3Cpath d='M0 5.5H28.6M24 1.2l4.8 4.3L24 9.8' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 11'%3E%3Cpath d='M0 5.5H28.6M24 1.2l4.8 4.3L24 9.8' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  transition: transform .25s;
+}
+a:hover .arrow { transform: translateX(4px); }
 .button {
   display: inline-flex; align-items: center; justify-content: space-between; gap: 24px;
   min-width: 240px; min-height: 56px; padding: 0 24px 0 28px;
@@ -83,7 +89,7 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
   align-items: center; padding-left: var(--gutter);
 }
 .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; min-height: 56px; text-decoration: none; }
-.brand img { width: 36px; height: 36px; }
+.brand img { width: 34px; height: auto; }
 .brand__name { font-size: 16px; font-weight: 500; letter-spacing: .04em; white-space: nowrap; }
 .main-nav { grid-area: nav; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); margin-left: calc(var(--gutter) * -1); }
 .main-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; font-size: 14px; letter-spacing: .08em; text-decoration: none; white-space: nowrap; }
@@ -102,7 +108,7 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
   .site-header__bar { grid-template-columns: auto 1fr auto auto; grid-template-areas: "brand nav ig tel"; min-height: var(--header-h); }
   .header-ig { width: 72px; }
   .header-ig svg { width: 24px; height: 24px; }
-  .brand img { width: 44px; height: 44px; }
+  .brand img { width: 42px; }
   .brand__name { font-size: 16px; letter-spacing: .1em; }
   .main-nav { display: flex; justify-content: center; gap: clamp(16px, 2.2vw, 36px); border-top: 0; margin: 0; padding-inline: 24px; }
   .main-nav a { font-size: 15px; letter-spacing: .14em; position: relative; }
@@ -141,7 +147,7 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
   background: url(assets/logo-alpha.webp) center / contain no-repeat; opacity: .06; pointer-events: none; }
 .hero__panel > * { position: relative; z-index: 1; }
 .hero__mark { grid-column: 1; grid-row: 1; display: grid; gap: 14px; justify-items: start; }
-.hero__mark img { width: 72px; height: 72px; }
+.hero__mark img { width: 64px; height: auto; }
 .hero__eyebrow { font-size: 14px; line-height: 1.7; letter-spacing: .24em; color: var(--ink-soft); }
 .hero__title {
   grid-column: 2; grid-row: 1 / 3; justify-self: end; align-self: start; writing-mode: vertical-rl;
@@ -162,8 +168,8 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
   .hero__slide[data-slide="loaves"] img { object-position: center 70%; }
   .hero__controls { left: 32px; right: 32px; bottom: 24px; }
   .hero__panel { padding: 40px clamp(40px, 4.5vw, 72px) 40px; column-gap: 40px; }
-  .hero__mark img { width: 88px; height: 88px; }
-  .hero__panel::before { right: auto; left: -120px; top: 120px; width: 640px; height: 640px; }
+  .hero__mark img { width: 80px; }
+  .hero__panel::before { right: -6%; left: auto; top: 80px; width: 86%; height: auto; aspect-ratio: 1; }
   .hero__title { font-size: clamp(28px, 2.4vw, 37px); letter-spacing: .22em; }
   .hero__foot { margin-top: 24px; }
   .hero__button { display: inline-flex; margin-top: 20px; }
@@ -224,7 +230,7 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 }
 .menu-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; margin-top: 40px; border-top: 1px solid var(--line); }
 .menu-list li { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; letter-spacing: .08em; }
-.menu-list__end { margin-top: 12px; }
+.menu-list .menu-list__etc { color: var(--ink-soft); font-size: 15px; }
 @media (min-width: 900px) { .menu-list { grid-template-columns: repeat(4, 1fr); column-gap: 32px; margin-top: 56px; } }
 .home-fruit { display: grid; gap: 32px; margin-top: 72px; padding-top: 72px; border-top: 1px solid var(--line); }
 .home-fruit__photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -255,13 +261,13 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .marquee__track a { display: block; }
 .marquee__track img { width: clamp(150px, 40vw, 260px); aspect-ratio: 1; object-fit: cover; }
 .marquee.is-running { overflow: hidden; }
-.marquee.is-running .marquee__track { gap: 0; padding-inline: 0; animation: ig-flow 70s linear infinite; }
+.marquee.is-running .marquee__track { gap: 0; padding-inline: 0; animation: ig-flow 45s linear infinite; }
 .marquee.is-running .marquee__track > li { padding-right: 12px; }
 .marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
 /* ジャムの写真の列：縦長の札で、左へゆっくり流す（Instagramは右へ） */
 .jam-marquee { margin-top: 56px; }
 .jam-marquee .marquee__track img { width: clamp(140px, 34vw, 240px); aspect-ratio: 3 / 4; }
-.jam-marquee.is-running .marquee__track { animation-duration: 80s; }
+.jam-marquee.is-running .marquee__track { animation-duration: 50s; }
 /* Instagram は右へ流す（ジャムは左へ。2026-11-15 本人） */
 .ig-marquee.is-running .marquee__track { animation-direction: reverse; }
 @media (min-width: 900px) { .jam-marquee { margin-top: 96px; } }
@@ -280,7 +286,7 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .reserve__text .heading__en::before { content: ""; width: 48px; height: 1px; background: currentColor; }
 .reserve__phone { display: inline-block; font-size: clamp(38px, 10vw, 58px); line-height: 1.2; letter-spacing: .06em; text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
 .reserve__hours { margin-top: 14px; }
-.reserve__notes { margin: 28px 0 36px; display: grid; gap: 10px; max-width: 34em; text-align: left; }
+.reserve__notes { margin: 28px auto 36px; display: grid; gap: 10px; width: fit-content; max-width: 34em; text-align: left; }
 .reserve__notes li { position: relative; padding-left: 1.2em; font-size: 16px; line-height: 1.95; }
 .reserve__notes li::before { content: ""; position: absolute; left: 0; top: .95em; width: .6em; height: 1px; background: var(--ink-soft); }
 @media (min-width: 900px) { .reserve__text { padding: 80px 64px; } }
@@ -300,14 +306,14 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .shop-table__reading { display: block; }
 .shop-table__tel { display: inline-flex; align-items: center; min-height: 44px; font-size: 21px; line-height: 1.2; text-decoration: none; }
 .shop-table > div:has(.shop-table__tel) { padding-block: 6px; align-items: center; }
-.info__links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px; margin-top: 32px; }
+.info__links { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; margin-top: 32px; }
 .info__links .more-link { margin-top: 0; }
 .info__links .note { flex-basis: 100%; }
 
 /* ---- フッター ---- */
 .site-footer { background: var(--ink); color: var(--kiji); padding: 72px 0 32px; }
 .site-footer__inner { display: grid; gap: 40px; }
-.site-footer__brand img { width: 72px; height: 72px; filter: invert(1) brightness(1.4); margin-bottom: 16px; }
+.site-footer__brand img { width: 64px; height: auto; filter: invert(1) brightness(1.4); margin-bottom: 16px; }
 .site-footer__brand p { letter-spacing: .12em; }
 .site-footer__since { font-size: 14px; letter-spacing: .24em; }
 .site-footer__info { display: grid; gap: 10px; font-size: 16px; }
