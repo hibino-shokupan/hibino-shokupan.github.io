@@ -180,15 +180,15 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .about { background: var(--kiji); }
 
 /* ---- 食パン：横長の写真の下に、見出しと文の2列 ---- */
-.shokupan__photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center bottom; }
-.shokupan__body { display: grid; gap: 8px; margin-top: 40px; }
+.shokupan__grid { display: grid; gap: 40px; align-items: center; }
+.shokupan__photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.shokupan__body { display: grid; gap: 8px; }
 .spec { margin-top: 28px; border-top: 1px solid var(--line); }
 .spec > div { display: grid; grid-template-columns: 5.5em 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .spec dt { color: var(--ink-soft); }
 .tbc { display: inline-block; margin-left: 4px; padding: 0 8px; border: 1px solid var(--ink-soft); font-size: 13px; line-height: 1.7; color: var(--ink-soft); letter-spacing: .08em; vertical-align: 2px; }
 @media (min-width: 900px) {
-  .shokupan__photo img { aspect-ratio: 1400 / 593; }
-  .shokupan__body { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(48px, 7vw, 112px); margin-top: 72px; }
+  .shokupan__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(48px, 7vw, 112px); }
 }
 
 /* ---- 写真の列 ---- */
@@ -251,20 +251,24 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .instagram__links .more-link { margin-top: 0; }
 .instagram__links .note { margin-top: 6px; }
 @media (min-width: 900px) { .instagram__head { grid-template-columns: 1fr auto; align-items: end; margin-bottom: 56px; } }
-.ig-marquee { overflow-x: auto; }
-.ig-marquee__track { display: flex; width: max-content; gap: 12px; padding-inline: var(--gutter); }
-.ig-marquee__track a { display: block; }
-.ig-marquee__track img { width: clamp(150px, 40vw, 260px); aspect-ratio: 1; object-fit: cover; }
-.ig-marquee.is-running { overflow: hidden; }
-.ig-marquee.is-running .ig-marquee__track { padding-inline: 0; animation: ig-flow 70s linear infinite; }
-.ig-marquee.is-running .ig-marquee__track > li { padding-right: 12px; }
-.ig-marquee.is-running .ig-marquee__track { gap: 0; }
-.ig-marquee:hover .ig-marquee__track, .ig-marquee:focus-within .ig-marquee__track { animation-play-state: paused; }
+.marquee { overflow-x: auto; }
+.marquee__track { display: flex; width: max-content; gap: 12px; padding-inline: var(--gutter); }
+.marquee__track a { display: block; }
+.marquee__track img { width: clamp(150px, 40vw, 260px); aspect-ratio: 1; object-fit: cover; }
+.marquee.is-running { overflow: hidden; }
+.marquee.is-running .marquee__track { gap: 0; padding-inline: 0; animation: ig-flow 70s linear infinite; }
+.marquee.is-running .marquee__track > li { padding-right: 12px; }
+.marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
+/* ジャムの写真の列：縦長の札で、Instagramとは逆向きにゆっくり流す */
+.jam-marquee { margin-top: 56px; }
+.jam-marquee .marquee__track img { width: clamp(140px, 34vw, 240px); aspect-ratio: 3 / 4; }
+.jam-marquee.is-running .marquee__track { animation-duration: 80s; animation-direction: reverse; }
+@media (min-width: 900px) { .jam-marquee { margin-top: 96px; } }
 @keyframes ig-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-  .ig-marquee.is-running { overflow-x: auto; }
-  .ig-marquee.is-running .ig-marquee__track { animation: none; padding-inline: var(--gutter); }
-  .ig-marquee__track > [aria-hidden="true"] { display: none; }
+  .marquee.is-running { overflow-x: auto; }
+  .marquee.is-running .marquee__track { animation: none; padding-inline: var(--gutter); }
+  .marquee__track > [aria-hidden="true"] { display: none; }
   .hero__slide { transition: none; }
 }
 

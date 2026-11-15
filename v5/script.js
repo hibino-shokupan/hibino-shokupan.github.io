@@ -47,11 +47,11 @@
     }
   } catch (error) { /* 1枚目の写真のまま */ }
 
-  // ---- Instagram の投稿を横に流す（列を2つ続けて、切れ目なく回す） ----
-  try {
-    const marquee = document.querySelector('.ig-marquee');
-    const track = marquee ? marquee.querySelector('.ig-marquee__track') : null;
-    if (track) {
+  // ---- Instagram の投稿・ジャムの写真を横に流す（列を2つ続けて、切れ目なく回す） ----
+  Array.prototype.forEach.call(document.querySelectorAll('.marquee'), marquee => {
+    try {
+      const track = marquee.querySelector('.marquee__track');
+      if (!track) return;
       Array.prototype.slice.call(track.children).forEach(item => {
         const copy = item.cloneNode(true);
         copy.setAttribute('aria-hidden', 'true');
@@ -59,6 +59,6 @@
         track.appendChild(copy);
       });
       marquee.classList.add('is-running');
-    }
-  } catch (error) { /* 横にずらせる列のまま */ }
+    } catch (error) { /* 横にずらせる列のまま */ }
+  });
 })();

@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&amp;family=Shippori+Mincho:wght@400;500;600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261115b">
-  <script src="script.js?v=20261115b" defer></script>
+  <link rel="stylesheet" href="style.css?v=20261115c">
+  <script src="script.js?v=20261115c" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -85,8 +85,8 @@
     </section>
 
     <section id="shokupan" class="shokupan section section--band" aria-labelledby="bread-title">
-      <div class="container">
-        <figure class="shokupan__photo"><img src="assets/shelf-loaves.webp" width="1280" height="542" alt="木の棚に並ぶ食パン4斤" loading="lazy"></figure>
+      <div class="container shokupan__grid">
+        <figure class="shokupan__photo"><img src="assets/board-jam.webp" width="912" height="672" alt="木のボードにのせた食パンと、ジャムの瓶" loading="lazy"></figure>
         <div class="shokupan__body">
           <div class="heading"><p class="heading__en latin">Shokupan</p><h2 id="bread-title">無添加の食パン</h2></div>
           <div>
@@ -98,16 +98,16 @@
             <a class="more-link" href="#reserve">ご予約について<span class="arrow" aria-hidden="true"></span></a>
           </div>
         </div>
-        <div class="photo-row photo-row--two">
-          <figure><img src="assets/breakfast-set.webp" width="1280" height="960" alt="ジャムをのせたトーストのある朝の食卓" loading="lazy"></figure>
-          <figure><img src="assets/board-jam.webp" width="912" height="672" alt="木のボードにのせた食パンと、ジャムの瓶" loading="lazy"></figure>
-        </div>
+      </div>
+      <div class="container photo-row photo-row--two">
+        <figure><img src="assets/breakfast-set.webp" width="1280" height="960" alt="ジャムをのせたトーストのある朝の食卓" loading="lazy"></figure>
+        <figure><img src="assets/shelf.webp" width="1280" height="960" alt="木の棚に並ぶ食パンと赤いオーブン" loading="lazy"></figure>
       </div>
     </section>
 
     <section id="jam" class="jam section" aria-labelledby="jam-title">
       <div class="container split split--photo-first">
-        <figure class="split__photo"><img src="assets/jam-orange.webp" width="1108" height="831" alt="黄色いジャムの瓶と紺の看板" loading="lazy"></figure>
+        <figure class="split__photo"><img src="assets/blueberry-jam.webp" width="640" height="480" alt="ガラスの器のブルーベリーと、ジャムの瓶" loading="lazy"></figure>
         <div class="split__text">
           <div class="heading"><p class="heading__en latin">Original jam</p><h2 id="jam-title">季節の果実の、<br>自家製ジャム</h2></div>
           <ul class="jam-list">
@@ -123,10 +123,17 @@
           </div>
         </div>
       </div>
-      <div class="container photo-row photo-row--three">
-        <figure><img src="assets/jam-stack.webp" width="1280" height="960" alt="店頭に積まれた自家製ジャムの瓶" loading="lazy"></figure>
-        <figure><img src="assets/jam-red.webp" width="480" height="600" alt="赤いジャムの瓶と紺の看板" loading="lazy"></figure>
-        <figure><img src="assets/jam-jar.webp" width="1000" height="750" alt="&amp;.&amp; のジャムの瓶" loading="lazy"></figure>
+      <div class="marquee jam-marquee" role="region" aria-label="ジャムの写真（自動で流れます）" tabindex="0">
+        <ul class="marquee__track">
+          <li><img src="assets/jam-stack.webp" width="1280" height="960" alt="店頭に積まれた自家製ジャムの瓶" loading="lazy"></li>
+          <li><img src="assets/jam-orange.webp" width="1108" height="831" alt="黄色いジャムの瓶と紺の看板" loading="lazy"></li>
+          <li><img src="assets/jam-red.webp" width="1108" height="1478" alt="赤いジャムの瓶と紺の看板" loading="lazy"></li>
+          <li><img src="assets/jam-trio.webp" width="1108" height="1477" alt="3つ重ねたジャムの瓶" loading="lazy"></li>
+          <li><img src="assets/post-02.webp" width="640" height="480" alt="キウイとレモングラスのジャムの瓶" loading="lazy"></li>
+          <li><img src="assets/jam-red-sign.webp" width="1280" height="965" alt="赤いジャムの瓶3つと看板" loading="lazy"></li>
+          <li><img src="assets/post-05.webp" width="640" height="479" alt="逆さに並べたジャムの瓶" loading="lazy"></li>
+          <li><img src="assets/post-08.webp" width="512" height="640" alt="赤いジャム" loading="lazy"></li>
+        </ul>
       </div>
     </section>
 
@@ -165,8 +172,8 @@
           <a class="more-link" href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><span class="latin">@and.and_hibinosyokupan</span><span class="arrow" aria-hidden="true"></span></a>
         </div>
       </div>
-      <div class="ig-marquee" role="region" aria-label="Instagramの投稿（自動で流れます）" tabindex="0">
-        <ul class="ig-marquee__track">
+      <div class="marquee ig-marquee" role="region" aria-label="Instagramの投稿（自動で流れます）" tabindex="0">
+        <ul class="marquee__track">
           <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-01.webp" width="640" height="640" alt="Instagramの投稿：1周年の食パン" loading="lazy"></a></li>
           <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-06.webp" width="640" height="480" alt="Instagramの投稿：木のボードにのせた食パンとジャム" loading="lazy"></a></li>
           <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-04.webp" width="512" height="640" alt="Instagramの投稿：いちご" loading="lazy"></a></li>
