@@ -154,7 +154,6 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .hero__hours { border-top: 1px solid var(--ink); }
 .hero__hours > div { display: grid; grid-template-columns: 5.5em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); line-height: 1.8; }
 .hero__hours dt { color: var(--ink-soft); }
-.hero__closed { margin-top: 12px; }
 .hero__button { display: none; }
 @media (min-width: 900px) {
   /* 最初の画面は画面の高さ（上の帯と線の分を引く）。右の文が長い時だけ伸びる */
@@ -259,10 +258,12 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .marquee.is-running .marquee__track { gap: 0; padding-inline: 0; animation: ig-flow 70s linear infinite; }
 .marquee.is-running .marquee__track > li { padding-right: 12px; }
 .marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
-/* ジャムの写真の列：縦長の札で、Instagramとは逆向きにゆっくり流す */
+/* ジャムの写真の列：縦長の札で、左へゆっくり流す（Instagramは右へ） */
 .jam-marquee { margin-top: 56px; }
 .jam-marquee .marquee__track img { width: clamp(140px, 34vw, 240px); aspect-ratio: 3 / 4; }
-.jam-marquee.is-running .marquee__track { animation-duration: 80s; animation-direction: reverse; }
+.jam-marquee.is-running .marquee__track { animation-duration: 80s; }
+/* Instagram は右へ流す（ジャムは左へ。2026-11-15 本人） */
+.ig-marquee.is-running .marquee__track { animation-direction: reverse; }
 @media (min-width: 900px) { .jam-marquee { margin-top: 96px; } }
 @keyframes ig-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
