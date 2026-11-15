@@ -9,7 +9,7 @@
     else if (query.addListener) query.addListener(handler);
   };
 
-  // ---- 最初の画面のスライド（今のサイトと同じ順。5秒ごと。ボタンは置かない＝2026-11-15 本人） ----
+  // ---- 最初の画面のスライド（今のサイトと同じ順。5秒ごと。横にすべらせても動く。ボタンは置かない＝2026-11-15 本人） ----
   try {
     const root = document.querySelector('.hero__slides');
     const slides = root ? Array.prototype.slice.call(root.querySelectorAll('.hero__slide')) : [];
@@ -27,6 +27,17 @@
       const stop = () => { if (timer) clearInterval(timer); timer = null; };
       const start = () => { stop(); if (!paused && !document.hidden) timer = setInterval(() => show(index + 1), 5000); };
       const setPaused = value => { paused = value; start(); };
+      // 指で横にすべらせると、前・次の写真へ（2026-11-15 本人）。縦のすべりはページのスクロールのまま
+      let startX = null, startY = null;
+      root.addEventListener('pointerdown', event => { startX = event.clientX; startY = event.clientY; });
+      root.addEventListener('pointerup', event => {
+        if (startX === null) return;
+        const dx = event.clientX - startX, dy = event.clientY - startY;
+        startX = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { show(index + (dx < 0 ? 1 : -1)); start(); }
+      });
+      root.addEventListener('pointercancel', () => { startX = null; });
+      root.addEventListener('dragstart', event => event.preventDefault());
       onMediaChange(reduceMotion, () => setPaused(reduceMotion.matches));
       document.addEventListener('visibilitychange', start);
       root.dataset.activeSlide = slides[0].dataset.slide;
