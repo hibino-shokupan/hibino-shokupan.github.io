@@ -302,6 +302,13 @@ a:hover .arrow { transform: translateX(4px); }
 @media (min-width: 900px) { .reserve__text { padding: 80px 64px; } }
 
 /* ---- 店舗のご案内（カレンダーは置かない。不定休のため） ---- */
+/* 地に、最初の画面と同じくロゴを大きく薄く透かす（2026-11-15 本人）。PCは地図に隠れないよう、店の表の後ろに */
+.info { position: relative; overflow: hidden; }
+.info::before { content: ""; position: absolute; z-index: 0; right: -90px; top: 150px; width: 420px; height: 420px;
+  background: url(assets/logo-alpha.webp) center / contain no-repeat; opacity: .06; pointer-events: none; }
+.info > .container { position: relative; z-index: 1; }
+/* PCは、ロゴの中の小さな字が店の表に重ならないよう、地図の下の空いた所（右下）に */
+@media (min-width: 900px) { .info::before { right: calc(50% - 680px); top: auto; bottom: -70px; width: 560px; height: 560px; } }
 .info__grid { display: grid; gap: 48px; }
 @media (min-width: 900px) { .info__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(56px, 7vw, 112px); align-items: start; } }
 .info__closed { margin-top: 32px; padding: 28px 28px 30px; background: var(--kiji); border-top: 1px solid var(--ink); }
