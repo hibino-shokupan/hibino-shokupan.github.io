@@ -58,11 +58,11 @@ h3 { font-size: 21px; font-weight: 500; line-height: 1.7; letter-spacing: .12em;
 .body-copy + .body-copy { margin-top: 1.4em; }
 
 /* ---- ボタン：細い枠＋明朝＋線の矢印 ---- */
-/* 線の矢印：細い線と、先の上下2本の短い線（2026-11-15 本人「この矢印変だよ」で、上だけの線から描き直した） */
+/* 線の矢印：細い線と、先の上だけの短い線（2026-11-15 本人「元々の矢印のほうがいい。下の線がないやつ」。元の形を、線の端にきちんとつながるように描いた） */
 .arrow {
-  display: inline-block; flex: none; width: 30px; height: 11px; background: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 11'%3E%3Cpath d='M0 5.5H28.6M24 1.2l4.8 4.3L24 9.8' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
-          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 11'%3E%3Cpath d='M0 5.5H28.6M24 1.2l4.8 4.3L24 9.8' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  display: inline-block; flex: none; width: 30px; height: 8px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 8'%3E%3Cpath d='M0 7.2H29.2M23.4 2.2l5.8 5' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 8'%3E%3Cpath d='M0 7.2H29.2M23.4 2.2l5.8 5' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
   transition: transform .25s;
 }
 a:hover .arrow { transform: translateX(4px); }
