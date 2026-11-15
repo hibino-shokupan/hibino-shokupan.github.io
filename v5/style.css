@@ -270,25 +270,21 @@ a:hover .arrow { transform: translateX(4px); }
 .instagram__links .more-link { margin-top: 0; }
 .instagram__links .note { margin-top: 6px; }
 @media (min-width: 900px) { .instagram__head { grid-template-columns: 1fr auto; align-items: end; margin-bottom: 56px; } }
-.marquee { overflow-x: auto; }
+/* 流れる列：横にすべらせられる列を、JS が少しずつ送る（指・トラックパッド・マウスのドラッグでも動かせる。2026-11-15 本人） */
+.marquee { overflow-x: auto; overscroll-behavior-x: contain; scroll-behavior: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
+.marquee::-webkit-scrollbar { display: none; }
+.marquee.is-dragging { cursor: grabbing; }
 .marquee__track { display: flex; width: max-content; gap: 12px; padding-inline: var(--gutter); }
 .marquee__track a { display: block; }
-.marquee__track img { width: clamp(150px, 40vw, 260px); aspect-ratio: 1; object-fit: cover; }
-.marquee.is-running { overflow: hidden; }
-.marquee.is-running .marquee__track { gap: 0; padding-inline: 0; animation: ig-flow 45s linear infinite; }
+.marquee__track img { width: clamp(150px, 40vw, 260px); aspect-ratio: 1; object-fit: cover; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+.marquee.is-running .marquee__track { gap: 0; padding-inline: 0; }
 .marquee.is-running .marquee__track > li { padding-right: 12px; }
-.marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
 /* ジャムの写真の列：縦長の札で、左へゆっくり流す（Instagramは右へ） */
 .jam-marquee { margin-top: 40px; }
 .jam-marquee .marquee__track img { width: clamp(140px, 34vw, 240px); aspect-ratio: 3 / 4; }
-.jam-marquee.is-running .marquee__track { animation-duration: 50s; }
-/* Instagram は右へ流す（ジャムは左へ。2026-11-15 本人） */
-.ig-marquee.is-running .marquee__track { animation-direction: reverse; }
 @media (min-width: 900px) { .jam-marquee { margin-top: 72px; } }
-@keyframes ig-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-  .marquee.is-running { overflow-x: auto; }
-  .marquee.is-running .marquee__track { animation: none; padding-inline: var(--gutter); }
+  .marquee.is-running .marquee__track { padding-inline: var(--gutter); }
   .marquee__track > [aria-hidden="true"] { display: none; }
   .hero__slide { transition: none; }
 }
