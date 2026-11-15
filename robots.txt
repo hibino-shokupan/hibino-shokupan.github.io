@@ -1,4 +1,4 @@
+# 2026-11-15 ホームページは https://hibino-shokupan-dl.github.io/ へ移した。
+# この場所には、ご予約ページ（/yoyaku/）と、移した案内のトップが残る。
 User-agent: *
 Allow: /
-
-Sitemap: https://hibino-shokupan.github.io/sitemap.xml

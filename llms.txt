@@ -11,7 +11,8 @@
 
 ## 主要ページ
 
-- [公式サイト](https://hibino-shokupan.github.io/): コンセプト・商品・店舗のご案内・ご予約の方法
+- [公式ホームページ](https://hibino-shokupan-dl.github.io/): お店のこと・商品・店舗のご案内・ご予約の方法（2026-11-15 に移転）
+- [ご予約ページ](https://hibino-shokupan.github.io/yoyaku/): 食パンのご予約
 - [Instagram](https://www.instagram.com/and.and_hibinosyokupan): 日々の記録
 
-最終更新：2026-10-27
+最終更新：2026-11-15
