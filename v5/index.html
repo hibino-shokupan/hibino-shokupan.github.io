@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#F7F3EC">
+  <meta name="description" content="三股町の、テイクアウトだけの小さな食パン屋です。無添加の食パンと、季節の果実の自家製ジャム。木・金・土・日 11:00〜15:00（売り切れ次第終了）。ご予約はお電話で。">
+  <title>&amp;.&amp;～日々の食パン～｜食パンと、果実の自家製ジャム</title>
+  <link rel="icon" href="assets/logo-alpha.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&amp;family=Shippori+Mincho:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__bar">
+      <a class="brand" href="#top" aria-label="&amp;.&amp;～日々の食パン～ 最初へ">
+        <img src="assets/logo-alpha.webp" width="320" height="320" alt="&amp;.&amp; のロゴ">
+        <span class="brand__name">&amp;.&amp;～日々の食パン～</span>
+      </a>
+      <nav id="main-nav" class="main-nav" aria-label="もくじ">
+        <a class="main-nav__wide" href="#about">お店のこと</a><a href="#shokupan">食パン</a><a href="#jam">ジャム</a><a href="#sweets">菓子パン</a><a class="main-nav__wide" href="#instagram">Instagram</a><a href="#reserve">ご予約</a><a href="#info">ご案内</a>
+      </nav>
+      <a class="header-tel" href="tel:0986510511" aria-label="電話をかける 0986-51-0511">
+        <span class="header-tel__label latin">TEL</span>
+        <span class="header-tel__number latin">0986-51-0511</span>
+        <span class="header-tel__hours">受付　木〜日　9:00〜15:00</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section id="top" class="hero" aria-labelledby="hero-title">
+      <div class="hero__slides" role="region" aria-roledescription="carousel" aria-label="お店の写真（自動で切り替わります）">
+        <figure class="hero__slide is-active" data-slide="loaves"><picture><source media="(min-width: 900px)" srcset="assets/loaves-pc.webp" width="1004" height="868"><img src="assets/loaves.webp" width="1280" height="813" alt="スノコの上に並ぶ食パン" loading="eager" fetchpriority="high"></picture></figure>
+        <figure class="hero__slide" data-slide="shelf"><img src="assets/shelf.webp" width="1280" height="960" alt="木の棚に並ぶ食パンと赤いオーブン" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="breakfast-set"><img src="assets/breakfast-set.webp" width="1280" height="960" alt="ジャムをのせたトーストのある朝の食卓" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="board-jam"><img src="assets/board-jam.webp" width="912" height="672" alt="木のボードにのせた食パンと、ジャムの瓶" loading="lazy"></figure>
+        <figure class="hero__slide hero__slide--logo" data-slide="logo"><img src="assets/logo-alpha.webp" width="320" height="320" alt="&amp;.&amp; のロゴ" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="exterior"><img src="assets/exterior.webp" width="1280" height="960" alt="木目の壁の店の入口とロゴの看板" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="jam-stack"><img src="assets/jam-stack.webp" width="1280" height="960" alt="店頭に積まれた自家製ジャムの瓶" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="shelf-fruit"><img src="assets/shelf-fruit.webp" width="1280" height="960" alt="棚に並ぶシャインマスカットとパン" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="sweets-2"><img src="assets/sweets-2.webp" width="1280" height="960" alt="袋に入って並ぶ菓子パン" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="sign-night"><img src="assets/sign-night.webp" width="1000" height="750" alt="夜に照らされたロゴの看板" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="framed"><img src="assets/framed.webp" width="1280" height="960" alt="壁に飾った食パンの写真" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="grapes"><img src="assets/grapes.webp" width="1280" height="960" alt="我が家で育てたシャインマスカット" loading="lazy"></figure>
+        <figure class="hero__slide" data-slide="jam-jar"><img src="assets/jam-jar.webp" width="1000" height="750" alt="&amp;.&amp; のジャムの瓶" loading="lazy"></figure>
+        <div class="hero__controls" hidden>
+          <div class="hero__progress" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+      <div class="hero__panel">
+        <div class="hero__mark">
+          <img src="assets/logo-alpha.webp" width="320" height="320" alt="&amp;.&amp; のロゴ" loading="eager">
+          <p class="hero__eyebrow latin">MIMATA, MIYAZAKI</p>
+        </div>
+        <h1 id="hero-title" class="hero__title"><span>日々の食パンと、</span><span>果実の自家製ジャム。</span></h1>
+        <p class="hero__lead"><span class="phrase">三股町の、</span><br><span class="phrase">テイクアウト</span><span class="phrase">だけの</span><br><span class="phrase">小さな</span><span class="phrase">食パン屋です。</span></p>
+        <div class="hero__foot">
+          <dl class="hero__hours">
+            <div><dt>営業日</dt><dd>木・金・土・日</dd></div>
+            <div><dt>営業時間</dt><dd><span class="phrase">11:00〜15:00</span><span class="phrase">（売り切れ次第終了）</span></dd></div>
+          </dl>
+          <p class="hero__closed note"><span class="phrase">個人で</span><span class="phrase">営んでいるため、</span><span class="phrase">不定期に</span><span class="phrase">お休みを</span><span class="phrase">いただくことが</span><span class="phrase">あります。</span></p>
+          <a class="button hero__button" href="tel:0986510511">電話で予約する<span class="arrow" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about section" aria-labelledby="about-title">
+      <div class="container split">
+        <div class="split__text">
+          <div class="heading"><p class="heading__en latin">Concept</p><h2 id="about-title">三股町の、<br>小さな食パン屋</h2></div>
+          <p class="body-copy"><span class="phrase">&amp;.&amp; は、</span><span class="phrase">2020年に始めた、</span><span class="phrase">テイクアウトだけの</span><span class="phrase">食パン屋です。</span><br><span class="phrase">三股町の、</span><span class="phrase">民家の一角にある</span><span class="phrase">小さなお店で、</span><span class="phrase">つくり手が</span><span class="phrase">ひとりで</span><span class="phrase">焼いています。</span></p>
+          <p class="body-copy"><span class="phrase">並ぶのは、</span><span class="phrase">無添加の食パンと、</span><span class="phrase">季節の果実の</span><span class="phrase">自家製ジャム。</span><span class="phrase">その日の菓子パンと、</span><span class="phrase">我が家で育てた果物も</span><span class="phrase">並びます。</span></p>
+        </div>
+        <figure class="split__photo"><img src="assets/exterior.webp" width="1280" height="960" alt="木目の壁の店の入口とロゴの看板" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section id="shokupan" class="shokupan section section--band" aria-labelledby="bread-title">
+      <div class="container">
+        <figure class="shokupan__photo"><img src="assets/shelf-loaves.webp" width="1280" height="542" alt="木の棚に並ぶ食パン4斤" loading="lazy"></figure>
+        <div class="shokupan__body">
+          <div class="heading"><p class="heading__en latin">Shokupan</p><h2 id="bread-title">無添加の食パン</h2></div>
+          <div>
+            <p class="body-copy"><span class="phrase">&amp;.&amp; の食パンは、</span><span class="phrase">無添加です。</span><br><span class="phrase">売り切れ次第</span><span class="phrase">終了なので、</span><span class="phrase">確実に</span><span class="phrase">ほしい日は、</span><span class="phrase">お電話で</span><span class="phrase">ご予約ください。</span></p>
+            <dl class="spec">
+              <div><dt>ご予約</dt><dd><span class="phrase">1斤から</span><span class="phrase">（2斤で1本）</span> <span class="tbc">確認中</span></dd></div>
+              <div><dt>カット</dt><dd><span class="phrase">4枚切り・</span><span class="phrase">5枚切り・</span><span class="phrase">カットなし</span> <span class="tbc">確認中</span></dd></div>
+            </dl>
+            <a class="more-link" href="#reserve">ご予約について<span class="arrow" aria-hidden="true"></span></a>
+          </div>
+        </div>
+        <div class="photo-row photo-row--two">
+          <figure><img src="assets/breakfast-set.webp" width="1280" height="960" alt="ジャムをのせたトーストのある朝の食卓" loading="lazy"></figure>
+          <figure><img src="assets/board-jam.webp" width="912" height="672" alt="木のボードにのせた食パンと、ジャムの瓶" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="jam" class="jam section" aria-labelledby="jam-title">
+      <div class="container split split--photo-first">
+        <figure class="split__photo"><img src="assets/jam-orange.webp" width="1108" height="831" alt="黄色いジャムの瓶と紺の看板" loading="lazy"></figure>
+        <div class="split__text">
+          <div class="heading"><p class="heading__en latin">Original jam</p><h2 id="jam-title">季節の果実の、<br>自家製ジャム</h2></div>
+          <ul class="jam-list">
+            <li><span class="jam-list__dot" style="--dot:var(--strawberry)"></span><span class="jam-list__name">いちご<small>のジャム</small></span><span class="jam-list__en latin">Strawberry</span></li>
+            <li><span class="jam-list__dot" style="--dot:var(--blueberry)"></span><span class="jam-list__name">ブルーベリー<small>のジャム</small></span><span class="jam-list__en latin">Blueberry</span></li>
+            <li><span class="jam-list__dot" style="--dot:var(--kinkan)"></span><span class="jam-list__name">きんかん<small>のジャム</small></span><span class="jam-list__en latin">Kinkan</span></li>
+            <li><span class="jam-list__dot" style="--dot:var(--hyuganatsu)"></span><span class="jam-list__name">日向夏<small>のジャム</small></span><span class="jam-list__en latin">Hyuganatsu</span></li>
+            <li><span class="jam-list__dot" style="--dot:var(--mikan)"></span><span class="jam-list__name">みかん<small>のジャム</small></span><span class="jam-list__en latin">Mikan</span></li>
+          </ul>
+          <div class="jam__note">
+            <p><span class="phrase">ジャムは、</span><span class="phrase">季節によって</span><span class="phrase">並ぶものが</span><span class="phrase">変わります。</span><span class="phrase">ない日も</span><span class="phrase">あります。</span></p>
+            <p><span class="phrase">いちご＆ブルーベリーや、</span><span class="phrase">日向夏×みかんのように、</span><span class="phrase">果実を合わせた</span><span class="phrase">ジャムもあります。</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="container photo-row photo-row--three">
+        <figure><img src="assets/jam-stack.webp" width="1280" height="960" alt="店頭に積まれた自家製ジャムの瓶" loading="lazy"></figure>
+        <figure><img src="assets/jam-red.webp" width="480" height="600" alt="赤いジャムの瓶と紺の看板" loading="lazy"></figure>
+        <figure><img src="assets/jam-jar.webp" width="1000" height="750" alt="&amp;.&amp; のジャムの瓶" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section id="sweets" class="sweets section section--white" aria-labelledby="sweets-title">
+      <div class="container">
+        <div class="sweets__head">
+          <div class="heading"><p class="heading__en latin">Today’s bake</p><h2 id="sweets-title">その日の菓子パン</h2></div>
+          <p class="body-copy"><span class="phrase">焼くものは、</span><span class="phrase">その日の気分で</span><span class="phrase">決めています。</span><br><span class="phrase">並ぶものは、</span><span class="phrase">日によって</span><span class="phrase">変わります。</span></p>
+        </div>
+        <div class="mosaic">
+          <figure class="mosaic__tall"><img src="assets/sweets.webp" width="1108" height="1477" alt="天板に並ぶ菓子パン（ピザパン・かのこ豆チーズパンなど）" loading="lazy"></figure>
+          <figure><img src="assets/sweets-3.webp" width="1108" height="1477" alt="粉砂糖をまぶした菓子パン" loading="lazy"></figure>
+          <figure><img src="assets/sweets-2.webp" width="1280" height="960" alt="袋に入って並ぶ菓子パンと名札" loading="lazy"></figure>
+        </div>
+        <ul class="menu-list"><li>メロンパン</li><li>抹茶メロンパン</li><li>ハムチーズパン</li><li>ピザパン</li><li>かのこ豆チーズパン</li><li>小豆パン</li><li>塩パン</li><li>きなこちぎりパン</li></ul>
+        <p class="menu-list__end note">など。</p>
+        <div class="home-fruit">
+          <div class="home-fruit__text">
+            <p class="heading__en latin">Home-grown fruit</p>
+            <h3>我が家の果物</h3>
+            <p class="body-copy"><span class="phrase">我が家で育てた果物も</span><span class="phrase">並びます。</span><br><span class="phrase">シャインマスカット・</span><span class="phrase">キウイ・</span><span class="phrase">ブルーベリー。</span><br><span class="phrase">採れた時期だけです。</span></p>
+          </div>
+          <div class="home-fruit__photos">
+            <figure class="home-fruit__main"><img src="assets/grapes.webp" width="1280" height="960" alt="我が家で育てたシャインマスカット" loading="lazy"></figure>
+            <figure><img src="assets/kiwi.webp" width="1280" height="720" alt="我が家で育てたゴールドキウイ" loading="lazy"></figure>
+            <figure><img src="assets/blueberry-bush.webp" width="760" height="570" alt="色づきはじめたブルーベリーの実" loading="lazy"></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="instagram" class="instagram section" aria-labelledby="instagram-title">
+      <div class="container instagram__head">
+        <div class="heading"><p class="heading__en latin">Instagram</p><h2 id="instagram-title">日々の記録</h2></div>
+        <div class="instagram__links">
+          <a class="more-link" href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><span class="latin">@and.and_hibinosyokupan</span><span class="arrow" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div class="ig-marquee" role="region" aria-label="Instagramの投稿（自動で流れます）" tabindex="0">
+        <ul class="ig-marquee__track">
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-01.webp" width="640" height="640" alt="Instagramの投稿：1周年の食パン" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-06.webp" width="640" height="480" alt="Instagramの投稿：木のボードにのせた食パンとジャム" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-04.webp" width="512" height="640" alt="Instagramの投稿：いちご" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-03.webp" width="640" height="480" alt="Instagramの投稿：ブルーベリーとジャムの瓶" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-10.webp" width="640" height="480" alt="Instagramの投稿：棚に並ぶ食パン" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-02.webp" width="640" height="480" alt="Instagramの投稿：ジャムの瓶" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-05.webp" width="640" height="479" alt="Instagramの投稿：逆さに並べたジャムの瓶" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-12.webp" width="640" height="640" alt="Instagramの投稿：店の入口" loading="lazy"></a></li>
+          <li><a href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener"><img src="assets/post-08.webp" width="512" height="640" alt="Instagramの投稿：赤いジャム" loading="lazy"></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="reserve" class="reserve section section--band" aria-labelledby="reserve-title">
+      <div class="container reserve__box">
+        <div class="reserve__text">
+          <div class="heading"><p class="heading__en latin">Reservation</p><h2 id="reserve-title">ご予約は、お電話で</h2></div>
+          <a class="reserve__phone latin" href="tel:0986510511">0986-51-0511</a>
+          <p class="reserve__hours"><span class="phrase">受付　</span><span class="phrase">木・金・土・日　</span><span class="phrase">9:00〜15:00</span></p>
+          <ul class="reserve__notes">
+            <li><span class="phrase">ひとりで</span><span class="phrase">作業しているため、</span><span class="phrase">パンを</span><span class="phrase">焼いている間は</span><span class="phrase">電話に</span><span class="phrase">出られないことが</span><span class="phrase">あります。</span><span class="phrase">少し時間をおいて、</span><span class="phrase">おかけ直しください。</span></li>
+            <li><span class="phrase">食パンのご予約は、</span><span class="phrase">1日36斤までです。</span> <span class="tbc">確認中</span></li>
+          </ul>
+          <a class="button button--solid" href="tel:0986510511">電話をかける<span class="arrow" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="info" class="info section section--white" aria-labelledby="info-title">
+      <div class="container">
+        <div class="heading"><p class="heading__en latin">Shop information</p><h2 id="info-title">店舗のご案内</h2></div>
+        <div class="info__grid">
+          <div id="access" class="info__access">
+            <dl class="shop-table">
+              <div><dt>店名</dt><dd>&amp;.&amp;～日々の食パン～<span class="shop-table__reading note"><span class="phrase">（アンドアンド</span> <span class="phrase">ひびのしょくぱん）</span></span></dd></div>
+              <div><dt>住所</dt><dd><span class="phrase">〒889-1901</span> <span class="phrase">宮崎県北諸県郡</span><span class="phrase">三股町樺山1273-1</span></dd></div>
+              <div><dt>電話</dt><dd><a class="latin shop-table__tel" href="tel:0986510511">0986-51-0511</a></dd></div>
+              <div><dt>営業日</dt><dd><span class="phrase">木・金・土・日</span><span class="phrase">（第5日曜日はお休み）</span></dd></div>
+              <div><dt>営業時間</dt><dd><span class="phrase">11:00〜15:00</span><span class="phrase">（売り切れ次第終了）</span></dd></div>
+              <div><dt>定休日</dt><dd><span class="phrase">月・火・水</span><span class="phrase">（ほかに不定休あり）</span></dd></div>
+              <div><dt>駐車場</dt><dd>あり（店の前のスペース）</dd></div>
+            </dl>
+            <div class="info__closed">
+              <p class="info__closed-title">お休みについて</p>
+              <p><span class="phrase">木・金・土・日の</span><span class="phrase">営業日でも、</span><span class="phrase">不定期に</span><span class="phrase">お休みを</span><span class="phrase">いただくことが</span><span class="phrase">あります。</span></p>
+              <p><span class="phrase">お越しの前に、</span><span class="phrase">お電話で</span><span class="phrase">お確かめください。</span></p>
+            </div>
+          </div>
+          <div class="info__side">
+            <div class="info__map">
+              <iframe title="&amp;.&amp;～日々の食パン～の地図（Google マップ）" src="https://www.google.com/maps?q=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1&amp;output=embed&amp;hl=ja" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            </div>
+            <div class="info__links">
+              <a class="button" href="https://www.google.com/maps/search/?api=1&amp;query=%26.%26%20%E6%97%A5%E3%80%85%E3%81%AE%E9%A3%9F%E3%83%91%E3%83%B3%20%E5%AE%AE%E5%B4%8E%E7%9C%8C%E5%8C%97%E8%AB%B8%E7%9C%8C%E9%83%A1%E4%B8%89%E8%82%A1%E7%94%BA%E6%A8%BA%E5%B1%B11273-1" target="_blank" rel="noopener">Google マップで開く<span class="arrow" aria-hidden="true"></span></a>
+              <a class="more-link" href="https://www.instagram.com/and.and_hibinosyokupan/" target="_blank" rel="noopener">Instagram<span class="arrow" aria-hidden="true"></span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand"><img src="assets/logo-alpha.webp" width="320" height="320" alt="&amp;.&amp; のロゴ" loading="lazy"><p>&amp;.&amp;～日々の食パン～</p><p class="latin site-footer__since">SINCE 2020</p></div>
+      <div class="site-footer__info">
+        <p><span class="phrase">〒889-1901</span> <span class="phrase">宮崎県北諸県郡</span><span class="phrase">三股町樺山1273-1</span></p>
+        <a class="site-footer__phone latin" href="tel:0986510511">0986-51-0511</a>
+        <p><span class="phrase">木・金・土・日</span><span class="phrase">（第5日曜日はお休み）</span><br><span class="phrase">11:00〜15:00</span><span class="phrase">（売り切れ次第終了）</span></p>
+      </div>
+      <nav class="site-footer__nav" aria-label="ページの中の場所">
+        <a href="#about">お店のこと</a><a href="#shokupan">食パン</a><a href="#jam">ジャム</a><a href="#sweets">菓子パン</a><a href="#instagram">Instagram</a><a href="#reserve">ご予約</a><a href="#info">ご案内</a>
+      </nav>
+    </div>
+    <p class="site-footer__copyright note latin">© 2026 &amp;.&amp; HIBINO SHOKUPAN</p>
+  </footer>
+  <div class="mobile-actions" role="group" aria-label="電話と店舗のご案内"><a href="tel:0986510511">電話で予約する</a><a href="#info">店舗のご案内</a></div>
+</body>
+</html>
