@@ -270,7 +270,7 @@ a:hover .arrow { transform: translateX(4px); }
 .instagram__links .more-link { margin-top: 0; }
 .instagram__links .note { margin-top: 6px; }
 @media (min-width: 900px) { .instagram__head { grid-template-columns: 1fr auto; align-items: end; margin-bottom: 56px; } }
-/* 流れる列：横にすべらせられる列を、JS が少しずつ送る（指・トラックパッド・マウスのドラッグでも動かせる。2026-11-15 本人） */
+/* 流れる列：横にすべらせられる列を、JS が少しずつ送る（指・トラックパッド・マウスのドラッグでも動かせ、止まらずに流れ続ける。2026-11-15 本人） */
 .marquee { overflow-x: auto; overscroll-behavior-x: contain; scroll-behavior: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
 .marquee::-webkit-scrollbar { display: none; }
 .marquee.is-dragging { cursor: grabbing; }

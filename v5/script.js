@@ -48,7 +48,8 @@
   } catch (error) { /* 1枚目の写真のまま */ }
 
   // ---- Instagram の投稿・ジャムの写真を横に流す（列を2つ続けて、切れ目なく回す） ----
-  // 指・トラックパッドで横にすべらせたり、マウスでドラッグしたりもできる。動かした後は少し待ってから、また流れる（2026-11-15 本人）
+  // 指・トラックパッドで横にすべらせたり、マウスでドラッグしたりもできる。止めずに流れ続ける（2026-11-15 本人「スライドしたら流れが止まるのはやめて」）。
+  // 指で触っている間・すべりの勢いが残っている間だけは、指の動きに任せる
   Array.prototype.forEach.call(document.querySelectorAll('.marquee'), marquee => {
     try {
       const track = marquee.querySelector('.marquee__track');
@@ -62,19 +63,13 @@
       marquee.classList.add('is-running');
       const reverse = marquee.classList.contains('ig-marquee');  // Instagram は右へ、ジャムは左へ
       const seconds = reverse ? 45 : 50;  // 元の列の長さを流すのにかかる時間
-      let half = 0, pos = 0, expected = 0, last = 0, holdUntil = 0, pointerInside = false, touching = false, drag = null, moved = false;
+      let half = 0, pos = 0, expected = 0, last = 0, touching = false, drag = null, moved = false;
       const measure = () => { half = track.scrollWidth / 2; };
-      const hold = () => { holdUntil = performance.now() + 2500; };
       const wrap = () => { if (half > 0) { while (pos >= half) pos -= half; while (pos < 0) pos += half; } };
       measure();
-      marquee.addEventListener('touchstart', () => { touching = true; hold(); }, {passive: true});
-      marquee.addEventListener('touchend', () => { touching = false; hold(); }, {passive: true});
-      marquee.addEventListener('touchcancel', () => { touching = false; hold(); }, {passive: true});
-      marquee.addEventListener('wheel', hold, {passive: true});
-      marquee.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') pointerInside = true; });
-      marquee.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') pointerInside = false; });
-      marquee.addEventListener('focusin', () => { pointerInside = true; });
-      marquee.addEventListener('focusout', () => { pointerInside = false; });
+      marquee.addEventListener('touchstart', () => { touching = true; }, {passive: true});
+      marquee.addEventListener('touchend', () => { touching = false; }, {passive: true});
+      marquee.addEventListener('touchcancel', () => { touching = false; }, {passive: true});
       // マウスでつかんで横に動かす（指は、ふつうの横すべりで動く）
       marquee.addEventListener('pointerdown', event => {
         if (event.pointerType !== 'mouse' || event.button !== 0) return;
@@ -85,18 +80,19 @@
         if (!drag) return;
         const dx = event.clientX - drag.x;
         if (Math.abs(dx) > 4) { moved = true; marquee.classList.add('is-dragging'); }
-        if (moved) { marquee.scrollLeft = drag.left - dx; hold(); }
+        if (moved) marquee.scrollLeft = drag.left - dx;
       });
       addEventListener('pointerup', () => { drag = null; marquee.classList.remove('is-dragging'); });
       marquee.addEventListener('click', event => { if (moved) { event.preventDefault(); event.stopPropagation(); moved = false; } }, true);
       marquee.addEventListener('dragstart', event => event.preventDefault());
-      addEventListener('resize', measure);
       const frame = now => {
+        measure();  // 写真の読み込みや画面の幅で列の長さが変わるので、毎こま測る（最初に1回だけだと短く測れて、位置が巻き戻った）
         const actual = marquee.scrollLeft;
-        if (Math.abs(actual - expected) > 1.5) { pos = actual; hold(); }  // 指などで動かされた
+        const userMoved = Math.abs(actual - expected) > 1.5;  // 指・すべりの勢い・トラックパッドで動いている
+        if (userMoved) pos = actual;
         const dt = last ? Math.min(now - last, 100) / 1000 : 0;
         last = now;
-        if (!reduceMotion.matches && !pointerInside && !touching && !drag && now >= holdUntil && half > 0) {
+        if (!reduceMotion.matches && !touching && !drag && !userMoved && half > 0) {
           pos += (reverse ? -1 : 1) * half / seconds * dt;
           wrap();
           marquee.scrollLeft = pos;
