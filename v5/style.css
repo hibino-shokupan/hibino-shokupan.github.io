@@ -217,16 +217,23 @@ a:hover .arrow { transform: translateX(4px); }
 .sweets__head { display: grid; gap: 8px; margin-bottom: 40px; }
 .sweets__head .heading { margin-bottom: 16px; }
 @media (min-width: 900px) { .sweets__head { grid-template-columns: 1fr 1fr; align-items: end; margin-bottom: 56px; } .sweets__head .heading { margin-bottom: 0; } }
-.mosaic { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: auto auto; gap: 10px; }
-.mosaic img { width: 100%; height: 100%; object-fit: cover; }
-.mosaic__tall { grid-row: span 2; }
-.mosaic figure:nth-child(2) img { aspect-ratio: 1; }
-.mosaic figure:nth-child(3) img { aspect-ratio: 4 / 3; }
+/* 菓子パンの写真4枚（2026-11-15 本人「これらをうまく配置して」）
+   スマホ：左に縦長の天板、右に粉砂糖と袋、下に店頭の棚を横いっぱい。
+   PC：天板・粉砂糖・袋を同じ高さで横に並べ（幅の比を写真の縦横の比に合わせる）、下に店頭の棚を横いっぱい。 */
+/* 縦横の比は枠（figure）に持たせ、写真は枠いっぱいに敷く（WebKitで幅を変えた時に高さが古いまま残るのを防ぐ） */
+.mosaic { display: grid; grid-template-columns: 1.1fr 1fr; gap: 10px; }
+.mosaic figure { position: relative; overflow: hidden; }
+.mosaic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mosaic__tray { grid-row: 1 / 3; }
+.mosaic__donut { aspect-ratio: 1; }
+.mosaic__donut img { object-position: center 70%; }
+.mosaic__bag { aspect-ratio: 4 / 3; }
+.mosaic__shelf { grid-column: 1 / -1; aspect-ratio: 1280 / 527; }
 @media (min-width: 900px) {
-  /* 袋の写真は名札が切れないよう4:3のまま。3枚の高さがそろう幅の比（1:1:16/9） */
-  .mosaic { grid-template-columns: 1fr 1fr 1.78fr; grid-template-rows: auto; gap: 24px; align-items: end; }
-  .mosaic__tall { grid-row: auto; }
-  .mosaic figure:nth-child(-n+2) img { aspect-ratio: 3 / 4; }
+  .mosaic { grid-template-columns: .75fr .75fr 1.333fr; gap: 24px; }
+  .mosaic__tray { grid-row: auto; aspect-ratio: 3 / 4; }
+  .mosaic__donut { aspect-ratio: 3 / 4; }
+  .mosaic__donut img { object-position: center; }
 }
 .menu-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; margin-top: 40px; border-top: 1px solid var(--line); }
 .menu-list li { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; letter-spacing: .08em; }
